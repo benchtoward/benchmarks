@@ -4,6 +4,7 @@
   license: CC BY 4.0 (upstream Apache-2.0)
   license_url: https://creativecommons.org/licenses/by/4.0/
   source_url: https://doi.org/10.23421/2026.0800
+  # Released on Hugging Face in 2025; the KHDP DOI was issued later (2026). The citation year stays 2025.
   citation: "SNUH-HARI. ClinicalQA: Korean Medical Knowledge QA Benchmark. Seoul National University Hospital Healthcare AI Research Institute, 2025. doi:10.23421/2026.0800"
   khdp_code: ClinicalQA
   version: 1.0.0
