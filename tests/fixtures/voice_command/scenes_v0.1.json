@@ -1,0 +1,1155 @@
+{
+ "lap_sigmoid": {
+  "procedure": "Laparoscopic sigmoid colectomy (anterior resection)",
+  "procedure_ko": "복강경 S상결장 절제술(전방절제술)",
+  "department": "대장항문외과",
+  "approach": "laparoscopic",
+  "phase": "medial-to-lateral 박리로 IMA 기시부를 노출하는 단계. 로봇은 laparoscope와 보조 포트 기구를 잡고 있다.",
+  "actions": [
+   "SUCTION",
+   "IRRIGATE",
+   "RETRACT",
+   "HOLD",
+   "RELEASE",
+   "CAMERA_MOVE",
+   "CAMERA_ZOOM",
+   "CAMERA_CLEAN",
+   "TOOL_CHANGE",
+   "STOP"
+  ],
+  "anatomy": {
+   "sigmoid_colon": {
+    "en": "sigmoid colon",
+    "ko": "S상결장",
+    "abbr": null,
+    "say": "sigmoid"
+   },
+   "sigmoid_mesocolon": {
+    "en": "sigmoid mesocolon",
+    "ko": "S상결장간막",
+    "abbr": null,
+    "say": "mesocolon"
+   },
+   "descending_colon": {
+    "en": "descending colon",
+    "ko": "하행결장",
+    "abbr": null,
+    "say": "descending colon"
+   },
+   "rectum": {
+    "en": "rectum",
+    "ko": "직장",
+    "abbr": null,
+    "say": "rectum"
+   },
+   "ima": {
+    "en": "inferior mesenteric artery",
+    "ko": "하장간막동맥",
+    "abbr": "IMA",
+    "say": "IMA"
+   },
+   "imv": {
+    "en": "inferior mesenteric vein",
+    "ko": "하장간막정맥",
+    "abbr": "IMV",
+    "say": "IMV"
+   },
+   "lca": {
+    "en": "left colic artery",
+    "ko": "좌결장동맥",
+    "abbr": "LCA",
+    "say": "left colic"
+   },
+   "sra": {
+    "en": "superior rectal artery",
+    "ko": "상직장동맥",
+    "abbr": "SRA",
+    "say": "SRA"
+   },
+   "left_ureter": {
+    "en": "left ureter",
+    "ko": "좌측 요관",
+    "abbr": null,
+    "say": "left ureter"
+   },
+   "gonadal": {
+    "en": "left gonadal vessels",
+    "ko": "좌측 생식샘혈관",
+    "abbr": null,
+    "say": "gonadal vessel"
+   },
+   "small_bowel": {
+    "en": "small bowel",
+    "ko": "소장",
+    "abbr": null,
+    "say": "small bowel"
+   },
+   "pelvis": {
+    "en": "pelvis",
+    "ko": "골반",
+    "abbr": null,
+    "say": "pelvis"
+   },
+   "left_gutter": {
+    "en": "left paracolic gutter",
+    "ko": "좌측 결장옆고랑",
+    "abbr": null,
+    "say": "left gutter"
+   },
+   "splenic_flexure": {
+    "en": "splenic flexure",
+    "ko": "비장만곡",
+    "abbr": null,
+    "say": "splenic flexure"
+   }
+  },
+  "tools": {
+   "laparoscope": {
+    "en": "laparoscope",
+    "ko": "라파로스코프",
+    "say": "laparoscope"
+   },
+   "suction_irrigator": {
+    "en": "suction irrigator",
+    "ko": "석션 이리게이터",
+    "say": "suction irrigator"
+   },
+   "grasper": {
+    "en": "atraumatic grasper",
+    "ko": "그래스퍼",
+    "say": "grasper"
+   },
+   "fan_retractor": {
+    "en": "fan retractor",
+    "ko": "팬 리트랙터",
+    "say": "fan retractor"
+   }
+  },
+  "handover": {
+   "hemolok": {
+    "en": "Hem-o-lok clip applier",
+    "ko": "헤모락",
+    "say": "Hem-o-lok"
+   }
+  }
+ },
+ "lap_right_hemi": {
+  "procedure": "Laparoscopic right hemicolectomy",
+  "procedure_ko": "복강경 우측 결장 절제술",
+  "department": "대장항문외과",
+  "approach": "laparoscopic",
+  "phase": "medial approach로 SMV를 따라 ileocolic pedicle을 박리하는 단계. 로봇은 laparoscope와 보조 포트 기구를 잡고 있다.",
+  "actions": [
+   "SUCTION",
+   "IRRIGATE",
+   "RETRACT",
+   "HOLD",
+   "RELEASE",
+   "CAMERA_MOVE",
+   "CAMERA_ZOOM",
+   "CAMERA_CLEAN",
+   "TOOL_CHANGE",
+   "STOP"
+  ],
+  "anatomy": {
+   "cecum": {
+    "en": "cecum",
+    "ko": "맹장",
+    "abbr": null,
+    "say": "cecum"
+   },
+   "terminal_ileum": {
+    "en": "terminal ileum",
+    "ko": "말단 회장",
+    "abbr": "TI",
+    "say": "TI"
+   },
+   "ascending_colon": {
+    "en": "ascending colon",
+    "ko": "상행결장",
+    "abbr": null,
+    "say": "ascending colon"
+   },
+   "hepatic_flexure": {
+    "en": "hepatic flexure",
+    "ko": "간만곡",
+    "abbr": null,
+    "say": "hepatic flexure"
+   },
+   "transverse_colon": {
+    "en": "transverse colon",
+    "ko": "횡행결장",
+    "abbr": null,
+    "say": "transverse colon"
+   },
+   "ica": {
+    "en": "ileocolic artery",
+    "ko": "회결장동맥",
+    "abbr": "ICA",
+    "say": "ileocolic"
+   },
+   "smv": {
+    "en": "superior mesenteric vein",
+    "ko": "상장간막정맥",
+    "abbr": "SMV",
+    "say": "SMV"
+   },
+   "sma": {
+    "en": "superior mesenteric artery",
+    "ko": "상장간막동맥",
+    "abbr": "SMA",
+    "say": "SMA"
+   },
+   "mca": {
+    "en": "middle colic artery",
+    "ko": "중결장동맥",
+    "abbr": "MCA",
+    "say": "middle colic"
+   },
+   "rca": {
+    "en": "right colic artery",
+    "ko": "우결장동맥",
+    "abbr": "RCA",
+    "say": "right colic"
+   },
+   "henle": {
+    "en": "gastrocolic trunk",
+    "ko": "위결장정맥간",
+    "abbr": null,
+    "say": "Henle trunk"
+   },
+   "duodenum": {
+    "en": "duodenum",
+    "ko": "십이지장",
+    "abbr": null,
+    "say": "duodenum"
+   },
+   "pancreatic_head": {
+    "en": "pancreatic head",
+    "ko": "췌장 두부",
+    "abbr": null,
+    "say": "pancreas head"
+   },
+   "right_ureter": {
+    "en": "right ureter",
+    "ko": "우측 요관",
+    "abbr": null,
+    "say": "right ureter"
+   },
+   "omentum": {
+    "en": "greater omentum",
+    "ko": "대망",
+    "abbr": null,
+    "say": "omentum"
+   },
+   "right_gutter": {
+    "en": "right paracolic gutter",
+    "ko": "우측 결장옆고랑",
+    "abbr": null,
+    "say": "right gutter"
+   }
+  },
+  "tools": {
+   "laparoscope": {
+    "en": "laparoscope",
+    "ko": "라파로스코프",
+    "say": "laparoscope"
+   },
+   "suction_irrigator": {
+    "en": "suction irrigator",
+    "ko": "석션 이리게이터",
+    "say": "suction irrigator"
+   },
+   "grasper": {
+    "en": "atraumatic grasper",
+    "ko": "그래스퍼",
+    "say": "grasper"
+   },
+   "fan_retractor": {
+    "en": "fan retractor",
+    "ko": "팬 리트랙터",
+    "say": "fan retractor"
+   }
+  },
+  "handover": {}
+ },
+ "lap_chole": {
+  "procedure": "Laparoscopic cholecystectomy",
+  "procedure_ko": "복강경 담낭절제술",
+  "department": "외과",
+  "approach": "laparoscopic",
+  "phase": "Calot 삼각을 박리해 critical view of safety를 확보하는 단계. 로봇은 laparoscope와 fundus를 잡은 grasper를 들고 있다.",
+  "actions": [
+   "SUCTION",
+   "IRRIGATE",
+   "RETRACT",
+   "HOLD",
+   "RELEASE",
+   "CAMERA_MOVE",
+   "CAMERA_ZOOM",
+   "CAMERA_CLEAN",
+   "TOOL_CHANGE",
+   "STOP"
+  ],
+  "anatomy": {
+   "gallbladder": {
+    "en": "gallbladder",
+    "ko": "담낭",
+    "abbr": "GB",
+    "say": "GB"
+   },
+   "fundus": {
+    "en": "gallbladder fundus",
+    "ko": "담낭 저부",
+    "abbr": null,
+    "say": "fundus"
+   },
+   "hartmann": {
+    "en": "Hartmann's pouch",
+    "ko": "하트만 주머니",
+    "abbr": null,
+    "say": "Hartmann"
+   },
+   "cystic_duct": {
+    "en": "cystic duct",
+    "ko": "담낭관",
+    "abbr": null,
+    "say": "cystic duct"
+   },
+   "cystic_artery": {
+    "en": "cystic artery",
+    "ko": "담낭동맥",
+    "abbr": null,
+    "say": "cystic artery"
+   },
+   "cbd": {
+    "en": "common bile duct",
+    "ko": "총담관",
+    "abbr": "CBD",
+    "say": "CBD"
+   },
+   "chd": {
+    "en": "common hepatic duct",
+    "ko": "총간관",
+    "abbr": "CHD",
+    "say": "CHD"
+   },
+   "rha": {
+    "en": "right hepatic artery",
+    "ko": "우간동맥",
+    "abbr": "RHA",
+    "say": "RHA"
+   },
+   "liver": {
+    "en": "liver",
+    "ko": "간",
+    "abbr": null,
+    "say": "liver"
+   },
+   "duodenum": {
+    "en": "duodenum",
+    "ko": "십이지장",
+    "abbr": null,
+    "say": "duodenum"
+   },
+   "omentum": {
+    "en": "greater omentum",
+    "ko": "대망",
+    "abbr": null,
+    "say": "omentum"
+   },
+   "morison": {
+    "en": "Morison's pouch",
+    "ko": "간신와",
+    "abbr": null,
+    "say": "Morison"
+   },
+   "calot": {
+    "en": "Calot's triangle",
+    "ko": "칼로 삼각",
+    "abbr": null,
+    "say": "Calot"
+   },
+   "gb_bed": {
+    "en": "gallbladder bed",
+    "ko": "담낭와",
+    "abbr": null,
+    "say": "GB bed"
+   }
+  },
+  "tools": {
+   "laparoscope": {
+    "en": "laparoscope",
+    "ko": "라파로스코프",
+    "say": "laparoscope"
+   },
+   "suction_irrigator": {
+    "en": "suction irrigator",
+    "ko": "석션 이리게이터",
+    "say": "suction irrigator"
+   },
+   "grasper": {
+    "en": "atraumatic grasper",
+    "ko": "그래스퍼",
+    "say": "grasper"
+   }
+  },
+  "handover": {}
+ },
+ "lap_gastrectomy": {
+  "procedure": "Laparoscopic distal gastrectomy",
+  "procedure_ko": "복강경 원위부 위절제술",
+  "department": "외과",
+  "approach": "laparoscopic",
+  "phase": "infrapyloric와 suprapancreatic 림프절 곽청 단계. 로봇은 laparoscope와 위를 잡은 grasper를 들고 있다.",
+  "actions": [
+   "SUCTION",
+   "IRRIGATE",
+   "RETRACT",
+   "HOLD",
+   "RELEASE",
+   "CAMERA_MOVE",
+   "CAMERA_ZOOM",
+   "CAMERA_CLEAN",
+   "TOOL_CHANGE",
+   "STOP"
+  ],
+  "anatomy": {
+   "stomach": {
+    "en": "stomach",
+    "ko": "위",
+    "abbr": null,
+    "say": "stomach"
+   },
+   "antrum": {
+    "en": "gastric antrum",
+    "ko": "위 전정부",
+    "abbr": null,
+    "say": "antrum"
+   },
+   "duodenum": {
+    "en": "duodenum",
+    "ko": "십이지장",
+    "abbr": null,
+    "say": "duodenum"
+   },
+   "pancreas": {
+    "en": "pancreas",
+    "ko": "췌장",
+    "abbr": null,
+    "say": "pancreas"
+   },
+   "liver_left": {
+    "en": "left lobe of liver",
+    "ko": "간 좌엽",
+    "abbr": null,
+    "say": "left lobe"
+   },
+   "lga": {
+    "en": "left gastric artery",
+    "ko": "좌위동맥",
+    "abbr": "LGA",
+    "say": "LGA"
+   },
+   "cha": {
+    "en": "common hepatic artery",
+    "ko": "총간동맥",
+    "abbr": "CHA",
+    "say": "CHA"
+   },
+   "gda": {
+    "en": "gastroduodenal artery",
+    "ko": "위십이지장동맥",
+    "abbr": "GDA",
+    "say": "GDA"
+   },
+   "rgea": {
+    "en": "right gastroepiploic artery",
+    "ko": "우위대망동맥",
+    "abbr": "RGEA",
+    "say": "RGEA"
+   },
+   "rgev": {
+    "en": "right gastroepiploic vein",
+    "ko": "우위대망정맥",
+    "abbr": "RGEV",
+    "say": "RGEV"
+   },
+   "lgv": {
+    "en": "left gastric vein",
+    "ko": "좌위정맥",
+    "abbr": "LGV",
+    "say": "coronary vein"
+   },
+   "splenic_artery": {
+    "en": "splenic artery",
+    "ko": "비장동맥",
+    "abbr": null,
+    "say": "splenic artery"
+   },
+   "portal_vein": {
+    "en": "portal vein",
+    "ko": "문맥",
+    "abbr": "PV",
+    "say": "portal vein"
+   },
+   "omentum": {
+    "en": "greater omentum",
+    "ko": "대망",
+    "abbr": null,
+    "say": "omentum"
+   },
+   "transverse_colon": {
+    "en": "transverse colon",
+    "ko": "횡행결장",
+    "abbr": null,
+    "say": "transverse colon"
+   }
+  },
+  "tools": {
+   "laparoscope": {
+    "en": "laparoscope",
+    "ko": "라파로스코프",
+    "say": "laparoscope"
+   },
+   "suction_irrigator": {
+    "en": "suction irrigator",
+    "ko": "석션 이리게이터",
+    "say": "suction irrigator"
+   },
+   "grasper": {
+    "en": "atraumatic grasper",
+    "ko": "그래스퍼",
+    "say": "grasper"
+   },
+   "fan_retractor": {
+    "en": "fan retractor",
+    "ko": "팬 리트랙터",
+    "say": "fan retractor"
+   },
+   "liver_retractor": {
+    "en": "Nathanson liver retractor",
+    "ko": "네이선슨",
+    "say": "Nathanson"
+   }
+  },
+  "handover": {}
+ },
+ "open_hysterectomy": {
+  "procedure": "Total abdominal hysterectomy",
+  "procedure_ko": "개복 전자궁절제술",
+  "department": "산부인과",
+  "approach": "open",
+  "phase": "uterine artery 결찰 전에 ureter 주행을 확인하는 단계. 로봇은 자궁 견인과 retractor를 맡고 있다.",
+  "actions": [
+   "SUCTION",
+   "IRRIGATE",
+   "RETRACT",
+   "HOLD",
+   "RELEASE",
+   "LIGHT_FOCUS",
+   "HANDOVER",
+   "TOOL_CHANGE",
+   "STOP"
+  ],
+  "anatomy": {
+   "uterus": {
+    "en": "uterus",
+    "ko": "자궁",
+    "abbr": null,
+    "say": "uterus"
+   },
+   "cervix": {
+    "en": "cervix",
+    "ko": "자궁경부",
+    "abbr": null,
+    "say": "cervix"
+   },
+   "tube": {
+    "en": "fallopian tube",
+    "ko": "난관",
+    "abbr": null,
+    "say": "tube"
+   },
+   "ovary": {
+    "en": "ovary",
+    "ko": "난소",
+    "abbr": null,
+    "say": "ovary"
+   },
+   "round_lig": {
+    "en": "round ligament",
+    "ko": "원인대",
+    "abbr": null,
+    "say": "round ligament"
+   },
+   "ip_lig": {
+    "en": "infundibulopelvic ligament",
+    "ko": "누두골반인대",
+    "abbr": "IP",
+    "say": "IP ligament"
+   },
+   "uterine_artery": {
+    "en": "uterine artery",
+    "ko": "자궁동맥",
+    "abbr": null,
+    "say": "uterine artery"
+   },
+   "ureter": {
+    "en": "ureter",
+    "ko": "요관",
+    "abbr": null,
+    "say": "ureter"
+   },
+   "bladder": {
+    "en": "bladder",
+    "ko": "방광",
+    "abbr": null,
+    "say": "bladder"
+   },
+   "bladder_flap": {
+    "en": "bladder flap",
+    "ko": "방광 피판",
+    "abbr": null,
+    "say": "bladder flap"
+   },
+   "sigmoid_colon": {
+    "en": "sigmoid colon",
+    "ko": "S상결장",
+    "abbr": null,
+    "say": "sigmoid"
+   },
+   "small_bowel": {
+    "en": "small bowel",
+    "ko": "소장",
+    "abbr": null,
+    "say": "small bowel"
+   },
+   "pod": {
+    "en": "pouch of Douglas",
+    "ko": "더글라스와",
+    "abbr": "POD",
+    "say": "cul-de-sac"
+   },
+   "vaginal_cuff": {
+    "en": "vaginal cuff",
+    "ko": "질 절단부",
+    "abbr": null,
+    "say": "cuff"
+   }
+  },
+  "tools": {
+   "bladder_blade": {
+    "en": "bladder blade",
+    "ko": "블래더 블레이드",
+    "say": "bladder blade"
+   },
+   "deaver": {
+    "en": "Deaver retractor",
+    "ko": "디버",
+    "say": "Deaver"
+   },
+   "malleable": {
+    "en": "malleable retractor",
+    "ko": "말리어블",
+    "say": "malleable"
+   },
+   "yankauer": {
+    "en": "Yankauer suction",
+    "ko": "양카우어",
+    "say": "Yankauer"
+   },
+   "poole": {
+    "en": "Poole suction",
+    "ko": "풀 석션",
+    "say": "Poole"
+   }
+  },
+  "handover": {
+   "heaney": {
+    "en": "Heaney clamp",
+    "ko": "히니",
+    "say": "Heaney"
+   },
+   "kocher": {
+    "en": "Kocher clamp",
+    "ko": "코커",
+    "say": "Kocher"
+   },
+   "kelly": {
+    "en": "Kelly clamp",
+    "ko": "켈리",
+    "say": "Kelly"
+   },
+   "mayo": {
+    "en": "Mayo scissors",
+    "ko": "메이요",
+    "say": "Mayo"
+   },
+   "metz": {
+    "en": "Metzenbaum scissors",
+    "ko": "메첸바움",
+    "say": "Metzenbaum"
+   },
+   "needle_holder": {
+    "en": "needle holder",
+    "ko": "니들 홀더",
+    "say": "needle holder"
+   },
+   "lap_sponge": {
+    "en": "laparotomy sponge",
+    "ko": "랩 스펀지",
+    "say": "lap sponge"
+   }
+  }
+ },
+ "open_nephrectomy": {
+  "procedure": "Open right radical nephrectomy",
+  "procedure_ko": "개복 우측 근치적 신장절제술",
+  "department": "비뇨의학과",
+  "approach": "open",
+  "phase": "Kocher maneuver 후 renal hilum을 박리하는 단계. 로봇은 retractor와 흡인을 맡고 있다.",
+  "actions": [
+   "SUCTION",
+   "IRRIGATE",
+   "RETRACT",
+   "HOLD",
+   "RELEASE",
+   "LIGHT_FOCUS",
+   "HANDOVER",
+   "TOOL_CHANGE",
+   "STOP"
+  ],
+  "anatomy": {
+   "kidney": {
+    "en": "right kidney",
+    "ko": "우측 신장",
+    "abbr": null,
+    "say": "kidney"
+   },
+   "renal_artery": {
+    "en": "right renal artery",
+    "ko": "우신동맥",
+    "abbr": null,
+    "say": "renal artery"
+   },
+   "renal_vein": {
+    "en": "right renal vein",
+    "ko": "우신정맥",
+    "abbr": null,
+    "say": "renal vein"
+   },
+   "ivc": {
+    "en": "inferior vena cava",
+    "ko": "하대정맥",
+    "abbr": "IVC",
+    "say": "IVC"
+   },
+   "aorta": {
+    "en": "aorta",
+    "ko": "대동맥",
+    "abbr": null,
+    "say": "aorta"
+   },
+   "adrenal": {
+    "en": "right adrenal gland",
+    "ko": "우측 부신",
+    "abbr": null,
+    "say": "adrenal"
+   },
+   "ureter": {
+    "en": "right ureter",
+    "ko": "우측 요관",
+    "abbr": null,
+    "say": "ureter"
+   },
+   "gonadal_vein": {
+    "en": "right gonadal vein",
+    "ko": "우측 생식샘정맥",
+    "abbr": null,
+    "say": "gonadal vein"
+   },
+   "duodenum": {
+    "en": "duodenum",
+    "ko": "십이지장",
+    "abbr": null,
+    "say": "duodenum"
+   },
+   "liver": {
+    "en": "liver",
+    "ko": "간",
+    "abbr": null,
+    "say": "liver"
+   },
+   "ascending_colon": {
+    "en": "ascending colon",
+    "ko": "상행결장",
+    "abbr": null,
+    "say": "ascending colon"
+   },
+   "psoas": {
+    "en": "psoas muscle",
+    "ko": "장요근",
+    "abbr": null,
+    "say": "psoas"
+   },
+   "renal_fossa": {
+    "en": "renal fossa",
+    "ko": "신장와",
+    "abbr": null,
+    "say": "renal fossa"
+   }
+  },
+  "tools": {
+   "deaver": {
+    "en": "Deaver retractor",
+    "ko": "디버",
+    "say": "Deaver"
+   },
+   "richardson": {
+    "en": "Richardson retractor",
+    "ko": "리차드슨",
+    "say": "Richardson"
+   },
+   "malleable": {
+    "en": "malleable retractor",
+    "ko": "말리어블",
+    "say": "malleable"
+   },
+   "yankauer": {
+    "en": "Yankauer suction",
+    "ko": "양카우어",
+    "say": "Yankauer"
+   },
+   "poole": {
+    "en": "Poole suction",
+    "ko": "풀 석션",
+    "say": "Poole"
+   }
+  },
+  "handover": {
+   "right_angle": {
+    "en": "right-angle clamp",
+    "ko": "라이트 앵글",
+    "say": "right angle"
+   },
+   "satinsky": {
+    "en": "Satinsky clamp",
+    "ko": "사틴스키",
+    "say": "Satinsky"
+   },
+   "metz": {
+    "en": "Metzenbaum scissors",
+    "ko": "메첸바움",
+    "say": "Metzenbaum"
+   },
+   "debakey": {
+    "en": "DeBakey forceps",
+    "ko": "드베이키",
+    "say": "DeBakey"
+   },
+   "vessel_loop": {
+    "en": "vessel loop",
+    "ko": "베슬 루프",
+    "say": "vessel loop"
+   },
+   "lap_sponge": {
+    "en": "laparotomy sponge",
+    "ko": "랩 스펀지",
+    "say": "lap sponge"
+   }
+  }
+ },
+ "vats_rul": {
+  "procedure": "VATS right upper lobectomy",
+  "procedure_ko": "흉강경 우상엽 절제술",
+  "department": "흉부외과",
+  "approach": "thoracoscopic",
+  "phase": "anterior hilum을 박리해 truncus anterior와 superior pulmonary vein을 노출하는 단계. 로봇은 thoracoscope와 폐 견인 기구를 잡고 있다.",
+  "actions": [
+   "SUCTION",
+   "IRRIGATE",
+   "RETRACT",
+   "HOLD",
+   "RELEASE",
+   "CAMERA_MOVE",
+   "CAMERA_ZOOM",
+   "CAMERA_CLEAN",
+   "TOOL_CHANGE",
+   "STOP"
+  ],
+  "anatomy": {
+   "rul": {
+    "en": "right upper lobe",
+    "ko": "우상엽",
+    "abbr": "RUL",
+    "say": "RUL"
+   },
+   "rml": {
+    "en": "right middle lobe",
+    "ko": "우중엽",
+    "abbr": "RML",
+    "say": "RML"
+   },
+   "rll": {
+    "en": "right lower lobe",
+    "ko": "우하엽",
+    "abbr": "RLL",
+    "say": "RLL"
+   },
+   "truncus": {
+    "en": "truncus anterior",
+    "ko": "앞줄기동맥",
+    "abbr": null,
+    "say": "truncus"
+   },
+   "pa": {
+    "en": "pulmonary artery",
+    "ko": "폐동맥",
+    "abbr": "PA",
+    "say": "PA"
+   },
+   "spv": {
+    "en": "right superior pulmonary vein",
+    "ko": "우상폐정맥",
+    "abbr": null,
+    "say": "superior vein"
+   },
+   "rul_bronchus": {
+    "en": "right upper lobe bronchus",
+    "ko": "우상엽 기관지",
+    "abbr": null,
+    "say": "upper lobe bronchus"
+   },
+   "azygos": {
+    "en": "azygos vein",
+    "ko": "홀정맥",
+    "abbr": null,
+    "say": "azygos"
+   },
+   "svc": {
+    "en": "superior vena cava",
+    "ko": "상대정맥",
+    "abbr": "SVC",
+    "say": "SVC"
+   },
+   "phrenic": {
+    "en": "phrenic nerve",
+    "ko": "횡격막신경",
+    "abbr": null,
+    "say": "phrenic"
+   },
+   "vagus": {
+    "en": "vagus nerve",
+    "ko": "미주신경",
+    "abbr": null,
+    "say": "vagus"
+   },
+   "minor_fissure": {
+    "en": "minor fissure",
+    "ko": "소엽간열",
+    "abbr": null,
+    "say": "minor fissure"
+   },
+   "major_fissure": {
+    "en": "major fissure",
+    "ko": "대엽간열",
+    "abbr": null,
+    "say": "major fissure"
+   },
+   "diaphragm": {
+    "en": "diaphragm",
+    "ko": "횡격막",
+    "abbr": null,
+    "say": "diaphragm"
+   }
+  },
+  "tools": {
+   "thoracoscope": {
+    "en": "thoracoscope",
+    "ko": "토라코스코프",
+    "say": "scope"
+   },
+   "suction": {
+    "en": "endoscopic suction",
+    "ko": "석션",
+    "say": "suction"
+   },
+   "lung_grasper": {
+    "en": "lung grasper",
+    "ko": "렁 그래스퍼",
+    "say": "lung grasper"
+   },
+   "ring_forceps": {
+    "en": "ring forceps",
+    "ko": "링 포셉",
+    "say": "ring forceps"
+   }
+  },
+  "handover": {}
+ },
+ "open_thyroid": {
+  "procedure": "Total thyroidectomy",
+  "procedure_ko": "갑상선 전절제술",
+  "department": "이비인후과",
+  "approach": "open",
+  "phase": "우측 엽을 내측으로 견인하고 RLN과 부갑상선을 확인하는 단계. 로봇은 retractor와 흡인을 맡고 있다.",
+  "actions": [
+   "SUCTION",
+   "IRRIGATE",
+   "RETRACT",
+   "HOLD",
+   "RELEASE",
+   "LIGHT_FOCUS",
+   "HANDOVER",
+   "TOOL_CHANGE",
+   "STOP"
+  ],
+  "anatomy": {
+   "right_lobe": {
+    "en": "right thyroid lobe",
+    "ko": "갑상선 우엽",
+    "abbr": null,
+    "say": "right lobe"
+   },
+   "left_lobe": {
+    "en": "left thyroid lobe",
+    "ko": "갑상선 좌엽",
+    "abbr": null,
+    "say": "left lobe"
+   },
+   "isthmus": {
+    "en": "thyroid isthmus",
+    "ko": "갑상선 협부",
+    "abbr": null,
+    "say": "isthmus"
+   },
+   "strap": {
+    "en": "strap muscles",
+    "ko": "띠근육",
+    "abbr": null,
+    "say": "strap muscle"
+   },
+   "scm": {
+    "en": "sternocleidomastoid muscle",
+    "ko": "흉쇄유돌근",
+    "abbr": "SCM",
+    "say": "SCM"
+   },
+   "rln": {
+    "en": "recurrent laryngeal nerve",
+    "ko": "되돌이후두신경",
+    "abbr": "RLN",
+    "say": "RLN"
+   },
+   "sup_parathyroid": {
+    "en": "superior parathyroid gland",
+    "ko": "상부 부갑상선",
+    "abbr": null,
+    "say": "superior parathyroid"
+   },
+   "inf_parathyroid": {
+    "en": "inferior parathyroid gland",
+    "ko": "하부 부갑상선",
+    "abbr": null,
+    "say": "inferior parathyroid"
+   },
+   "sta": {
+    "en": "superior thyroid artery",
+    "ko": "상갑상동맥",
+    "abbr": "STA",
+    "say": "STA"
+   },
+   "ita": {
+    "en": "inferior thyroid artery",
+    "ko": "하갑상동맥",
+    "abbr": "ITA",
+    "say": "ITA"
+   },
+   "mtv": {
+    "en": "middle thyroid vein",
+    "ko": "중갑상정맥",
+    "abbr": null,
+    "say": "middle thyroid vein"
+   },
+   "trachea": {
+    "en": "trachea",
+    "ko": "기관",
+    "abbr": null,
+    "say": "trachea"
+   },
+   "cca": {
+    "en": "common carotid artery",
+    "ko": "온목동맥",
+    "abbr": "CCA",
+    "say": "carotid"
+   },
+   "ijv": {
+    "en": "internal jugular vein",
+    "ko": "속목정맥",
+    "abbr": "IJV",
+    "say": "IJV"
+   },
+   "superior_pole": {
+    "en": "superior pole",
+    "ko": "상극",
+    "abbr": null,
+    "say": "upper pole"
+   }
+  },
+  "tools": {
+   "army_navy": {
+    "en": "army-navy retractor",
+    "ko": "아미 네이비",
+    "say": "army-navy"
+   },
+   "senn": {
+    "en": "Senn retractor",
+    "ko": "센",
+    "say": "Senn"
+   },
+   "yankauer": {
+    "en": "Yankauer suction",
+    "ko": "양카우어",
+    "say": "Yankauer"
+   },
+   "debakey": {
+    "en": "DeBakey forceps",
+    "ko": "드베이키",
+    "say": "DeBakey"
+   }
+  },
+  "handover": {
+   "mosquito": {
+    "en": "mosquito clamp",
+    "ko": "모스키토",
+    "say": "mosquito"
+   },
+   "kelly": {
+    "en": "Kelly clamp",
+    "ko": "켈리",
+    "say": "Kelly"
+   },
+   "metz": {
+    "en": "Metzenbaum scissors",
+    "ko": "메첸바움",
+    "say": "Metzenbaum"
+   },
+   "bipolar": {
+    "en": "bipolar forceps",
+    "ko": "바이폴라",
+    "say": "bipolar"
+   },
+   "nerve_probe": {
+    "en": "nerve stimulator probe",
+    "ko": "너브 프로브",
+    "say": "nerve probe"
+   },
+   "peanut": {
+    "en": "peanut sponge",
+    "ko": "피넛",
+    "say": "peanut"
+   }
+  }
+ }
+}

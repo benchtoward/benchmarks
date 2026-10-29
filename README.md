@@ -16,6 +16,7 @@ task version.
 | [`clinicalqa@0`](https://medbench.kr/tasks/clinicalqa) | Korean clinical knowledge (KMLE-level MCQ) | [ClinicalQA: Korean Medical Knowledge QA Benchmark](https://doi.org/10.23421/2026.0800) | medbench.kr definition (no published protocol) | [spec](registry/tasks/clinicalqa.yaml), [`clinicalqa.py`](src/medbench/tasks/clinicalqa.py), [`evaluate.py`](src/medbench/evaluate.py), [`scoring.py`](src/medbench/scoring.py) |
 | [`inspire-mortality@0`](https://medbench.kr/tasks/inspire-mortality) | 30-day postoperative in-hospital mortality | [INSPIRE](https://khdp.net/database/data-search-detail/660/inspire/1.3) | [INSPIRE authors' 30-day in-hospital mortality task (gbm_mortality.py)](https://github.com/vitaldb/inspire/blob/04a249028b9290729a1f8027322bfcc1101739ed/gbm_mortality.py) | [spec](registry/tasks/inspire-mortality.yaml), [`inspire_mortality.py`](src/medbench/tasks/inspire_mortality.py), [`inspire.py`](src/medbench/baselines/inspire.py) |
 | [`k-or-speech-asr@0`](https://medbench.kr/tasks/k-or-speech-asr) | Korean operating-room speech recognition | [Synthetic K-OR Speech Audio](https://khdp.net/database/data-search-detail/774/Synthetic-K-OR-Speech-Audio/1.0.0) | medbench.kr definition (no published protocol) | [spec](registry/tasks/k-or-speech-asr.yaml) |
+| [`kor-surgical-robot-voice-command@0`](https://medbench.kr/tasks/kor-surgical-robot-voice-command) | Korean surgical robot voice commands | [Korean Surgical Robot Voice-Command Benchmark](https://khdp.net/database/data-search-detail/3507/kor-surgical-robot-voice-command/1.0.0) | Dataset author's evaluation code (prompt, scorer, paired comparison), ported unchanged | [spec](registry/tasks/kor-surgical-robot-voice-command.yaml), [`voice_command.py`](src/medbench/tasks/voice_command.py), [`voice_command_cli.py`](src/medbench/tasks/voice_command_cli.py) |
 | [`vitaldb-arrhythmia-abnormal@0`](https://medbench.kr/tasks/vitaldb-arrhythmia-abnormal) | Abnormal rhythm in 5-second intraoperative ECG (lead II) | [VitalDB Arrhythmia Database](https://khdp.net/database/data-search-detail/738/vitaldb-arrhythmia/1.0.0) | [Eun DI, Shim K, Lee H, Lim Y, Lim H, Lee H, Lee J, Lee HC](https://github.com/vitaldb/arrdb) | [spec](registry/tasks/vitaldb-arrhythmia-abnormal.yaml), [`vitaldb_arrhythmia_abnormal.py`](src/medbench/tasks/vitaldb_arrhythmia_abnormal.py), [`vitaldb_arrhythmia.py`](src/medbench/tasks/vitaldb_arrhythmia.py), [`arrhythmia.py`](src/medbench/baselines/arrhythmia.py) |
 | [`vitaldb-ioh@0`](https://medbench.kr/tasks/vitaldb-ioh) | Intraoperative hypotension 5 min ahead (numeric MAP) | [VitalDB](https://khdp.net/database/data-search-detail/658/vitaldb_open/1.0.0) | medbench.kr definition (no published protocol) | [spec](registry/tasks/vitaldb-ioh.yaml), [`vitaldb_ioh.py`](src/medbench/tasks/vitaldb_ioh.py), [`vitaldb_split.py`](src/medbench/tasks/vitaldb_split.py), [`ioh.py`](src/medbench/baselines/ioh.py) |
 
@@ -32,6 +33,9 @@ uv run pytest -q
 Data is never included here: each builder downloads its dataset from its source under that dataset's license.
 VitalDB waveforms come from the `vitaldb` package. LLM tasks need an OpenAI-compatible endpoint: add a route to
 `registry/providers.yaml` (`name: {base_url: ..., key_env: ...}`) and a model entry in `registry/models.yaml`.
+A task whose protocol fixes request settings says so in its spec; `kor-surgical-robot-voice-command` needs the route
+to declare how it switches thinking off (`request: {thinking_off: {...}}`, see `route_request` in
+`src/medbench/tasks/voice_command.py`).
 
 ## Report a problem
 

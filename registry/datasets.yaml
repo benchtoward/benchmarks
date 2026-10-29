@@ -58,3 +58,13 @@
   citation: "SCOPE: A survival and cardiac arrest outcome dataset with PPG and ECG waveforms from intensive care units (version 1.0). KHDP; 2025. doi:10.23421/2025.0698"
   khdp_code: icu-cardiac-arrest
   version: "1.0"
+
+- slug: kor-surgical-robot-voice-command
+  title: Korean Surgical Robot Voice-Command Benchmark
+  modality: text
+  license: CC BY 4.0
+  license_url: https://creativecommons.org/licenses/by/4.0/
+  source_url: https://khdp.net/database/data-search-detail/3507/kor-surgical-robot-voice-command/1.0.0
+  citation: "Lee H. Korean Surgical Robot Voice-Command Benchmark (version 1.0.0). Seoul National University Hospital. KHDP. 2026. doi:10.23421/2026.03507"
+  khdp_code: kor-surgical-robot-voice-command
+  version: 1.0.0

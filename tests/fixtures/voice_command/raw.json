@@ -1,0 +1,444 @@
+{
+"clean/strong": {
+"lap_sigmoid-01": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"SUCTION\", \"target\": null, \"instrument\": \"suction irrigator\", \"direction\": null, \"magnitude\": null}], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-02-en": {
+"content": "{\n  \"response\": \"execute\",\n  \"actions\": [\n    {\n      \"action\": \"SUCTION\",\n      \"target\": \"pelvis\",\n      \"instrument\": null,\n      \"direction\": null,\n      \"magnitude\": null\n    }\n  ],\n  \"message\": null\n}",
+"error": null
+},
+"lap_sigmoid-02-ko": {
+"content": "{\n\"response\": \"execute\",\n\"actions\": [\n{\n\"action\": \"SUCTION\",\n\"target\": \"pelvis\",\n\"instrument\": null,\n\"direction\": null,\n\"magnitude\": null\n}\n],\n\"message\": null\n}",
+"error": null
+},
+"lap_sigmoid-15": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"RETRACT\", \"target\": \"sigmoid colon\", \"instrument\": null, \"direction\": \"medial\", \"magnitude\": \"small\"}], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-16": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"RETRACT\", \"target\": \"sigmoid colon\", \"instrument\": null, \"direction\": \"lateral\", \"magnitude\": null}], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-19-en": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"CAMERA_MOVE\", \"target\": \"splenic flexure\", \"instrument\": null, \"direction\": null, \"magnitude\": null}], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-19-ko": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"CAMERA_MOVE\", \"target\": \"splenic flexure\", \"instrument\": null, \"direction\": null, \"magnitude\": null}], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-21": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"CAMERA_MOVE\", \"target\": null, \"instrument\": null, \"direction\": \"left\", \"magnitude\": null}], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-23": {
+"content": "{\n  \"response\": \"execute\",\n  \"actions\": [\n    {\n      \"action\": \"STOP\",\n      \"target\": null,\n      \"instrument\": null,\n      \"direction\": null,\n      \"magnitude\": null\n    }\n  ],\n  \"message\": null\n}",
+"error": null
+},
+"lap_sigmoid-25-en": {
+"content": "{\"response\": \"reject\", \"actions\": [], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-25-abbr": {
+"content": "{\"response\": \"reject\", \"actions\": [], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-25-abbr_ko": {
+"content": "{\"response\": \"reject\", \"actions\": [], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-25-ko": {
+"content": "{\"response\": \"reject\", \"actions\": [], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-27-en": {
+"content": "{\"response\": \"reject\", \"actions\": [], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-27-abbr_ko": {
+"content": "{\"response\": \"reject\", \"actions\": [], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-28": {
+"content": "{\"response\": \"clarify\", \"actions\": [], \"message\": \"무엇을 잡아드릴까요? (예: S자 결장, S자 결장 장간막 등)\"}",
+"error": null
+},
+"lap_right_hemi-11-en": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"CAMERA_MOVE\", \"target\": \"gastrocolic trunk\", \"instrument\": null, \"direction\": \"up\", \"magnitude\": null}], \"message\": null}",
+"error": null
+},
+"lap_right_hemi-11-abbr": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"CAMERA_MOVE\", \"target\": \"gastrocolic trunk\", \"instrument\": null, \"direction\": \"up\", \"magnitude\": null}], \"message\": null}",
+"error": null
+},
+"lap_right_hemi-11-ko": {
+"content": "{\n  \"response\": \"execute\",\n  \"actions\": [\n    {\n      \"action\": \"CAMERA_MOVE\",\n      \"target\": \"superior mesenteric vein\",\n      \"instrument\": null,\n      \"direction\": \"up\",\n      \"magnitude\": null\n    }\n  ],\n  \"message\": null\n}",
+"error": null
+}
+},
+"clean/weak": {
+"lap_sigmoid-01": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"SUCTION\", \"target\": \"sigmoid mesocolon\", \"instrument\": \"suction irrigator\", \"direction\": null, \"magnitude\": null}], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-02-en": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"SUCTION\", \"target\": \"pelvis\", \"instrument\": null, \"direction\": null, \"magnitude\": null}], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-02-ko": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"SUCTION\", \"target\": \"inferior mesenteric vein\", \"instrument\": \"suction irrigator\", \"direction\": null, \"magnitude\": null}], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-15": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"RETRACT\", \"target\": \"sigmoid colon\", \"instrument\": null, \"direction\": \"medial\", \"magnitude\": null}], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-16": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"RETRACT\", \"target\": \"sigmoid colon\", \"instrument\": null, \"direction\": \"lateral\", \"magnitude\": null}], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-19-en": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"CAMERA_MOVE\", \"target\": \"splenic flexure\", \"instrument\": null, \"direction\": \"up\", \"magnitude\": null}], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-19-ko": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"CAMERA_MOVE\", \"target\": \"splenic flexure\", \"instrument\": null, \"direction\": \"up\", \"magnitude\": null}], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-21": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"CAMERA_MOVE\", \"target\": \"left\", \"instrument\": null, \"direction\": \"left\", \"magnitude\": null}], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-23": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"STOP\", \"target\": null, \"instrument\": null, \"direction\": null, \"magnitude\": null}], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-25-en": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"RETRACT\", \"target\": \"inferior mesenteric artery\", \"instrument\": null, \"direction\": \"medial\", \"magnitude\": null}], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-25-abbr": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"RETRACT\", \"target\": \"sigmoid mesocolon\", \"instrument\": \"fan retractor\", \"direction\": \"medial\", \"magnitude\": \"small\"}] , \"message\": null}",
+"error": null
+},
+"lap_sigmoid-25-abbr_ko": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"RETRACT\", \"target\": \"sigmoid mesocolon\", \"instrument\": null, \"direction\": \"medial\", \"magnitude\": null}], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-25-ko": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"RETRACT\", \"target\": \"inferior mesenteric artery\", \"instrument\": null, \"direction\": \"medial\", \"magnitude\": null}], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-27-en": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"TOOL_CHANGE\", \"target\": \"Hem-o-lok\", \"instrument\": null, \"direction\": null, \"magnitude\": null}], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-27-abbr_ko": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"SUCTION\", \"target\": \"blood\", \"instrument\": \"suction irrigator\", \"direction\": null, \"magnitude\": null}], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-28": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"HOLD\", \"target\": \"sigmoid mesocolon\", \"instrument\": null, \"direction\": null, \"magnitude\": null}], \"message\": null}",
+"error": null
+},
+"lap_right_hemi-11-en": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"CAMERA_MOVE\", \"target\": \"gastrocolic trunk\", \"instrument\": null, \"direction\": \"up\", \"magnitude\": null}], \"message\": null}",
+"error": null
+},
+"lap_right_hemi-11-abbr": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"CAMERA_MOVE\", \"target\": \"Henle trunk\", \"instrument\": null, \"direction\": \"up\", \"magnitude\": null}], \"message\": null}",
+"error": null
+},
+"lap_right_hemi-11-ko": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"CAMERA_MOVE\", \"target\": \"hepatic flexure\", \"instrument\": null, \"direction\": \"up\", \"magnitude\": null}], \"message\": null}",
+"error": null
+}
+},
+"clean/mid": {
+"lap_sigmoid-01": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"SUCTION\", \"target\": null, \"instrument\": \"suction irrigator\", \"direction\": null, \"magnitude\": null}], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-02-en": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"SUCTION\", \"target\": \"pelvis\", \"instrument\": \"suction irrigator\", \"direction\": null, \"magnitude\": null}], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-02-ko": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"SUCTION\", \"target\": \"pelvis\", \"instrument\": \"suction irrigator\", \"direction\": null, \"magnitude\": null}], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-15": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"RETRACT\", \"target\": \"sigmoid colon\", \"instrument\": null, \"direction\": \"medial\", \"magnitude\": \"small\"}], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-16": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"RETRACT\", \"target\": \"sigmoid colon\", \"instrument\": null, \"direction\": \"lateral\", \"magnitude\": null}], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-19-en": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"CAMERA_MOVE\", \"target\": \"splenic flexure\", \"instrument\": \"laparoscope\", \"direction\": \"up\", \"magnitude\": null}], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-19-ko": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"CAMERA_MOVE\", \"target\": \"splenic flexure\", \"instrument\": \"laparoscope\", \"direction\": \"up\", \"magnitude\": null}], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-21": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"CAMERA_MOVE\", \"target\": null, \"instrument\": \"laparoscope\", \"direction\": \"left\", \"magnitude\": null}], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-23": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"STOP\", \"target\": null, \"instrument\": null, \"direction\": null, \"magnitude\": null}], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-25-en": {
+"content": "{\"response\": \"reject\", \"actions\": [], \"message\": \"클립(결찰)은 로봇이 수행할 수 없는 동작입니다.\"}",
+"error": null
+},
+"lap_sigmoid-25-abbr": {
+"content": "{\"response\": \"reject\", \"actions\": [], \"message\": \"현재 로봇은 클립(결찰) 기능을 수행할 수 없습니다. 다른 동작을 요청해 주세요.\"}",
+"error": null
+},
+"lap_sigmoid-25-abbr_ko": {
+"content": "{\"response\": \"reject\", \"actions\": [], \"message\": \"클립(결찰)은 로봇이 수행할 수 없는 동작입니다.\"}",
+"error": null
+},
+"lap_sigmoid-25-ko": {
+"content": "{\"response\": \"reject\", \"actions\": [], \"message\": \"클립(결찰)은 로봇이 수행할 수 없는 동작입니다.\"}",
+"error": null
+},
+"lap_sigmoid-27-en": {
+"content": "{\"response\": \"reject\", \"actions\": [], \"message\": \"죄송합니다. Hem-o-lok(클립)은 제가 수행할 수 없는 동작입니다.\"}",
+"error": null
+},
+"lap_sigmoid-27-abbr_ko": {
+"content": "{\"response\": \"reject\", \"actions\": [], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-28": {
+"content": "{\"response\": \"clarify\", \"actions\": [], \"message\": \"무엇을 잡을까요?\"}",
+"error": null
+},
+"lap_right_hemi-11-en": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"CAMERA_MOVE\", \"target\": \"gastrocolic trunk\", \"instrument\": null, \"direction\": \"up\", \"magnitude\": null}], \"message\": null}",
+"error": null
+},
+"lap_right_hemi-11-abbr": {
+"content": "{\"response\": \"clarify\", \"actions\": [], \"message\": \"어떤 구조물을 기준으로 카메라를 이동할까요? (예: hepatic flexure, duodenum 등)\"}",
+"error": null
+},
+"lap_right_hemi-11-ko": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"CAMERA_MOVE\", \"target\": \"superior mesenteric vein\", \"instrument\": null, \"direction\": \"up\", \"magnitude\": null}], \"message\": null}",
+"error": null
+}
+},
+"asr_generic/strong": {
+"lap_sigmoid-01": {
+"content": "{\n  \"response\": \"execute\",\n  \"actions\": [\n    {\n      \"action\": \"SUCTION\",\n      \"target\": null,\n      \"instrument\": null,\n      \"direction\": null,\n      \"magnitude\": null\n    }\n  ],\n  \"message\": null\n}",
+"error": null
+},
+"lap_sigmoid-02-en": {
+"content": "{\n  \"response\": \"execute\",\n  \"actions\": [\n    {\n      \"action\": \"SUCTION\",\n      \"target\": null,\n      \"instrument\": null,\n      \"direction\": null,\n      \"magnitude\": null\n    }\n  ],\n  \"message\": null\n}",
+"error": null
+},
+"lap_sigmoid-02-ko": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"SUCTION\", \"target\": \"pelvis\", \"instrument\": null, \"direction\": null, \"magnitude\": null}], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-15": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"RETRACT\", \"target\": \"sigmoid colon\", \"instrument\": null, \"direction\": \"medial\", \"magnitude\": \"small\"}], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-16": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"RETRACT\", \"target\": \"sigmoid colon\", \"instrument\": null, \"direction\": \"lateral\", \"magnitude\": null}], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-19-en": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"CAMERA_MOVE\", \"target\": \"splenic flexure\", \"instrument\": null, \"direction\": null, \"magnitude\": null}], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-19-ko": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"CAMERA_MOVE\", \"target\": \"splenic flexure\", \"instrument\": null, \"direction\": null, \"magnitude\": null}], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-21": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"CAMERA_MOVE\", \"target\": null, \"instrument\": null, \"direction\": \"left\", \"magnitude\": null}], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-23": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"STOP\", \"target\": null, \"instrument\": null, \"direction\": null, \"magnitude\": null}], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-25-en": {
+"content": "{\"response\": \"reject\", \"actions\": [], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-25-abbr": {
+"content": "{\"response\": \"reject\", \"actions\": [], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-25-abbr_ko": {
+"content": "{\"response\": \"reject\", \"actions\": [], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-25-ko": {
+"content": "{\"response\": \"reject\", \"actions\": [], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-27-en": {
+"content": "{\"response\": \"reject\", \"actions\": [], \"message\": \"요청하신 '햄 올록'은 수술용 도구 목록에 없으며, 현재 로봇이 수행할 수 있는 동작이 아닙니다.\"}",
+"error": null
+},
+"lap_sigmoid-27-abbr_ko": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"TOOL_CHANGE\", \"target\": null, \"instrument\": \"atraumatic grasper\", \"direction\": null, \"magnitude\": null}], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-28": {
+"content": "{\"response\": \"clarify\", \"actions\": [], \"message\": \"어떤 구조물(장기 또는 조직)을 잡아드릴까요?\"}",
+"error": null
+},
+"lap_right_hemi-11-en": {
+"content": "{\n  \"response\": \"execute\",\n  \"actions\": [\n    {\n      \"action\": \"CAMERA_MOVE\",\n      \"target\": \"gastrocolic trunk\",\n      \"instrument\": null,\n      \"direction\": \"up\",\n      \"magnitude\": null\n    }\n  ],\n  \"message\": null\n}",
+"error": null
+},
+"lap_right_hemi-11-abbr": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"CAMERA_MOVE\", \"target\": \"gastrocolic trunk\", \"instrument\": null, \"direction\": \"up\", \"magnitude\": null}], \"message\": null}",
+"error": null
+},
+"lap_right_hemi-11-ko": {
+"content": "{\n\"response\": \"execute\",\n\"actions\": [\n{\n\"action\": \"CAMERA_MOVE\",\n\"target\": \"superior mesenteric vein\",\n\"instrument\": null,\n\"direction\": \"up\",\n\"magnitude\": null\n}\n],\n\"message\": null\n}",
+"error": null
+}
+},
+"asr_generic/mid": {
+"lap_sigmoid-01": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"SUCTION\", \"target\": null, \"instrument\": \"suction irrigator\", \"direction\": null, \"magnitude\": null}], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-02-en": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"SUCTION\", \"target\": null, \"instrument\": \"suction irrigator\", \"direction\": null, \"magnitude\": null}], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-02-ko": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"SUCTION\", \"target\": \"pelvis\", \"instrument\": \"suction irrigator\", \"direction\": null, \"magnitude\": null}], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-15": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"RETRACT\", \"target\": \"sigmoid colon\", \"instrument\": null, \"direction\": \"medial\", \"magnitude\": \"small\"}], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-16": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"RETRACT\", \"target\": \"sigmoid colon\", \"instrument\": null, \"direction\": \"lateral\", \"magnitude\": null}], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-19-en": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"CAMERA_MOVE\", \"target\": \"splenic flexure\", \"instrument\": \"laparoscope\", \"direction\": \"up\", \"magnitude\": null}], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-19-ko": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"CAMERA_MOVE\", \"target\": \"splenic flexure\", \"instrument\": null, \"direction\": \"up\", \"magnitude\": null}], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-21": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"CAMERA_MOVE\", \"target\": null, \"instrument\": \"laparoscope\", \"direction\": \"left\", \"magnitude\": null}], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-23": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"STOP\", \"target\": null, \"instrument\": null, \"direction\": null, \"magnitude\": null}], \"message\": null}",
+"error": null
+},
+"lap_sigmoid-25-en": {
+"content": "{\"response\": \"reject\", \"actions\": [], \"message\": \"현재 로봇은 클립(clip)을 직접 사용하는 기능이 없습니다. 박리나 견인, 혹은 다른 동작을 요청해 주세요.\"}",
+"error": null
+},
+"lap_sigmoid-25-abbr": {
+"content": "{\"response\": \"reject\", \"actions\": [], \"message\": \"클립 결찰은 로봇이 수행할 수 없는 동작입니다.\"}",
+"error": null
+},
+"lap_sigmoid-25-abbr_ko": {
+"content": "{\"response\": \"reject\", \"actions\": [], \"message\": \"클립(결찰)은 제가 수행할 수 없는 동작입니다.\"}",
+"error": null
+},
+"lap_sigmoid-25-ko": {
+"content": "{\"response\": \"reject\", \"actions\": [], \"message\": \"클립(결찰)은 로봇이 수행할 수 없는 동작입니다.\"}",
+"error": null
+},
+"lap_sigmoid-27-en": {
+"content": "{\"response\": \"clarify\", \"actions\": [], \"message\": \"어떤 도구를 드릴까요?\"}",
+"error": null
+},
+"lap_sigmoid-27-abbr_ko": {
+"content": "{\"response\": \"reject\", \"actions\": [], \"message\": \"죄송합니다. 요청하신 도구(해무라카나)를 찾을 수 없거나 지원하지 않는 명령입니다. 다른 명령을 입력해 주세요.\"}",
+"error": null
+},
+"lap_sigmoid-28": {
+"content": "{\"response\": \"clarify\", \"actions\": [], \"message\": \"무엇을 잡을까요? (대상과 도구를 말씀해 주세요.)\"}",
+"error": null
+},
+"lap_right_hemi-11-en": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"CAMERA_MOVE\", \"target\": \"gastrocolic trunk\", \"instrument\": null, \"direction\": \"up\", \"magnitude\": null}], \"message\": null}",
+"error": null
+},
+"lap_right_hemi-11-abbr": {
+"content": "{\"response\": \"clarify\", \"actions\": [], \"message\": \"핸들 트렁이 무엇을 의미하는지 명확하지 않습니다. 특정 구조물을 말씀하시는 건가요?\"}",
+"error": null
+},
+"lap_right_hemi-11-ko": {
+"content": "{\"response\": \"execute\", \"actions\": [{\"action\": \"CAMERA_MOVE\", \"target\": \"superior mesenteric vein\", \"instrument\": null, \"direction\": \"up\", \"magnitude\": null}], \"message\": null}",
+"error": null
+}
+},
+"overheard/strong": {
+"kor-SYN-G04445": {
+"content": "{\"response\": \"reject\", \"actions\": [], \"message\": \"해당 발화는 수술 기구의 조작 명령이 아닌 생체 신호(체온, ETCO2) 모니터링 보고로 판단되어 로봇 제어 대상이 아닙니다.\"}",
+"error": null
+},
+"kor-MMO-M00547": {
+"content": "{\"response\": \"clarify\", \"actions\": [], \"message\": \"구체적으로 어떤 동작(흡인, 세척, 견인 등)을 수행할까요?\"}",
+"error": null
+},
+"kor-SYN-G04581": {
+"content": "{\n  \"response\": \"reject\",\n  \"actions\": [],\n  \"message\": \"마취 상태 보고는 수술 보조 로봇의 제어 명령이 아닙니다.\"\n}",
+"error": null
+},
+"kor-SYN-G00515": {
+"content": "{\"response\": \"reject\", \"actions\": [], \"message\": \"호흡 패턴은 마취과에서 관리하는 사항으로, 수술 보조 로봇의 제어 대상이 아닙니다.\"}",
+"error": null
+},
+"kor-MMO-M01185": {
+"content": "{\"response\": \"reject\", \"actions\": [], \"message\": \"로봇은 기록 확인이나 과거 사용 기구 조회 기능이 없습니다.\"}",
+"error": null
+},
+"kor-MMO-M00961": {
+"content": "{\"response\": \"execute\", \"actions\": [], \"message\": null}",
+"error": null
+}
+},
+"overheard/mid": {
+"kor-SYN-G04445": {
+"content": "{\"response\": \"reject\", \"actions\": [], \"message\": null}",
+"error": null
+},
+"kor-MMO-M00547": {
+"content": "{\"response\": \"clarify\", \"actions\": [], \"message\": \"어떤 동작을 수행할까요?\"}",
+"error": null
+},
+"kor-SYN-G04581": {
+"content": "{\"response\": \"reject\", \"actions\": [], \"message\": null}",
+"error": null
+},
+"kor-SYN-G00515": {
+"content": "{\"response\": \"reject\", \"actions\": [], \"message\": null}",
+"error": null
+},
+"kor-MMO-M01185": {
+"content": "{\"response\": \"reject\", \"actions\": [], \"message\": null}",
+"error": null
+},
+"kor-MMO-M00961": {
+"content": "{\"response\": \"execute\", \"actions\": [], \"message\": null}",
+"error": null
+}
+}
+}

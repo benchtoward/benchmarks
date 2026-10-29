@@ -58,3 +58,13 @@ def tmp_session():
     session = session_factory(engine)()
     yield session
     session.close()
+
+
+@pytest.fixture(autouse=True, scope="session")
+def _scratch_job_ledger(tmp_path_factory):
+    """Commands that record their jobs in a ledger write to a scratch folder during tests, never the real one."""
+    import os
+
+    os.environ["MEDBENCH_ORCH_DIR"] = str(tmp_path_factory.mktemp("orch"))
+    os.environ.pop("MEDBENCH_ORCH_JOB", None)
+    yield

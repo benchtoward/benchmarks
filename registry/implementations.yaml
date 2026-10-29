@@ -7,3 +7,4 @@ vitaldb-arrhythmia-abnormal@0: [src/medbench/tasks/vitaldb_arrhythmia_abnormal.p
                                 src/medbench/baselines/arrhythmia.py]
 scope-arrest@0: [src/medbench/tasks/scope_arrest.py, src/medbench/tasks/scope_sampling.py, src/medbench/tasks/scope_hrv.py,
                  src/medbench/baselines/scope_arrest.py]
+kor-surgical-robot-voice-command@0: [src/medbench/tasks/voice_command.py, src/medbench/tasks/voice_command_cli.py]

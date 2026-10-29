@@ -141,3 +141,14 @@ def test_list_content_is_joined():
     body = {"choices": [{"message": {"content": [{"type": "text", "text": "정답: "}, {"type": "text", "text": "C"}]}}]}
     r = _chat(_client([httpx.Response(200, json=body)], []))
     assert r.content == "정답: C"
+
+
+def test_extra_request_fields_are_sent_without_overriding_the_core_ones():
+    calls = []
+    client = _client([_ok("{}")], calls)
+    extra = {"response_format": {"type": "json_object"}, "chat_template_kwargs": {"enable_thinking": False},
+             "model": "other", "max_tokens": 1}
+    asyncio.run(client.chat("m-1", [{"role": "user", "content": "q"}], max_tokens=64, extra=extra))
+    assert calls[0]["response_format"] == {"type": "json_object"}
+    assert calls[0]["chat_template_kwargs"] == {"enable_thinking": False}
+    assert calls[0]["model"] == "m-1" and calls[0]["max_tokens"] == 64

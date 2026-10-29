@@ -43,8 +43,11 @@ class LLMClient:
         self.sleep = sleep
 
     async def chat(self, model_id: str, messages: list[dict], *, max_tokens: int,
-                   temperature: float = 0.0) -> ChatResult:
-        payload = {"model": model_id, "messages": messages, "max_tokens": max_tokens, "temperature": temperature}
+                   temperature: float = 0.0, extra: dict | None = None) -> ChatResult:
+        """`extra`: further request fields a task's protocol needs (e.g. response_format); they never replace the
+        model, messages, max_tokens or temperature."""
+        payload = {**(extra or {}), "model": model_id, "messages": messages, "max_tokens": max_tokens,
+                   "temperature": temperature}
         headers = {"Authorization": f"Bearer {self.api_key}"}
         error, transient, read_timeouts = "unknown", True, 0
         async with httpx.AsyncClient(transport=self.transport, timeout=self.timeout) as http:

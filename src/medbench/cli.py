@@ -207,3 +207,16 @@ def baseline_vitaldb_ioh() -> None:
 from medbench.tasks.inspire_cli import register as register_inspire  # noqa: E402
 
 register_inspire(fetch_app, build_app, baseline_app)
+
+from medbench.tasks.voice_command_cli import register as register_voice_command  # noqa: E402
+
+register_voice_command(app, fetch_app, baseline_app)
+
+try:  # deployment scheduling and job bookkeeping, not part of the published evaluation code
+    from medbench.orch.cli import orch_app, register_jobs  # noqa: E402
+except ModuleNotFoundError:
+    orch_app = register_jobs = None
+
+if orch_app is not None:
+    app.add_typer(orch_app, name="orch")
+    register_jobs(app)  # eval commands hold a ledger lease while they run
