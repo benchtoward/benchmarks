@@ -140,7 +140,7 @@
   provider: api
   developer: NVIDIA
 - slug: medbench/scope-hrv-lgbm
-  name: LightGBM on 33 HRV measures (Lee et al. 2023 setup)
+  name: LightGBM on 33 HRV measures (SCOPE authors' training script)
   type: baseline
   provider: medbench
   developer: medbench.kr

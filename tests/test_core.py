@@ -23,7 +23,7 @@ def test_run_key_changes_with_each_input():
 def test_load_registry_is_idempotent(tmp_session):
     load_registry(tmp_session, REGISTRY_DIR)
     load_registry(tmp_session, REGISTRY_DIR)
-    assert tmp_session.query(Task).count() == 7
+    assert tmp_session.query(Task).count() == len(list((REGISTRY_DIR / "tasks").glob("*.yaml"))) >= 6
     assert tmp_session.query(Dataset).count() == 7
     model = tmp_session.get(Model, "google/medgemma-27b")
     assert (model.type, model.developer) == ("llm", "Google")  # serving ids are deployment data
@@ -141,11 +141,17 @@ def test_admin_hide_survives_a_registry_reload(tmp_session):
     assert tmp_session.query(Task).filter_by(slug="clinicalqa", version=0).one().visibility == "hidden"
 
 
-def test_spec_can_hide_a_task_without_changing_its_results(tmp_session):
-    from pathlib import Path
+def test_spec_can_hide_a_task_without_changing_its_results(tmp_session, tmp_path):
+    import shutil
 
-    from medbench.db import Task
-    from medbench.registry import PRESENTATIONAL_FIELDS, load_registry
-    load_registry(tmp_session, Path(__file__).resolve().parents[1] / "registry")
+    from medbench.registry import PRESENTATIONAL_FIELDS
+    registry = tmp_path / "registry"
+    shutil.copytree(REGISTRY_DIR, registry)
+    load_registry(tmp_session, registry)
+    shown = tmp_session.query(Task).filter_by(slug="clinicalqa", version=0).one().spec_hash
+    spec = registry / "tasks" / "clinicalqa.yaml"
+    spec.write_text(spec.read_text(encoding="utf-8") + "visibility: hidden\n", encoding="utf-8")
+    load_registry(tmp_session, registry)
+    task = tmp_session.query(Task).filter_by(slug="clinicalqa", version=0).one()
     assert "visibility" in PRESENTATIONAL_FIELDS
-    assert tmp_session.query(Task).filter_by(slug="scope-arrest", version=0).one().visibility == "hidden"
+    assert task.visibility == "hidden" and task.spec_hash == shown
