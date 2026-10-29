@@ -42,6 +42,26 @@ def _entry(d: dict) -> KhdpEntry:
                      type=d.get("type"))
 
 
+@dataclass(frozen=True)
+class KhdpSubmission:
+    """A dataset submission of this account (draft, under review or published)."""
+    code: str
+    version: str
+    status: str
+    title: str
+    doi: str | None
+
+
+def submission_label(status: str) -> str:
+    """KHDP submission status as shown on medbench.kr."""
+    s = (status or "").lower()
+    if "review" in s:
+        return "under review"
+    if s in ("published", "public", "open"):
+        return "published"
+    return s.replace("_", " ") or "unknown"
+
+
 class KhdpClient:
     def __init__(self, token: str, http: httpx.Client | None = None):
         self.token = token
@@ -78,6 +98,17 @@ class KhdpClient:
             token = body.get("continueToken")
             if not token:
                 return out
+
+    def submission(self, code: str, version: str) -> KhdpSubmission | None:
+        """This account's submission of code/version, or None if there is none (deleted or never made)."""
+        response = self._get(f"/submissions/{code}/{version}")
+        if response.status_code == 404:
+            return None
+        response.raise_for_status()
+        d = response.json()
+        doi = (d.get("doiLink") or "").removeprefix("https://doi.org/").removeprefix("http://doi.org/") or None
+        return KhdpSubmission(code=d.get("code", code), version=d.get("version", version), status=d.get("status", ""),
+                              title=d.get("title", ""), doi=doi)
 
     def download(self, file: KhdpFile, dest: Path) -> Path:
         """Stream a presigned URL to `dest` (no bearer header: the URL carries its own signature)."""

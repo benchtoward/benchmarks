@@ -177,6 +177,12 @@ class BenchBuild(Base):
     done: Mapped[int | None] = mapped_column(Integer, nullable=True)
     total: Mapped[int | None] = mapped_column(Integer, nullable=True)
     public: Mapped[bool] = mapped_column(Boolean, default=True)
+    # the dataset this build publishes on KHDP, if any: draft | under review | published (+ DOI and page)
+    khdp_code: Mapped[str | None] = mapped_column(String, nullable=True)
+    khdp_version: Mapped[str | None] = mapped_column(String, nullable=True)
+    khdp_status: Mapped[str | None] = mapped_column(String, nullable=True)
+    khdp_doi: Mapped[str | None] = mapped_column(String, nullable=True)
+    khdp_url: Mapped[str | None] = mapped_column(String, nullable=True)
     started_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
 
