@@ -1,0 +1,44 @@
+[project]
+name = "medbench-kr-benchmarks"
+version = "0.1.0"
+description = "Evaluation code of medbench.kr: task definitions, data builders, scoring and baselines for open SNUH datasets"
+readme = "README.md"
+license = "Apache-2.0"
+authors = [{ name = "medbench.kr contributors" }]
+requires-python = ">=3.12"
+dependencies = [
+    "duckdb>=2.0.0",
+    "httpx>=0.28.1",
+    "numpy>=2.5.4",
+    "pandas>=3.1.0",
+    "pyarrow>=26.0.0",
+    "pyyaml>=6.0.3",
+    "scikit-learn>=1.9.1",
+    "scipy>=1.18.1",
+    "sqlalchemy>=2.1.6",
+    "typer>=0.27.3",
+    "vitaldb>=1.7.2",
+]
+
+[project.urls]
+Homepage = "https://medbench.kr"
+Repository = "https://github.com/medbench-kr/benchmarks"
+
+[project.scripts]
+medbench = "medbench.cli:app"
+
+[build-system]
+requires = ["uv_build>=0.9.7,<0.10.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "medbench"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.2.0",
+    "xgboost>=3.4.1",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

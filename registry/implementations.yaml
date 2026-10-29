@@ -1,0 +1,7 @@
+# Where each task's code lives (paths in github.com/medbench-kr/benchmarks). Shown on task pages and in the public
+# README; kept outside the task specs so it never changes a spec hash.
+clinicalqa@0: [src/medbench/tasks/clinicalqa.py, src/medbench/evaluate.py, src/medbench/scoring.py]
+vitaldb-ioh@0: [src/medbench/tasks/vitaldb_ioh.py, src/medbench/tasks/vitaldb_split.py, src/medbench/baselines/ioh.py]
+inspire-mortality@0: [src/medbench/tasks/inspire_mortality.py, src/medbench/baselines/inspire.py]
+vitaldb-arrhythmia-abnormal@0: [src/medbench/tasks/vitaldb_arrhythmia_abnormal.py, src/medbench/tasks/vitaldb_arrhythmia.py,
+                                src/medbench/baselines/arrhythmia.py]

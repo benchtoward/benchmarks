@@ -1,0 +1,39 @@
+- slug: clinicalqa
+  title: "ClinicalQA: Korean Medical Knowledge QA Benchmark"
+  modality: text
+  license: CC BY 4.0 (upstream Apache-2.0)
+  license_url: https://creativecommons.org/licenses/by/4.0/
+  source_url: https://doi.org/10.23421/2026.0800
+  citation: "SNUH-HARI. ClinicalQA: Korean Medical Knowledge QA Benchmark. Seoul National University Hospital Healthcare AI Research Institute, 2025. doi:10.23421/2026.0800"
+  khdp_code: ClinicalQA
+  version: 1.0.0
+
+- slug: vitaldb
+  title: VitalDB
+  modality: biosignal
+  license: CC BY 4.0
+  license_url: https://creativecommons.org/licenses/by/4.0/
+  source_url: https://khdp.net/database/data-search-detail/658/vitaldb_open/1.0.0
+  citation: "Lee HC, Park Y, Yoon SB, Yang SM, Park D, Jung CW. VitalDB, a high-fidelity multi-parameter vital signs database in surgical patients. Sci Data. 2022;9:279. doi:10.1038/s41597-022-01411-5"
+  khdp_code: vitaldb_open
+  version: 1.0.0
+
+- slug: vitaldb-arrhythmia
+  title: VitalDB Arrhythmia Database
+  modality: biosignal
+  license: CC BY 4.0
+  license_url: https://creativecommons.org/licenses/by/4.0/
+  source_url: https://khdp.net/database/data-search-detail/738/vitaldb-arrhythmia/1.0.0
+  citation: "Eun D, Shim K, Lee H, Lim Y, Lim H, Lee H, Lee HC. VitalDB Arrhythmia Database: An Anesthesiologist-Validated Large-Scale Intraoperative Arrhythmia Dataset with Beat and Rhythm Labels (version 1.0.0). PhysioNet. 2026. doi:10.13026/axd6-wm13"
+  khdp_code: vitaldb-arrhythmia
+  version: 1.0.0
+
+- slug: inspire
+  title: INSPIRE
+  modality: structured
+  license: CC BY 4.0
+  license_url: https://creativecommons.org/licenses/by/4.0/
+  source_url: https://khdp.net/database/data-search-detail/660/inspire/1.3
+  citation: "Lim L, Lee H, Jung CW, Sim D, Borrat X, Pollard TJ, Celi LA, Mark RG, Vistisen ST, Lee HC. INSPIRE, a publicly available research dataset for perioperative medicine. Sci Data. 2024;11:655. doi:10.1038/s41597-024-03517-4. Data: INSPIRE version 1.3, doi:10.13026/4evs-wq50"
+  khdp_code: inspire
+  version: "1.3"

@@ -1,0 +1,4 @@
+# Tasks shown as "Coming soon" cards on the home page until they are built.
+- {modality: biosignal, title: "Cardiac arrest from ICU ECG and PPG", dataset: "SCOPE (SNUH ICU, 4,517 stays)"}
+- {modality: speech, title: "Korean operating-room speech recognition", dataset: "Synthetic K-OR Speech Audio (8,000 clips)"}
+- {modality: structured, title: "Text-to-SQL over OMOP CDM", dataset: "Synthetic-SNUH v4 (10,000 synthetic patients)"}

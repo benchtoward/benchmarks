@@ -1,0 +1,13 @@
+slug: clinicalqa
+version: 0
+preview: true
+dataset: clinicalqa
+kind: mcq
+primary_metric: accuracy
+title: Korean clinical knowledge (KMLE-level MCQ)
+prompt: clinicalqa-p0
+split: test-only (all 1,045 items)
+source:
+  repo: snuh/ClinicalQA
+  revision: 29bdc9043f3e693b7671f868e2038ec7ac288acd
+  file: data/train-00000-of-00001.parquet

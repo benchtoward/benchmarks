@@ -1,0 +1,3 @@
+case_id,analysis_start_time_sec,analysis_end_time_sec,analyzed_duration_sec,total_beats,rhythm_classes,subjectid
+337,100.0,110.0,10.0,3,"N, AFIB",42
+1001,200.0,203.0,3.0,3,N,99001

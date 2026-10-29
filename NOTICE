@@ -1,0 +1,13 @@
+medbench.kr benchmarks
+Copyright 2026 medbench.kr contributors
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+
+Benchmarks adopt evaluation protocols published by others. Protocols and code consulted, with the
+commit each specification pins (code from these projects is not copied into this repository unless
+listed under third_party/ with its own license):
+
+- inspire-mortality@0: INSPIRE authors' 30-day in-hospital mortality task (gbm_mortality.py); https://github.com/vitaldb/inspire @ 04a249028b9290729a1f8027322bfcc1101739ed
+- vitaldb-arrhythmia-abnormal@0: Eun DI, Shim K, Lee H, Lim Y, Lim H, Lee H, Lee J, Lee HC. VitalDB Arrhythmia Database: an anesthesiologist-validated large-scale intraoperative arrhythmia dataset with beat and rhythm labels. Sci Data. 2026;13. doi:10.1038/s41597-026-07076-8 (section Technical Validation); https://github.com/vitaldb/arrdb @ 59b7722674e76592900cb8131d25337f2dd084b8; https://github.com/vitaldb/openecg @ 0d8610fdac1ec2bae25e2f9674d177c124041638
+
+Datasets are cited on each task page and in registry/datasets.yaml.

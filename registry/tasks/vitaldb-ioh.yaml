@@ -1,0 +1,19 @@
+slug: vitaldb-ioh
+version: 0
+preview: true
+dataset: vitaldb
+kind: binary
+primary_metric: auroc
+title: Intraoperative hypotension 5 min ahead (numeric MAP)
+track: Solar8000/ART_MBP
+interval_s: 2
+valid_range_mmhg: [20, 200]       # outside -> missing (NaN)
+input_window_s: 300               # 150 samples
+horizon_s: 300                    # the 5 minutes right after the input window
+stride_s: 300
+hypotension: {threshold_mmhg: 65, min_duration_s: 60}   # 30 consecutive valid samples < 65
+max_missing_fraction: 0.1         # applies to the input window and to the horizon separately
+exclude_if_input_hypotensive: true
+cohort: {ane_type: General}
+split: {by: subjectid, seed: 20261029, fractions: [0.7, 0.1, 0.2]}
+metrics: {primary: auroc, secondary: [auprc, brier], bootstrap: {n: 1000, by: subjectid}}

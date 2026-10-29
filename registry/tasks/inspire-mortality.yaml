@@ -1,0 +1,75 @@
+slug: inspire-mortality
+version: 0
+preview: true
+dataset: inspire
+kind: binary
+primary_metric: auroc
+title: 30-day postoperative in-hospital mortality
+protocol:
+  name: "INSPIRE authors' 30-day in-hospital mortality task (gbm_mortality.py)"
+  script: https://github.com/vitaldb/inspire/blob/04a249028b9290729a1f8027322bfcc1101739ed/gbm_mortality.py
+  repository: https://github.com/vitaldb/inspire
+  commit: 04a249028b9290729a1f8027322bfcc1101739ed   # last commit that changed gbm_mortality.py (2023-11-02)
+  dataset: "INSPIRE (KHDP inspire 1.3), doi:10.13026/4evs-wq50, CC BY 4.0"
+  note: >-
+    INSPIRE 1.1 and later bin every measurement (height, weight, laboratory values) to 5th-percentile values for
+    anonymity, so scores on release 1.3 can differ from those reported for the script.
+data: {khdp_code: inspire, version: "1.3", files: [operations.csv, labs.csv]}
+unit: one operation per patient (subject_id)
+cohort:
+  operation: "each patient's earliest operation by orin_time; ties on orin_time go to the smallest op_id (stable sort)"
+  include: "asa < 6, applied after the operation is chosen (asa >= 6 and missing asa are dropped, as in the script)"
+label:
+  name: inhosp_death_30day
+  definition: "inhosp_death_time < orout_time + 30 * 24 * 60 (times in minutes); no in-hospital death time means 0"
+  window_min: 43200
+inputs:
+  script: [age, sex, emop, bmi, andur, preop_hb, preop_platelet, preop_wbc, preop_aptt, preop_ptinr, preop_glucose,
+           preop_bun, preop_albumin, preop_ast, preop_alt, preop_creatinine, preop_sodium, preop_potassium]
+  extra: [asa]
+  definitions:
+    sex: "1 if sex == 'M' else 0"
+    bmi: "weight / (height / 100) ** 2 when height > 10, else missing"
+    andur: "anend_time - anstart_time (minutes)"
+    preop_<item>: >-
+      the latest labs.csv value of the item for the same subject_id with chart_time <= orin_time and
+      orin_time - chart_time <= lab_window_min (pandas merge_asof, direction backward); missing if there is none
+  lab_items: [hb, platelet, aptt, wbc, ptinr, glucose, bun, albumin, ast, alt, creatinine, sodium, potassium]
+  lab_window_min: 259200   # 6 * 30 * 24 * 60
+metadata:
+  vitaldb_linked: "operations.case_id is set, i.e. the operation is also in the VitalDB open dataset"
+split:
+  method: >-
+    the cohort, in the script's row order (sorted by orin_time), is shuffled with df.sample(frac=1, random_state=1);
+    the first int(0.7 * n) rows are train and the rest are test
+  seed: 1
+  train_fraction: 0.7
+  splits: [train, test]
+  by: subject_id   # one row per patient, so the split is patient-disjoint
+metrics:
+  primary: auroc
+  secondary: [auprc]
+  auprc: average_precision   # sklearn average_precision_score
+  bootstrap: {n: 1000, by: subject_id}
+baselines:
+  medbench/inspire-asa: "ASA class as the score, no training"
+  medbench/inspire-logreg: "SimpleImputer() (mean) then LogisticRegression(max_iter=5000) on inputs.script"
+  medbench/inspire-xgb: >-
+    XGBClassifier(max_depth=4, n_estimators=50, subsample=0.8, colsample_bytree=0.8, eval_metric='logloss') on
+    inputs.script, missing values left to XGBoost
+deviations:
+  - >-
+    First operation by orin_time, as the script's own comment says ("find the first operation for each patient").
+    The published code takes the smallest op_id (groupby('subject_id')['op_id'].idxmin()), which INSPIRE assigns at
+    random, so for most patients with several operations it is not the first one.
+  - >-
+    Train excludes row ntrain. The script's df.loc[:ntrain] is inclusive, so the row at position ntrain is in both
+    its train and test sets; here it is in test only.
+  - >-
+    Sorts are stable. The script sorts with pandas' default quicksort, which orders equal keys differently across
+    numpy builds and platforms. Times are minutes from each patient's own time zero, so orin_time ties are common
+    and the shuffled split changes with the tie order. Here rows with equal orin_time keep subject_id order, and
+    labs with the same subject_id, item and chart_time keep file order (merge_asof takes the later row).
+  - >-
+    AUPRC is average precision. The script reports sklearn auc(recall, precision), the trapezoidal area under the
+    precision-recall curve, which overstates the area when scores have ties (for example the five ASA classes).

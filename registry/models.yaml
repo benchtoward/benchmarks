@@ -1,0 +1,126 @@
+# Models evaluated on medbench.kr. Baselines (provider: medbench) are built here. Served models use the
+# route `api`: point it at an OpenAI-compatible endpoint in registry/providers.yaml
+# (api: {base_url: ..., key_env: ...}) to evaluate a model yourself.
+- slug: alibaba/qwen3.8-flash-next-180b-a6b
+  name: Qwen3.8 Flash Next 180B-A6B
+  type: llm
+  provider: api
+  developer: Alibaba
+- slug: alibaba/qwen3.8-max-2.4t-a95b
+  name: Qwen3.8 Max 2.4T-A95B
+  type: llm
+  provider: api
+  developer: Alibaba
+- slug: zhipu/glm-5.3-753b-a40b
+  name: GLM-5.3 753B-A40B
+  type: llm
+  provider: api
+  developer: Zhipu AI
+- slug: deepseek/deepseek-v4-pro-1.6t-a49b
+  name: DeepSeek V4 Pro 1.6T-A49B
+  type: llm
+  provider: api
+  developer: DeepSeek
+- slug: deepseek/deepseek-v4.1-flash-552b-a16b
+  name: DeepSeek V4.1 Flash 552B-A16B
+  type: llm
+  provider: api
+  developer: DeepSeek
+- slug: alibaba/qwen3.8-27b
+  name: Qwen3.8 27B
+  type: llm
+  provider: api
+  developer: Alibaba
+- slug: alibaba/qwen3.6-35b-a3b
+  name: Qwen3.6 35B-A3B
+  type: llm
+  provider: api
+  developer: Alibaba
+- slug: google/gemma-4-26b-a4b
+  name: Gemma 4 26B-A4B
+  type: llm
+  provider: api
+  developer: Google
+- slug: google/medgemma-27b
+  name: MedGemma 27B
+  type: llm
+  provider: api
+  developer: Google
+  max_tokens: 8192
+- slug: google/medgemma-1.5-4b
+  name: MedGemma 1.5 4B
+  type: llm
+  provider: api
+  developer: Google
+- slug: openai/gpt-oss-120b
+  name: gpt-oss 120B
+  type: llm
+  provider: api
+  developer: OpenAI
+- slug: openai/gpt-oss-20b
+  name: gpt-oss 20B
+  type: llm
+  provider: api
+  developer: OpenAI
+- slug: anthropic/claude-haiku-5.5
+  name: Claude Haiku 5.5
+  type: llm
+  provider: api
+  developer: Anthropic
+- slug: openai/gpt-6-luna
+  name: GPT-6 Luna
+  type: llm
+  provider: api
+  developer: OpenAI
+- slug: google/gemini-3.8-flash
+  name: Gemini 3.8 Flash
+  type: llm
+  provider: api
+  developer: Google
+- slug: deepseek/deepseek-v4.1-flash-1017
+  name: DeepSeek V4.1 Flash (2026-10-17)
+  type: llm
+  provider: api
+  developer: DeepSeek
+- slug: medbench/majority-b
+  name: Majority class (always B)
+  type: baseline
+  provider: medbench
+  developer: medbench.kr
+  reference: true
+- slug: medbench/prior
+  name: Prior (ignores the input)
+  type: baseline
+  provider: medbench
+  developer: medbench.kr
+  reference: true
+- slug: medbench/ioh-logreg-lastmap
+  name: Logistic regression on last-minute MAP
+  type: baseline
+  provider: medbench
+  developer: medbench.kr
+- slug: medbench/ioh-hgb-summary
+  name: Gradient boosting on window summary features
+  type: baseline
+  provider: medbench
+  developer: medbench.kr
+- slug: medbench/inspire-asa
+  name: ASA class alone (INSPIRE authors' baseline)
+  type: baseline
+  provider: medbench
+  developer: medbench.kr
+- slug: medbench/inspire-logreg
+  name: Logistic regression, mean imputation (INSPIRE authors' script)
+  type: baseline
+  provider: medbench
+  developer: medbench.kr
+- slug: medbench/inspire-xgb
+  name: XGBoost (INSPIRE authors' script)
+  type: baseline
+  provider: medbench
+  developer: medbench.kr
+- slug: medbench/arrhythmia-hgb-rr
+  name: Gradient boosting on RR-interval features
+  type: baseline
+  provider: medbench
+  developer: medbench.kr

@@ -1,0 +1,4 @@
+time_second,beat_type,rhythm_label,bad_signal_quality,bad_signal_quality_label
+100.5,N,AFIB,False,
+101.2,V,AFIB,True,Start1
+102.0,N,AFIB,False,End1

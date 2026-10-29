@@ -1,0 +1,63 @@
+slug: vitaldb-arrhythmia-abnormal
+version: 0
+preview: true
+dataset: vitaldb-arrhythmia
+kind: binary
+primary_metric: auroc
+title: Abnormal rhythm in 5-second intraoperative ECG (lead II)
+protocol:
+  # The evaluation the dataset authors use to show the database's utility (paper, Technical Validation).
+  source: >-
+    Eun DI, Shim K, Lee H, Lim Y, Lim H, Lee H, Lee J, Lee HC. VitalDB Arrhythmia Database: an
+    anesthesiologist-validated large-scale intraoperative arrhythmia dataset with beat and rhythm labels.
+    Sci Data. 2026;13. doi:10.1038/s41597-026-07076-8 (section Technical Validation)
+  task: >-
+    Binary classification of 5-second ECG segments as normal or abnormal rhythm. A segment is normal only if it is
+    part of a continuous 45-second window annotated entirely as normal sinus rhythm; normal sinus rhythm segments
+    that contain premature beats are omitted; a segment with any rhythm label other than normal sinus rhythm is
+    abnormal.
+  annotations:
+    release: vitaldb-arrhythmia 1.0.0 (KHDP; PhysioNet doi:10.13026/axd6-wm13)
+    repository: https://github.com/vitaldb/arrdb
+    commit: 59b7722674e76592900cb8131d25337f2dd084b8
+  bad_signal_quality_precedent:
+    # The dataset group's own validation script skips windows that overlap bad-signal-quality segments.
+    repository: https://github.com/vitaldb/openecg
+    commit: 0d8610fdac1ec2bae25e2f9674d177c124041638
+    file: scripts/validate_vitaldb_arrhythmia.py
+input:
+  track: SNUADC/ECG_II
+  hz: 500
+  duration_s: 5
+  loader: "vitaldb.load_case(caseid, ['SNUADC/ECG_II'], 1/500) with vitaldb 1.7.2 (open-dataset vital files 1.0.1)"
+  reference: [caseid, start_s, duration_s]   # samples [start_s * 500, (start_s + 5) * 500) of the case recording
+segments:
+  grid_s: 5                       # non-overlapping; start_s is a multiple of 5 s from the start of the recording
+  max_annotation_gap_s: 10        # a longer gap between annotation rows is unannotated time: not scored
+  min_beats: 1                    # annotated beats (N, S, V, U, P) inside the segment
+  max_ecg_missing_fraction: 0.1   # missing (NaN) ECG samples in the segment
+label:
+  # Rhythm labels as written in the annotation files. A segment's labels are those of the annotation rows inside it
+  # plus the last row before and the first row after it (time between rows belongs to both neighbours).
+  normal: [N]
+  abnormal: [AFIB/AFL, AVB, Patterned Atrial Ectopy, Patterned Ventricular Ectopy, SND, SVTA, Unclassifiable, VT,
+             WAP/MAT]
+  not_scored: [Noise]
+  normal_context_s: 45            # the run of N rows containing the segment spans at least 45 s
+  premature_beats: [S, V]
+bad_signal_quality: {exclude_from: [test]}   # flagged segments stay in train and validation (column bad_signal_quality)
+split: {by: subjectid, scope: all VitalDB subjects (dataset-level split), seed: 20261029, fractions: [0.7, 0.1, 0.2]}
+metrics:
+  primary: auroc
+  secondary: [auprc, brier, accuracy, sensitivity, specificity, f1]
+  threshold: 0.5                  # for accuracy, sensitivity, specificity and F1 (prediction = probability abnormal)
+  by_category: share flagged abnormal per rhythm (sensitivity for abnormal rhythms, false-positive rate for N)
+  bootstrap: {n: 1000, by: subjectid}
+deviations:
+  - "Split: the dataset-level VitalDB subject split (70/10/20 over all VitalDB subjects, shared with other VitalDB tasks) instead of the paper's 8:2 patient-level split of this database."
+  - "Segmentation: the paper does not give the segment grid; segments are non-overlapping and start at multiples of 5 s."
+  - "Normal context: 'part of a continuous 45-second window entirely annotated as normal sinus rhythm' is read as: the segment lies inside an uninterrupted run of N annotation rows spanning at least 45 s."
+  - "Noise is not scored (it is a signal-quality label, not one of the ten rhythm labels); Unclassifiable counts as abnormal (it is one of the ten)."
+  - "Premature beats are beats labelled S or V."
+  - "Bad signal quality: the paper does not say; flagged segments are excluded from the test split, as the dataset group's openecg validation does, and kept with a flag in train and validation."
+  - "Segments overlapping annotation gaps over 10 s, segments without an annotated beat, and segments with more than 10% missing ECG are not scored."
