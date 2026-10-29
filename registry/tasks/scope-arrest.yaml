@@ -1,6 +1,7 @@
 slug: scope-arrest
 version: 0
 preview: true
+visibility: hidden  # not listed while it is built with the dataset authors' processing and modeling code
 dataset: scope
 kind: binary
 primary_metric: auroc

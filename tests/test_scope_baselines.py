@@ -60,7 +60,7 @@ def test_run_records_runs_with_a_stay_bootstrap(tmp_session, tmp_path):
 
     load_registry(tmp_session, REGISTRY_DIR)
     df = data(1)
-    runs = run_scope_baselines(tmp_session, resolve_task(tmp_session, "scope-arrest"), df, data_dir=tmp_path, n_boot=30)
+    runs = run_scope_baselines(tmp_session, resolve_task(tmp_session, "scope-arrest", include_hidden=True), df, data_dir=tmp_path, n_boot=30)
     assert sorted(r.model_slug for r in runs) == sorted(BASELINES) == ["medbench/prior", "medbench/scope-hrv-lgbm"]
     n_test = int((df.split == "test").sum())
     for run in runs:

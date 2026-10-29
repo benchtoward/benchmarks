@@ -125,3 +125,27 @@ def test_vitaldb_datasets_link_to_khdp(tmp_session):
     load_registry(tmp_session, REGISTRY_DIR)
     for slug in ("vitaldb", "vitaldb-arrhythmia"):
         assert tmp_session.get(Dataset, slug).source_url.startswith("https://khdp.net/database/data-search-detail/")
+
+
+def test_admin_hide_survives_a_registry_reload(tmp_session):
+    """The container reloads the registry on every start; a task hidden on /admin must stay hidden."""
+    from pathlib import Path
+
+    from medbench.db import Task
+    from medbench.registry import load_registry
+    registry = Path(__file__).resolve().parents[1] / "registry"
+    load_registry(tmp_session, registry)
+    tmp_session.query(Task).filter_by(slug="clinicalqa", version=0).one().visibility = "hidden"  # what /admin's hide does
+    tmp_session.commit()
+    load_registry(tmp_session, registry)
+    assert tmp_session.query(Task).filter_by(slug="clinicalqa", version=0).one().visibility == "hidden"
+
+
+def test_spec_can_hide_a_task_without_changing_its_results(tmp_session):
+    from pathlib import Path
+
+    from medbench.db import Task
+    from medbench.registry import PRESENTATIONAL_FIELDS, load_registry
+    load_registry(tmp_session, Path(__file__).resolve().parents[1] / "registry")
+    assert "visibility" in PRESENTATIONAL_FIELDS
+    assert tmp_session.query(Task).filter_by(slug="scope-arrest", version=0).one().visibility == "hidden"

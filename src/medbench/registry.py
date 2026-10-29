@@ -10,7 +10,7 @@ from medbench.db import Dataset, Model, Run, Task
 from medbench.runkey import canonical_json, run_key, spec_hash
 
 DATASET_FIELDS = ("title", "modality", "license", "license_url", "source_url", "citation", "khdp_code", "version")
-PRESENTATIONAL_FIELDS = {"title", "preview"}  # wording and badges: changing them must not invalidate results
+PRESENTATIONAL_FIELDS = {"title", "preview", "visibility"}  # wording, badges, listing: must not invalidate results
 MODEL_FIELDS = ("name", "type", "provider", "provider_model_id", "price_in_usd_per_m", "price_out_usd_per_m",
                "price_usd_per_audio_min", "notes", "max_tokens", "reference", "developer")
 
@@ -55,11 +55,12 @@ def load_registry(session: Session, registry_dir: Path) -> None:
             "spec_json": canonical_json(spec),
             "spec_hash": spec_hash({k: v for k, v in spec.items() if k not in PRESENTATIONAL_FIELDS}),
             "preview": bool(spec.get("preview", False)),
-            "visibility": spec.get("visibility", "open"),
             "made_by": spec.get("made_by"),
             "source_paper": spec.get("source_paper"),
         }
         row = session.query(Task).filter_by(slug=values["slug"], version=values["version"]).one_or_none()
+        if "visibility" in spec:  # otherwise keep the stored value, so a task hidden on /admin stays hidden
+            values["visibility"] = spec["visibility"]
         if row is None:
             session.add(Task(**values))
         else:
