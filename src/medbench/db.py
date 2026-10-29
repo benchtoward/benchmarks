@@ -188,6 +188,16 @@ class BenchBuild(Base):
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
 
 
+class BuildEvent(Base):
+    """One line of a benchmark build's log on /live: a new stage, status or step, or a 10% progress milestone."""
+    __tablename__ = "build_events"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    key: Mapped[str] = mapped_column(String, index=True)
+    at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    stage: Mapped[int] = mapped_column(Integer, default=0)
+    message: Mapped[str] = mapped_column(Text)
+
+
 class OwnerAction(Base):
     """Something a maintainer did on the admin page that the paper agent's own database must apply before the next sync."""
     __tablename__ = "owner_actions"

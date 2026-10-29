@@ -1,0 +1,57 @@
+slug: scope-arrest
+version: 0
+preview: true
+dataset: scope
+kind: binary
+primary_metric: auroc
+title: ICU cardiac arrest within 0.5-24 h from a 5-min ECG epoch
+protocol:
+  adopted: >-
+    Windowing, horizon and baseline features follow Lee et al. 2023. SCOPE's KHDP record (icu-cardiac-arrest 1.0)
+    describes the cohort and outcomes but gives no prediction task, usage notes or code, so there is no SCOPE
+    authors' definition to adopt.
+  source: "Lee H, Yang HL, Ryu HG, Jung CW, Cho YJ, Yoon SB, Yoon HK, Lee HC. Real-time machine learning model to predict in-hospital cardiac arrest using heart rate variability in ICU. npj Digit Med. 2023;6:215. doi:10.1038/s41746-023-00960-2"
+  code: https://github.com/HyeonhoonLee/hrvarrest
+  related: >-
+    Lee SM, Lee H, Lee HC. Early warning of in-hospital cardiac arrest from photoplethysmography using deep residual
+    networks. NeurIPS 2025 (openreview.net/forum?id=QvuG2h28GP) uses SCOPE with 5-min PPG segments and a 24 h window;
+    its control sampling was not available when this version was built, so it was not adopted.
+  cohort_overlap: >-
+    The paper's cohort (SNUH MICU and SICU, 2020-03 to 2022-08, 5,679 stays) and SCOPE (the same ICUs and Vital
+    Recorder, 2019-10 to 2023-12, 4,517 stays) very likely share many stays, in both the paper's development and
+    validation sets. SCOPE stays are pseudonymized, so the overlap cannot be measured. A model developed on the
+    paper's data has exposure to this test set.
+  deviations:
+    - "SCOPE keeps at most the last 48 h before the outcome, so the 24 h control block is drawn from that span, not from the whole ICU stay."
+    - "No stay contributes ECG from the last 0.5 h before its outcome or after it; the paper had no outcome anchor for controls. SCOPE files often continue up to 1 h past the outcome, and how often depends on the outcome (78% of arrest files end exactly 1 h after it, against 33% of death and 12% of discharge files), so windows are placed relative to the anchor, never the file end."
+    - "Epochs with more than 1% missing samples, a gap longer than 0.1 s, a flat signal or fewer than 30 R peaks are dropped (the paper does not say how gaps were handled). The paper's quality rule is kept."
+    - "Split 70/10/20 by ICU stay, stratified by outcome; the paper split 80/20 by patient. SCOPE has no patient id, so a patient's repeat stays (about 730 of 4,517) can fall in different splits."
+    - "HRV measures follow NeuroKit2 0.2.13 (the paper used an earlier release). Time and frequency measures are ports of its formulas; the Poincare, asymmetry and fragmentation measures are computed without the entropy measures the 33 features do not use."
+    - "The LightGBM baseline uses the paper's 33 BorutaShap-selected measures (Supplementary Fig. 1) as published, its fixed parameters and the midpoints of its search ranges, with boosting rounds from the paper's second 5-fold cross-validation (mean best iteration, early stopping on AUPRC) run on the train split grouped by stay; no Bayesian search or Beta calibration, and the final model is trained on the train split only."
+    - "Only the primary 0.5-24 h horizon is scored; the paper's secondary horizons (0.5-18, 12, 6, 3, 1 h) are not part of this version."
+anchor_utc: "2100-01-01T00:00:00Z"
+signal: {track: ECG_II, source_hz: 500, hz: 250, epoch_s: 300, downsample: polyphase 2:1, short_gaps: linear}
+cases: {outcome: Cardiac Arrest, label: 1, epochs: "contiguous, from 24 h to 0.5 h before the arrest (282 epochs)"}
+controls:
+  outcomes: [Discharge, Death]
+  label: 0
+  epochs: "one contiguous 24 h block (288 epochs) per stay, inside the ECG record and ending at least 0.5 h before the outcome"
+  position: "u ~ U(0, 1) from numpy default_rng([seed, case_id]); block start = record start + u x (usable span - 24 h); a record shorter than 24.5 h gives its whole usable span"
+  seed: 20261029
+blackout_h: 0.5
+epoch_rules:
+  max_missing_fraction: 0.01
+  max_gap_s: 0.1
+  min_beats: 30
+  ecg_processing: "NeuroKit2 0.2.13 ecg_clean(method=neurokit), ecg_peaks(method=neurokit) at 250 Hz"
+  quality: "NeuroKit2 ecg_quality(method=averageQRS); keep the epoch if more than 80% of beats have quality >= 0.9"
+features: [IALS, pNN50, TINN, HTI, PI, Prc20NN, pNN20, CVNN, MedianNN, MCVNN, SDNNI1, MinNN, CVSD, VHF, RMSSD, PSS,
+           LFn, CSI, MeanNN, PIP, IQRNN, HFn, SD1SD2, LF, SI, MaxNN, VLF, SDANN1, Prc80NN, PAS, CSI_Modified, LFHF, AI]
+inputs:
+  ecg: "raw Lead II, 5 min at 250 Hz (75,000 samples, float16), unfiltered"
+  hrv: "the 43 candidate HRV measures of the paper (the 33 above plus S, GI, SDNN, HF, SD2, SDSD, MadNN, SD1, LnHF, CVI)"
+  never: "stay id, epoch time relative to the outcome, file timestamps, record length"
+instance_id: "scope- + first 16 hex digits of sha256('scope-arrest|<case_id>|<start_s>')"
+split: {by: case_id, unit: ICU stay, stratify: outcome, seed: 20261029, fractions: [0.7, 0.1, 0.2],
+        file: registry/splits/scope-1.0.csv, sha256: 750411c3790703b8336f7b358f01630d79c1a11b303c038f2ebc4bb77692dab9}
+metrics: {primary: auroc, secondary: [auprc], bootstrap: {n: 1000, by: case_id}}

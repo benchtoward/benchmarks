@@ -5,3 +5,5 @@ vitaldb-ioh@0: [src/medbench/tasks/vitaldb_ioh.py, src/medbench/tasks/vitaldb_sp
 inspire-mortality@0: [src/medbench/tasks/inspire_mortality.py, src/medbench/baselines/inspire.py]
 vitaldb-arrhythmia-abnormal@0: [src/medbench/tasks/vitaldb_arrhythmia_abnormal.py, src/medbench/tasks/vitaldb_arrhythmia.py,
                                 src/medbench/baselines/arrhythmia.py]
+scope-arrest@0: [src/medbench/tasks/scope_arrest.py, src/medbench/tasks/scope_sampling.py, src/medbench/tasks/scope_hrv.py,
+                 src/medbench/baselines/scope_arrest.py]

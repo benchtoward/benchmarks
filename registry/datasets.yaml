@@ -48,3 +48,13 @@
   citation: "Seoul National University Hospital, Department of Anesthesiology and Pain Medicine. Synthetic K-OR Speech Audio: A Synthetic Korean Operating Room Speech Audio Dataset (version 1.0.0). KHDP. 2026. doi:10.23421/2026.0774"
   khdp_code: Synthetic-K-OR-Speech-Audio
   version: 1.0.0
+
+- slug: scope
+  title: "SCOPE: ICU ECG and PPG before cardiac arrest, death or discharge"
+  modality: biosignal
+  license: CC BY 4.0
+  license_url: https://creativecommons.org/licenses/by/4.0/
+  source_url: https://khdp.net/database/data-search-detail/698/icu-cardiac-arrest/1.0
+  citation: "SCOPE: A survival and cardiac arrest outcome dataset with PPG and ECG waveforms from intensive care units (version 1.0). KHDP; 2025. doi:10.23421/2025.0698"
+  khdp_code: icu-cardiac-arrest
+  version: "1.0"

@@ -23,8 +23,8 @@ def test_run_key_changes_with_each_input():
 def test_load_registry_is_idempotent(tmp_session):
     load_registry(tmp_session, REGISTRY_DIR)
     load_registry(tmp_session, REGISTRY_DIR)
-    assert tmp_session.query(Task).count() == 5
-    assert tmp_session.query(Dataset).count() == 5
+    assert tmp_session.query(Task).count() == 6
+    assert tmp_session.query(Dataset).count() == 6
     model = tmp_session.get(Model, "google/medgemma-27b")
     assert (model.type, model.developer) == ("llm", "Google")  # serving ids are deployment data
     assert model.digest == "google/medgemma-27b"

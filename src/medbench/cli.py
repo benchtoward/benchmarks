@@ -40,6 +40,13 @@ from medbench.tasks.speech_cli import register as register_speech  # noqa: E402
 
 register_speech(app, fetch_app)
 
+try:  # SCOPE's pod build uses the deployment's compute client, which is not part of the published code
+    from medbench.tasks.scope_cli import register as register_scope  # noqa: E402
+except ModuleNotFoundError:
+    register_scope = None
+if register_scope is not None:
+    register_scope(app, fetch_app, build_app, baseline_app)
+
 
 def open_session():
     settings = get_settings()
