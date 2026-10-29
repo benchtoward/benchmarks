@@ -26,6 +26,23 @@ def _upsert(session: Session, cls, key, values: dict):
     return row
 
 
+def spec_file_name(slug: str, version: int) -> str:
+    """Version 0 of a task lives in tasks/<slug>.yaml, a later version in a sibling file tasks/<slug>@<version>.yaml."""
+    return f"{slug}.yaml" if int(version) == 0 else f"{slug}@{int(version)}.yaml"
+
+
+def task_spec_files(registry_dir: Path) -> dict[tuple[str, int], Path]:
+    """(slug, version) -> its spec file; refuses a file not named by spec_file_name (links depend on the name)."""
+    files = {}
+    for path in sorted((Path(registry_dir) / "tasks").glob("*.yaml")):
+        spec = yaml.safe_load(path.read_text(encoding="utf-8"))
+        key = (spec["slug"], int(spec["version"]))
+        if path.name != spec_file_name(*key):
+            raise ValueError(f"{key[0]}@{key[1]} belongs in {spec_file_name(*key)}, not {path.name}")
+        files[key] = path
+    return files
+
+
 def load_registry(session: Session, registry_dir: Path) -> None:
     registry_dir = Path(registry_dir)
 

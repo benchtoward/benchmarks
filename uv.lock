@@ -5,9 +5,12 @@ resolution-markers = [
     "python_full_version >= '3.14' and sys_platform == 'win32'",
     "python_full_version >= '3.14' and sys_platform == 'emscripten'",
     "python_full_version >= '3.14' and sys_platform != 'emscripten' and sys_platform != 'win32'",
-    "python_full_version < '3.14' and sys_platform == 'win32'",
-    "python_full_version < '3.14' and sys_platform == 'emscripten'",
-    "python_full_version < '3.14' and sys_platform != 'emscripten' and sys_platform != 'win32'",
+    "python_full_version == '3.13.*' and sys_platform == 'win32'",
+    "python_full_version == '3.13.*' and sys_platform == 'emscripten'",
+    "python_full_version == '3.13.*' and sys_platform != 'emscripten' and sys_platform != 'win32'",
+    "python_full_version < '3.13' and sys_platform == 'win32'",
+    "python_full_version < '3.13' and sys_platform == 'emscripten'",
+    "python_full_version < '3.13' and sys_platform != 'emscripten' and sys_platform != 'win32'",
 ]
 
 [[package]]
@@ -203,6 +206,35 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/9a/8e/82a0fe20a541c03148528be8cac2408564a6c9a0cc7e9171802bc1d26985/attrs-26.1.0.tar.gz", hash = "sha256:d03ceb89cb322a8fd706d4fb91940737b6642aa36998fe130a9bc96c985eff32", size = 952055, upload-time = "2026-03-19T14:22:25.026Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/64/b4/17d4b0b2a2dc85a6df63d1157e028ed19f90d4cd97c36717afef2bc2f395/attrs-26.1.0-py3-none-any.whl", hash = "sha256:c647aa4a12dfbad9333ca4e71fe62ddc36f4e63b2d260a37a8b83d2f043ac309", size = 67548, upload-time = "2026-03-19T14:22:23.645Z" },
+]
+
+[[package]]
+name = "bayesian-optimization"
+version = "3.4.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "colorama" },
+    { name = "numpy" },
+    { name = "packaging" },
+    { name = "scikit-learn" },
+    { name = "scipy" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/e1/ee/821351adc50fbea50dc45c6a1f2b49946669d3de24693b6cc5dabceba128/bayesian_optimization-3.4.0.tar.gz", hash = "sha256:fb35e001de8bf2fa02ec1533b38a71be626f080fdb734efff20a47527836dd35", size = 32293, upload-time = "2026-10-02T06:53:50.781Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/05/f1/e1efda3cd996c8bbd656cbf2c39a473c0564a8b66f0e429f1cc607a7b092/bayesian_optimization-3.4.0-py3-none-any.whl", hash = "sha256:4282fd9948329627f7899d9e49909d5aa3e04bf3402f62700f0549bb4db473a4", size = 37330, upload-time = "2026-10-02T06:53:49.653Z" },
+]
+
+[[package]]
+name = "betacal"
+version = "1.1.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "numpy" },
+    { name = "scikit-learn" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/f6/76/edaa7f9688a8a1458063ec2495ef552d99a9186b01bbbd752e61391d8f8d/betacal-1.1.0.tar.gz", hash = "sha256:fc425a0bf78a3b368d60d8b1e465ee4bc953c52440e04836eb5098a1b32d98cc", size = 3663, upload-time = "2021-04-01T21:16:54.94Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/42/41/4c21097cbf63a8081ab637f1ce064238ad3de9dd000ecd783e2fc81e90e3/betacal-1.1.0-py3-none-any.whl", hash = "sha256:b7063c65fb7eb1b8d5bba4498f1f91aceb727e1ed0758e3bfc4b4b455715d023", size = 5265, upload-time = "2021-04-01T21:16:53.659Z" },
 ]
 
 [[package]]
@@ -1010,6 +1042,8 @@ dependencies = [
 
 [package.dev-dependencies]
 dev = [
+    { name = "bayesian-optimization" },
+    { name = "betacal" },
     { name = "lightgbm" },
     { name = "pytest" },
     { name = "xgboost" },
@@ -1032,6 +1066,8 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 dev = [
+    { name = "bayesian-optimization", specifier = "==3.4.0" },
+    { name = "betacal", specifier = "==1.1.0" },
     { name = "lightgbm", specifier = ">=4.7.0" },
     { name = "pytest", specifier = ">=9.2.0" },
     { name = "xgboost", specifier = ">=3.4.1" },

@@ -13,6 +13,7 @@ import yaml
 
 from medbench.config import registry_dir
 
+TASK_REF = "vitaldb-ioh@0"  # explicit: once a later version is published it becomes the latest
 CASES_URL = "https://api.vitaldb.net/cases"
 PART_SIZE = 200
 MIN_COMPLETE_RATIO = 0.95  # downloaded samples x interval / recorded case length; all 3,695 cases were 1.0

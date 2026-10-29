@@ -48,11 +48,26 @@ def test_resolve_task(tmp_session):
 
     load_registry(tmp_session, REGISTRY_DIR)
     assert resolve_task(tmp_session, "clinicalqa@0").slug == "clinicalqa"
-    assert resolve_task(tmp_session, "vitaldb-ioh").version == 0
+    assert resolve_task(tmp_session, "vitaldb-ioh@0").version == 0
+    shown = [t.version for t in tmp_session.query(Task).filter_by(slug="vitaldb-ioh") if t.visibility != "hidden"]
+    assert resolve_task(tmp_session, "vitaldb-ioh").version == max(shown)  # the latest version that is not hidden
     with pytest.raises(LookupError):
         resolve_task(tmp_session, "nope")
     with pytest.raises(LookupError):
         resolve_task(tmp_session, "clinicalqa@9")
+
+
+def test_every_spec_file_is_named_by_its_slug_and_version(tmp_path):
+    import shutil
+
+    from medbench.registry import task_spec_files
+
+    files = task_spec_files(REGISTRY_DIR)  # raises on a misnamed file
+    assert len(files) == len(list((REGISTRY_DIR / "tasks").glob("*.yaml")))
+    (tmp_path / "tasks").mkdir()
+    shutil.copy(REGISTRY_DIR / "tasks" / "clinicalqa.yaml", tmp_path / "tasks" / "clinicalqa-copy.yaml")
+    with pytest.raises(ValueError, match="belongs in clinicalqa.yaml"):
+        task_spec_files(tmp_path)
 
 
 def test_model_max_tokens(tmp_session):

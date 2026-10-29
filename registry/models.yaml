@@ -144,3 +144,8 @@
   type: baseline
   provider: medbench
   developer: medbench.kr
+- slug: medbench/ioh-map-logreg
+  name: MAP-only logistic regression (Yang et al. 2025 code)
+  type: baseline
+  provider: medbench
+  developer: medbench.kr

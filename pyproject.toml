@@ -36,6 +36,8 @@ module-name = "medbench"
 
 [dependency-groups]
 dev = [
+    "bayesian-optimization==3.4.0",
+    "betacal==1.1.0",
     "lightgbm>=4.7.0",
     "pytest>=9.2.0",
     "xgboost>=3.4.1",

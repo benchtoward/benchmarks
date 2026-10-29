@@ -1,7 +1,8 @@
 """Dataset-level VitalDB split: one assignment per subject over ALL VitalDB subjects, so a patient is on the same
 side of every task built on VitalDB (agent-made tasks and later versions of hand-built ones).
 
-The hypotension task v0 split only its own cohort's subjects; `vitaldb-ioh@1` should move to this split.
+The hypotension task v0 split only its own cohort's subjects. `vitaldb-ioh@1` keeps its authors' fixed test case list
+instead (maintainers, 2026-10-29: comparability with the publication), and its spec counts the overlap.
 """
 import pandas as pd
 

@@ -194,12 +194,12 @@ def baseline_vitaldb_ioh() -> None:
     import pandas as pd
 
     from medbench.baselines.ioh import run_ioh_baselines
-    from medbench.tasks.vitaldb_ioh import task_dir
+    from medbench.tasks.vitaldb_ioh import TASK_REF, task_dir
 
     settings = get_settings()
     instances = pd.read_parquet(task_dir(settings.data_dir) / "instances.parquet")
     with open_session() as session:
-        for run in run_ioh_baselines(session, resolve_task(session, "vitaldb-ioh"), instances,
+        for run in run_ioh_baselines(session, resolve_task(session, TASK_REF), instances,
                                      data_dir=settings.data_dir):
             typer.echo(_summary(run))
 
@@ -207,6 +207,13 @@ def baseline_vitaldb_ioh() -> None:
 from medbench.tasks.inspire_cli import register as register_inspire  # noqa: E402
 
 register_inspire(fetch_app, build_app, baseline_app)
+
+try:  # vitaldb-ioh@1 is exported with its task once the maintainers publish it
+    from medbench.tasks.ioh_v1_cli import register as register_ioh_v1  # noqa: E402
+except ModuleNotFoundError:
+    register_ioh_v1 = None
+if register_ioh_v1 is not None:
+    register_ioh_v1(build_app, baseline_app)
 
 from medbench.tasks.voice_command_cli import register as register_voice_command  # noqa: E402
 

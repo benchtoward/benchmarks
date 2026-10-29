@@ -1,0 +1,90 @@
+slug: scope-arrest
+version: 0
+preview: true
+visibility: open  # published by the maintainers (2026-10-30)
+dataset: scope
+kind: binary
+primary_metric: auroc
+title: ICU cardiac arrest within 0.5-24 h from a 5-min ECG epoch
+protocol:
+  name: medbench.kr definition
+  adopted: >-
+    Built with the SCOPE dataset authors' own processing and training scripts, which apply the setup of Lee et al.
+    2023 to SCOPE: the cohort, ECG reading, windows, epoch screening, HRV measures, stay split and reference model
+    follow that code. SCOPE's KHDP record (icu-cardiac-arrest 1.0) describes the cohort and outcomes but defines no
+    prediction task.
+  source: "Lee H, Yang HL, Ryu HG, Jung CW, Cho YJ, Yoon SB, Yoon HK, Lee HC. Real-time machine learning model to predict in-hospital cardiac arrest using heart rate variability in ICU. npj Digit Med. 2023;6:215. doi:10.1038/s41746-023-00960-2"
+  code: >-
+    The dataset authors' scripts for SCOPE (data processing, training and evaluation), provided to medbench.kr by the
+    authors on 2026-10-29 and not public; the paper's public repository is https://github.com/HyeonhoonLee/hrvarrest.
+  related: >-
+    Lee SM, Lee H, Lee HC. Early warning of in-hospital cardiac arrest from photoplethysmography using deep residual
+    networks. NeurIPS 2025 (openreview.net/forum?id=QvuG2h28GP) uses SCOPE with 5-min PPG segments and a 24 h window;
+    this task uses ECG only.
+  cohort_overlap: >-
+    The paper's cohort (SNUH MICU and SICU, 2020-03 to 2022-08, 5,679 stays) and SCOPE (the same ICUs and Vital
+    Recorder, 2019-10 to 2023-12, 4,517 stays) very likely share many stays. SCOPE stays are pseudonymized, so the
+    overlap cannot be measured. A model developed on the paper's data has exposure to this test set.
+  deviations:
+    - "Missing HRV measures are filled with the train split's medians. The authors' script fills them with the medians of all epochs before the split, which lets test epochs shape the training data."
+    - "95% intervals come from 1,000 bootstrap samples of ICU stays, the resampling unit of this benchmark. The authors' script reports a beta-distribution interval for AUROC and resamples epochs."
+    - "Only the primary 0.5-24 h horizon is scored; the authors' secondary horizons (0.5-18, 12, 6, 3 and 1 h) are not part of this version."
+    - "Package versions are fixed here because the authors' scripts pin none: NeuroKit2 0.2.13, vitaldb 1.7.2, LightGBM 4.7.0, bayesian-optimization 3.4.0, betacal 1.1.0. LightGBM's thread count follows the machine."
+anchor_utc: "2100-01-01T00:00:00Z"
+signal:
+  track: ECG_II
+  source_hz: 500
+  hz: 250
+  epoch_s: 300
+  read: >-
+    vitaldb VitalFile of the whole file, to_numpy(ECG_II, interval=1/250 s): samples are picked from the 500 Hz
+    record without a low-pass filter; another ECG track is read only if ECG_II gives an empty array
+cohort: {label_1: Cardiac Arrest, label_0: Discharge, excluded: [Death]}
+cases:
+  epochs: >-
+    the file cropped to the 24 h before the outcome anchor (2100-01-01 00:00 in the file's time zone; every SCOPE
+    file is UTC except one arrest stay in the train split, whose anchor therefore falls 9 h earlier), cut into 5-min
+    epochs from the start of the crop; epochs ending 0.5-24 h before the arrest (282)
+controls:
+  epochs: >-
+    one 24 h block per stay: start = random.randint(0, record samples - 24 h of samples) after random.seed(42 + the
+    stay's rank among discharge stays in the metadata sheet); a record of 24 h or less is used whole; cut into 5-min
+    epochs from the block start; ECG after the discharge time is used as recorded
+  seed: 42
+epoch_rules:
+  flat_s: 10
+  screening: "dropped if more than 10 s in a row are missing or constant"
+  filters: "NeuroKit2 signal_filter: Butterworth high-pass 0.5 Hz (order 5), then powerline 60 Hz"
+  peaks: "NeuroKit2 ecg_peaks(method=neurokit, correct_artifacts=True)"
+  quality: "NeuroKit2 ecg_quality(method=averageQRS); kept if at least 80% of the epoch's samples have a quality index >= 0.9"
+  hrv: "NeuroKit2 hrv(R peaks, 250 Hz); an epoch that fails at any step is dropped"
+  instance: "a kept epoch whose 33 model measures are all finite (the authors drop rows with an infinite measure)"
+features: [IALS, pNN50, TINN, HTI, PI, Prc20NN, MedianNN, CVSD, PIP, MCVNN, LFn, CSI, pNN20, MinNN, MeanNN, SDNNI1,
+           MaxNN, HFn, LF, LFHF, PAS, PSS, SDANN1, VHF, RMSSD, VLF, IQRNN, CVNN, CSI_Modified, SD2, Prc80NN, SD1SD2,
+           SDNN]
+inputs:
+  hrv: "the 44 HRV measures of the authors' script, as NeuroKit2 gives them (missing where it gives none)"
+  ecg: "raw Lead II, 5 min at 250 Hz (75,000 samples, float16), unfiltered, for test epochs"
+  never: "stay id, epoch position or minutes to the outcome, file timestamps, record length, quality ratio"
+instance_id: "scope- + first 16 hex digits of sha256('scope-arrest|<case_id>|<epoch start in 250 Hz samples from the anchor>')"
+split:
+  by: case_id
+  unit: ICU stay
+  method: >-
+    scikit-learn train_test_split(test_size=0.2, random_state=42, stratify=stay label) over the stays with at least
+    one instance, listed as arrest stays then discharge stays, each in metadata-sheet order (the authors' feature
+    table)
+  seed: 42
+  fractions: [0.8, 0.2]
+  file: registry/splits/scope-1.0.csv
+  sha256: f0174672f8da49618687cb4df4e0dad34980a0315fc9fb38ae5c2e78f9d8c455
+metrics: {primary: auroc, secondary: [auprc], bootstrap: {n: 1000, by: case_id}}
+baselines:
+  medbench/prior: "train-split prevalence for every epoch"
+  medbench/scope-hrv-lgbm: >-
+    the authors' training script: 5-fold StratifiedGroupKFold of the train split by stay (shuffled, random_state 42);
+    per fold, Bayesian optimization (3 random and 50 guided points) of num_leaves 16-32, lambda_l1 0.7-0.9, lambda_l2
+    0.9-1, feature_fraction 0.6-0.7, bagging_fraction 0.6-0.9, min_child_samples 6-10, min_child_weight 10-40, scored
+    by AUPRC with early stopping (300 of at most 2000 rounds); fixed objective binary, learning_rate 0.005,
+    bagging_freq 1, max_depth 5; parameters of the best fold; rounds = truncated mean best iteration of a second CV;
+    one model on the train split; Beta calibration on its train predictions
