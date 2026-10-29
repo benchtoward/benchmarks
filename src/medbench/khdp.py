@@ -111,13 +111,21 @@ class KhdpClient:
                               title=d.get("title", ""), doi=doi)
 
     def download(self, file: KhdpFile, dest: Path) -> Path:
-        """Stream a presigned URL to `dest` (no bearer header: the URL carries its own signature)."""
+        """Stream a presigned URL to `dest` (no bearer header: the URL carries its own signature).
+
+        An interrupted download leaves `<dest>.part`; the next call continues it with a Range request (or starts over
+        if storage ignores the range). Callers verify checksums."""
         dest = Path(dest)
         dest.parent.mkdir(parents=True, exist_ok=True)
         tmp = dest.with_suffix(dest.suffix + ".part")
-        with self.http.stream("GET", file.url) as response:
+        have = tmp.stat().st_size if tmp.exists() else 0
+        if file.size and have >= file.size:
+            have = 0  # a stale or oversized partial file: start over
+        headers = {"Range": f"bytes={have}-"} if have else {}
+        with self.http.stream("GET", file.url, headers=headers) as response:
             response.raise_for_status()
-            with tmp.open("wb") as fh:
+            mode = "ab" if have and response.status_code == 206 else "wb"
+            with tmp.open(mode) as fh:
                 for chunk in response.iter_bytes():
                     fh.write(chunk)
         tmp.replace(dest)

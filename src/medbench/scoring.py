@@ -21,6 +21,37 @@ def accuracy_ci(correct: Sequence[bool | None], n_boot: int = 1000, seed: int = 
     return {"value": value, "ci_low": low, "ci_high": high, "n": n, "n_unparsed": sum(c is None for c in correct)}
 
 
+def edit_distance(ref: Sequence, hyp: Sequence) -> int:
+    """Levenshtein distance (substitutions + deletions + insertions) between two sequences."""
+    previous = list(range(len(hyp) + 1))
+    for i, r in enumerate(ref, start=1):
+        current = [i]
+        for j, h in enumerate(hyp, start=1):
+            current.append(min(previous[j] + 1, current[j - 1] + 1, previous[j - 1] + (r != h)))
+        previous = current
+    return previous[-1]
+
+
+def error_rate_ci(errors: Sequence[float], lengths: Sequence[float], groups: Sequence, n_boot: int = 1000,
+                  seed: int = 0) -> dict:
+    """Pooled error rate sum(errors) / sum(lengths) (as CER and WER are defined), with a 95% interval from a cluster
+    bootstrap: whole groups (e.g. all voices of one utterance) are resampled together."""
+    e = np.asarray(errors, dtype=float)
+    n = np.asarray(lengths, dtype=float)
+    unique, inverse = np.unique(np.asarray(groups), return_inverse=True)
+    e_group = np.bincount(inverse, weights=e, minlength=len(unique))
+    n_group = np.bincount(inverse, weights=n, minlength=len(unique))
+    value = float(e.sum() / n.sum()) if n.sum() else 0.0
+    boots: list[float] = []
+    if len(unique):
+        picked = np.random.default_rng(seed).integers(0, len(unique), (n_boot, len(unique)))
+        denominators = n_group[picked].sum(axis=1)
+        keep = denominators > 0
+        boots = list(e_group[picked].sum(axis=1)[keep] / denominators[keep])
+    low, high = _interval(boots)
+    return {"value": value, "ci_low": low, "ci_high": high, "n": int(len(e)), "n_groups": int(len(unique))}
+
+
 BINARY_METRICS = {"auroc": roc_auc_score, "auprc": average_precision_score, "brier": brier_score_loss}
 
 

@@ -38,3 +38,13 @@
   citation: "Lim L, Lee H, Jung CW, Sim D, Borrat X, Pollard TJ, Celi LA, Mark RG, Vistisen ST, Lee HC. INSPIRE, a publicly available research dataset for perioperative medicine. Sci Data. 2024;11:655. doi:10.1038/s41597-024-03517-4. Data: INSPIRE version 1.3, doi:10.13026/4evs-wq50"
   khdp_code: inspire
   version: "1.3"
+
+- slug: k-or-speech
+  title: Synthetic K-OR Speech Audio
+  modality: speech
+  license: Apache-2.0 with a use restriction
+  license_url: https://www.apache.org/licenses/LICENSE-2.0
+  source_url: https://khdp.net/database/data-search-detail/774/Synthetic-K-OR-Speech-Audio/1.0.0
+  citation: "Seoul National University Hospital, Department of Anesthesiology and Pain Medicine. Synthetic K-OR Speech Audio: A Synthetic Korean Operating Room Speech Audio Dataset (version 1.0.0). KHDP. 2026. doi:10.23421/2026.0774"
+  khdp_code: Synthetic-K-OR-Speech-Audio
+  version: 1.0.0

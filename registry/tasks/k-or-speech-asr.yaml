@@ -1,0 +1,52 @@
+slug: k-or-speech-asr
+version: 0
+preview: true
+dataset: k-or-speech
+kind: asr
+primary_metric: cer
+title: Korean operating-room speech recognition
+split: test-only (all 8,000 clips = 2,000 utterances x 4 synthetic voices; fixed benchmark, nothing is trained)
+source:
+  khdp_code: Synthetic-K-OR-Speech-Audio
+  version: 1.0.0
+  archive: synthetic_kor_speech_audio_v1.zip
+  sha256: fb60266a06cf710535d3e4468b8a1748adda6b58de231e05a5e407b5c2de772d
+  reference: metadata.csv column text (identical to Synthetic-K-OR-Speech-Corpus 1.0.0 for all 2,000 ids, checked 2026-10-29)
+instance_id: "<utterance id>-<voice>, e.g. MMO-M00002-chul"
+request:
+  endpoint: OpenAI-compatible POST /audio/transcriptions, one clip per request
+  audio: the release WAV as is (24 kHz, 16-bit, mono)
+  language: ko
+  response_format: json
+  temperature: 0
+protocol_source: >-
+  The dataset's usage notes (KHDP Synthetic-K-OR-Speech-Audio 1.0.0) recommend CER and WER against the v1.0 text,
+  reported by intent, code-switching style, voice and speaker role. They define no text normalisation; the rules below
+  are medbench.kr's.
+normalisation:
+  version: kor-norm-0
+  applied_to: reference and transcript alike
+  steps:
+    - Unicode NFKC (NFC plus compatibility folding of full-width letters, digits and unit symbols), then lowercase
+    - remove bracketed tags [..], <..>, (..)
+    - "numbers: commas inside numbers dropped; Arabic numerals read in Hangul, Sino-Korean (5 번 -> 오 번, 3만 -> 삼만), native before 번째, 시간, 개, 명, 장, 살, 마리, 가지, 군데 (12개 -> 열두개); decimals digit by digit with the spoken point optional, because two of the four voices say 점 and two mostly do not (7.5, 칠 점 오 and 칠오 all become 칠오); digits attached to Latin letters (SpO2, EtCO2, R2P3) stay as written; % -> 퍼센트"
+    - every punctuation, symbol and mark character becomes a space; whitespace collapses
+    - "English code-switched terms stay as written (lowercased): Hangul for a Latin reference term (비피 for BP) or the reverse counts as an error"
+metrics:
+  primary: cer
+  cer: sum of character edit distances / sum of reference characters over all clips, spaces removed
+  wer: sum of word edit distances / sum of reference words over all clips (whitespace tokens; sensitive to Korean spacing)
+  ser: share of clips with at least one character error
+  missing: a clip without a transcript (API error) counts as an empty transcript, so every reference character is a deletion
+  bootstrap: {n: 1000, seed: 0, by: utterance (the 4 voices of one utterance are resampled together)}
+  breakdowns: [voice, cs_style, intent, speaker, digits in reference]
+license: >-
+  Audio Apache-2.0 with a use restriction: it may be used for ASR/STT research, benchmarking, evaluation and zero-shot
+  testing; it must not be used to train, fine-tune or develop text-to-speech, voice-cloning or speaker-identification
+  systems, nor to create any derivative voice asset; redistribution must keep this restriction. Text metadata CC BY 4.0
+  (MM-OR-derived rows Apache-2.0).
+limitations:
+  - Synthetic speech (Qwen3-TTS) has no room noise, reverberation, overlap or real urgency, so error rates here understate those in real operating rooms.
+  - One voice (chul) is a voice clone of an SNUH anesthesiologist; only ethan and maia carry intent-conditioned prosody.
+  - The audio was made with Qwen3-TTS (Alibaba); an ASR model from the same developer may be favoured.
+  - Unit spellings vary inside the references themselves (cc, 시씨, 씨씨); they are scored as written.

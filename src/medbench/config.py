@@ -11,6 +11,7 @@ class Settings:
     data_dir: Path = Path("./data")
     # LLM serving routes: provider name -> (base URL, API key), from registry/providers.yaml and the environment.
     providers: dict[str, tuple[str, str | None]] = field(default_factory=dict)
+    audio_providers: tuple[str, ...] = ()  # routes allowed to receive dataset audio (`audio: true` in providers.yaml)
     admin_password: str | None = None  # /admin is disabled when unset
     daily_goal: int = 100  # human visitors per day shown as the target on /admin
     analytics_secret: str | None = None  # salt for visitor hashes; generated into data_dir when unset
@@ -28,6 +29,7 @@ def get_settings() -> Settings:
         db_url=env.get("MEDBENCH_DB_URL") or defaults.db_url,
         data_dir=Path(env.get("MEDBENCH_DATA_DIR") or defaults.data_dir),
         providers=_providers(env),
+        audio_providers=_audio_providers(),
         admin_password=env.get("MEDBENCH_ADMIN_PASSWORD") or None,
         daily_goal=int(env.get("MEDBENCH_DAILY_GOAL") or defaults.daily_goal),
         analytics_secret=env.get("MEDBENCH_ANALYTICS_SECRET") or None,
@@ -50,6 +52,13 @@ def _providers(env) -> dict[str, tuple[str, str | None]]:
         base = env.get(route.get("base_env") or "") or route["base_url"]
         routes[name] = (base.rstrip("/"), env.get(route["key_env"]) or None)
     return routes
+
+
+def _audio_providers() -> tuple[str, ...]:
+    path = registry_dir() / "providers.yaml"
+    if not path.exists():
+        return ()
+    return tuple(name for name, route in (yaml.safe_load(path.read_text()) or {}).items() if route.get("audio"))
 
 
 def registry_dir() -> Path:

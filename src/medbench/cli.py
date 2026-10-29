@@ -36,6 +36,10 @@ except ModuleNotFoundError:
 if text2sql_app is not None:
     app.add_typer(text2sql_app, name="text2sql")
 
+from medbench.tasks.speech_cli import register as register_speech  # noqa: E402
+
+register_speech(app, fetch_app)
+
 
 def open_session():
     settings = get_settings()

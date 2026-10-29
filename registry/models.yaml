@@ -124,3 +124,18 @@
   type: baseline
   provider: medbench
   developer: medbench.kr
+- slug: alibaba/qwen3-asr-1.7b
+  name: Qwen3-ASR 1.7B
+  type: asr
+  provider: api
+  developer: Alibaba
+- slug: cohere/cohere-transcribe-2b
+  name: Cohere Transcribe 2B
+  type: asr
+  provider: api
+  developer: Cohere
+- slug: nvidia/nemotron-3.5-asr-0.6b
+  name: Nemotron 3.5 ASR 0.6B
+  type: asr
+  provider: api
+  developer: NVIDIA

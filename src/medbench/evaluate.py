@@ -42,8 +42,9 @@ def write_predictions(run: Run, rows: list[dict], data_dir: Path) -> Path:
     return path
 
 
-def _start_run(session: Session, model: Model, task: Task, key: str, config: dict) -> Run:
-    run = Run(id=_new_run_id(), run_key=key, model_slug=model.slug, task_id=task.id, harness_version=HARNESS_VERSION,
+def _start_run(session: Session, model: Model, task: Task, key: str, config: dict,
+               harness_version: str = HARNESS_VERSION) -> Run:
+    run = Run(id=_new_run_id(), run_key=key, model_slug=model.slug, task_id=task.id, harness_version=harness_version,
               config_json=json.dumps(config, sort_keys=True), tier="baseline", status="running",
               task_spec_hash=task.spec_hash)
     session.add(run)
@@ -129,6 +130,117 @@ def _finish_llm_run(session: Session, model: Model, run: Run, items: list[QAItem
     session.commit()
     write_predictions(run, [{"instance_id": r.instance_id, "prediction": r.prediction, "label": r.label,
                              "correct": r.correct} for r in ordered], data_dir)
+    return run
+
+
+ASR_HARNESS_VERSION = "asr-p0.1"
+
+
+async def run_asr_task(session: Session, model: Model, task: Task, clips: list, client, read_audio, *,
+                       concurrency: int = 4, force: bool = False, limit: int | None = None,
+                       data_dir: Path | None = None, language: str = "ko", progress=None,
+                       max_consecutive_failures: int = 25) -> Run:
+    """Transcribe every clip once (resumable, like run_llm_task) and score CER/WER on the control plane.
+
+    `client.transcribe(model_id, audio, filename, language=, temperature=)` returns a Transcription; `read_audio(clip)`
+    returns the WAV bytes. Transient failures leave the run `failed` and are retried on the next call; final per-clip
+    failures count as empty transcripts; an account-level failure (token, credits, model) stops sending further clips,
+    and so do `max_consecutive_failures` transient failures in a row (an endpoint that is down, e.g. a preempted pod).
+    """
+    from medbench.asr import Transcription
+    from medbench.tasks.k_or_speech import score_item
+
+    if data_dir is None:
+        from medbench.config import get_settings
+        data_dir = get_settings().data_dir
+    config = {"language": language, "response_format": "json", "temperature": 0}
+    if limit is not None:
+        config["limit"] = limit
+        clips = clips[:limit]
+    key = run_key(model.digest, task.spec_hash, ASR_HARNESS_VERSION, config)
+
+    run = _find_run(session, key)
+    if run is not None and run.status == "done" and not force:
+        return run
+    if run is None:
+        run = _start_run(session, model, task, key, config, harness_version=ASR_HARNESS_VERSION)
+    else:
+        if force:
+            session.query(ItemResult).filter_by(run_id=run.id).delete()
+        run.status = "running"
+        session.commit()
+
+    finished = {r.instance_id for r in session.query(ItemResult).filter_by(run_id=run.id) if not _retry(r)}
+    todo = [clip for clip in clips if clip.instance_id not in finished]
+    semaphore = asyncio.Semaphore(concurrency)
+    stop = asyncio.Event()
+    done_count = consecutive_failures = 0
+
+    async def one(clip) -> None:
+        nonlocal done_count, consecutive_failures
+        async with semaphore:
+            if stop.is_set():
+                return
+            try:
+                result = await client.transcribe(model.provider_model_id, read_audio(clip), clip.filename,
+                                                 language=language, temperature=0)
+            except Exception as exc:  # one broken call must not abort the whole evaluation
+                result = Transcription(text="", audio_seconds=0, raw=None, error=f"exception_{type(exc).__name__}",
+                                       transient=True)
+        consecutive_failures = consecutive_failures + 1 if result.error and result.transient else 0
+        if result.fatal or consecutive_failures >= max_consecutive_failures:
+            stop.set()
+        hypothesis = None if result.error else result.text
+        s = score_item(clip.reference, hypothesis)
+        session.merge(ItemResult(run_id=run.id, instance_id=clip.instance_id, prediction=hypothesis,
+                                 label=clip.reference, score=s.cer, correct=s.char_errors == 0, error=result.error,
+                                 transient=result.transient if result.error else None,
+                                 raw=(result.raw or "")[:20000] or None))
+        session.commit()
+        done_count += 1
+        if progress is not None:
+            progress(done_count, len(todo))
+
+    await asyncio.gather(*(one(clip) for clip in todo))
+    return _finish_asr_run(session, model, run, clips, data_dir)
+
+
+def _audio_seconds(raw: str | None) -> float:
+    try:
+        usage = json.loads(raw or "{}").get("usage") or {}
+        return float(usage.get("seconds") or 0)
+    except (ValueError, AttributeError, TypeError):
+        return 0.0
+
+
+def _finish_asr_run(session: Session, model: Model, run: Run, clips: list, data_dir: Path) -> Run:
+    from medbench.asr import audio_cost_usd, billed_minutes
+    from medbench.tasks.k_or_speech import asr_metrics, item_rows
+
+    results = {r.instance_id: r for r in session.query(ItemResult).filter_by(run_id=run.id)}
+    seconds = [_audio_seconds(r.raw) for r in results.values() if r.error is None]
+    run.n_items = len(clips)
+    run.cost_usd = audio_cost_usd(model, seconds)
+    run.eval_date = date.today()
+    if any(_retry(r) for r in results.values()) or len(results) < len(clips):
+        run.status = "failed"
+        run.metrics_json = None
+        session.commit()
+        return run
+
+    ordered = [results[clip.instance_id] for clip in clips]
+    hypotheses, errors = [r.prediction for r in ordered], [r.error for r in ordered]
+    rows = item_rows(clips, hypotheses, errors)
+    for r, row in zip(ordered, rows):  # rescore from stored transcripts so resumed items use the current normaliser
+        r.score, r.correct = row["cer"], row["char_errors"] == 0
+    metrics = asr_metrics(clips, hypotheses, errors)
+    metrics["audio_seconds"] = sum(seconds)
+    metrics["billed_minutes"] = sum(billed_minutes(s) for s in seconds)
+    run.metrics_json = json.dumps(metrics, ensure_ascii=False)
+    run.status = "done"
+    run.finished_at = utcnow()
+    session.commit()
+    write_predictions(run, rows, data_dir)
     return run
 
 

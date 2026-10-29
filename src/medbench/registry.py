@@ -11,7 +11,8 @@ from medbench.runkey import canonical_json, run_key, spec_hash
 
 DATASET_FIELDS = ("title", "modality", "license", "license_url", "source_url", "citation", "khdp_code", "version")
 PRESENTATIONAL_FIELDS = {"title", "preview"}  # wording and badges: changing them must not invalidate results
-MODEL_FIELDS = ("name", "type", "provider", "provider_model_id", "price_in_usd_per_m", "price_out_usd_per_m", "notes", "max_tokens", "reference", "developer")
+MODEL_FIELDS = ("name", "type", "provider", "provider_model_id", "price_in_usd_per_m", "price_out_usd_per_m",
+               "price_usd_per_audio_min", "notes", "max_tokens", "reference", "developer")
 
 
 def _upsert(session: Session, cls, key, values: dict):

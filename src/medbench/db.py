@@ -50,12 +50,13 @@ class Model(Base):
     __tablename__ = "models"
     slug: Mapped[str] = mapped_column(String, primary_key=True)
     name: Mapped[str] = mapped_column(String)
-    type: Mapped[str] = mapped_column(String)  # llm | research | baseline
+    type: Mapped[str] = mapped_column(String)  # llm | asr | research | baseline
     provider: Mapped[str] = mapped_column(String)  # serving route (registry/providers.yaml), or medbench for baselines
     provider_model_id: Mapped[str | None] = mapped_column(String, nullable=True)
     digest: Mapped[str] = mapped_column(String)
     price_in_usd_per_m: Mapped[float | None] = mapped_column(Float, nullable=True)
     price_out_usd_per_m: Mapped[float | None] = mapped_column(Float, nullable=True)
+    price_usd_per_audio_min: Mapped[float | None] = mapped_column(Float, nullable=True)  # speech models
     enabled: Mapped[bool] = mapped_column(Boolean, default=True)
     max_tokens: Mapped[int | None] = mapped_column(Integer, nullable=True)
     reference: Mapped[bool | None] = mapped_column(Boolean, nullable=True)  # shown as a reference line, not ranked
