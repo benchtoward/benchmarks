@@ -1,0 +1,239 @@
+slug: synthetic-snuh-text2sql
+version: 0
+preview: true
+visibility: open  # published by the maintainers (2026-10-31); items on KHDP pending (synthetic-snuh-text2sql 1.0.0)
+dataset: synthetic-snuh
+kind: text2sql
+primary_metric: rs0
+title: Synthetic-SNUH Text-to-SQL (OMOP CDM, Korean and English)
+split: test-only (every frozen item of both tiers; there is no training split)
+tiers:
+  hard:
+    role: >-
+      the headline tier: its RS(0) ranks models (decision headline_metric, 2 of 3); the SOP check of the benchmark
+      rests on it (decision easy_tier_publication, 2 of 3)
+    items:
+      file: drafts/synthetic-snuh-text2sql-hard-v0.yaml
+      questions: 101
+      answerable: 83
+      unanswerable: 18
+      categories: [clinical_terms, cohort_definition, data_quality, relative_time, unanswerable]
+      sha256: 63da72240219445b92cf32c7e3c3640aa4f9db6ad76b2ea2cdf791e56709d2c3
+    prompt:
+      id: text2sql-omop-hard-p0
+      sha256: 1c2e4c8f34de77b5f2ebd950a3ed623a17dfcc4653ce2b68b6329c7e375556d8
+      schema_sha256: f20fadda62bdb6b66942ba8c11ac11c943fbf60e7a4cead96369e5b5689cdfb9
+    abstention: true
+    instances: 202
+  easy:
+    role: >-
+      the easy tier: execution accuracy shown next to the headline, marked saturated (EX 0.899 to 0.997 in six open
+      models' dry runs), never ranked on its own (decision easy_tier_publication, 2 of 3)
+    items:
+      file: drafts/synthetic-snuh-text2sql-v0.yaml
+      questions: 154
+      answerable: 154
+      categories: [patient_lookup, cohort_count, aggregation, temporal, multi_domain_join, vocabulary_lookup]
+      sha256: a395f64bdef33d91129fa89b091ad03dbe4e10c57ed477ac8248c24bc49067c9
+    prompt:
+      id: text2sql-omop-p0
+      sha256: bbdae38295b84044a9f8625d44991801a7f52ab3a759ebe9c04688d3f543d79e
+      schema_sha256: ed0933749dc62615bc5a4e1ebad3325ec576047569bfaf7e6f085f065713a5b3
+    abstention: false
+    instances: 308
+items_note: >-
+  The items are the two frozen question files under registry/drafts/, which keep each item's review record and the
+  decisions taken on them. The sha256 of each tier covers every kept item's id, Korean and English question, reference
+  SQL, order_matters, answerable, category, difficulty and scope; the runner refuses a file that no longer matches, so
+  any change to an item is a new task version. The prompt hashes cover the system prompt and database note in the code
+  (src/medbench/tasks/text2sql.py), and the schema hashes the schema text built from the database.
+instance_id: "<tier>/<question id>-<lang>, e.g. hard/syn-hard-001-ko (510 instances: hard 202, easy 308)"
+request:
+  messages: >-
+    system: the tier's system prompt; user: the database schema (CREATE TABLE statements with 3 example rows per
+    non-empty table, the empty tables named, concepts counted by domain and vocabulary; on the hard tier also the
+    columns that are NULL in every row), the tier's database note and the question in Korean or in English.
+    `medbench-admin text2sql prompt <id>` prints one.
+  temperature: 0
+  max_tokens: 16384
+  thinking: >-
+    the limit counts thinking tokens; no thinking switch or thinking budget is sent, so each model thinks as its
+    route serves it (decision output_format, 2 of 3, kept the registry's 16,384)
+  answer: >-
+    the last ```sql block, else the text from the first SELECT or WITH line; on the hard tier an answer abstains when
+    its last code block holds only the word ABSTAIN (or, with no code block, its last line is that word)
+protocol:
+  name: EHRSQL 2024 shared task scoring (reliability score) with Spider test-suite execution matching
+  source: >-
+    Lee G, Kweon S, Bae S, Choi E. Overview of the EHRSQL 2024 Shared Task on Reliable Text-to-SQL Modeling on
+    Electronic Health Records. ClinicalNLP @ NAACL 2024. doi:10.18653/v1/2024.clinicalnlp-1.62
+  repository: https://github.com/glee4810/ehrsql-2024
+  commit: f9e1aa02160d39e3f8df52bf5c69c5cf2e472499
+  scorer: >-
+    scoring_program/scoring_utils.py (reliability_score, penalize; unchanged since e207f57a2d0af32b273d7ed69c37e30fa9862b68),
+    vendored unchanged in third_party/ehrsql-2024/ (CC BY 4.0) and called for every reliability score
+  transfer: true
+  medbench_made: [items, unanswerable items, prompt, database, result comparison, abstention, output limit,
+                  easy tier, intervals, priors]
+  also_adopted:
+    - name: Spider test-suite evaluation
+      source: >-
+        Zhong R, Yu T, Klein D. Semantic Evaluation for Text-to-SQL with Distilled Test Suites. EMNLP 2020
+      repository: https://github.com/taoyds/test-suite-sql-eval
+      commit: e97acc546ecbee8fa27fa8dbf025ef61493a876c
+      used: >-
+        exec_eval.py's rules, reimplemented in text2sql.results_match (no code copied): column permutations allowed,
+        row order checked only when the question needs it
+    - name: EHRSQL
+      source: >-
+        Lee G, Hwang H, Bae S, Kwon Y, Shin W, Yang S, Seo M, Kim J-Y, Choi E. EHRSQL: A Practical Text-to-SQL
+        Benchmark for Electronic Health Records. NeurIPS 35 Datasets and Benchmarks, 2022. arXiv:2301.07695
+      repository: https://github.com/glee4810/EHRSQL
+      commit: 01241a3c55bda895561c76923251ea2421d2e892
+      used: questions the database cannot answer; relative time answered against a fixed current time; patient scope
+    - name: TEXT-TO-OMOP
+      source: >-
+        Legrand P, Noor K, Bhagwanani S, Dobson RJ. An OMOP-Based Open-Source Text-to-SQL Benchmark Dataset.
+        ClinicalNLP @ LREC 2026, 381-393. https://aclanthology.org/2026.clinicalnlp-1.40/
+      used: EHRSQL-style questions over OMOP CDM v5.4 with read-only execution (no code or items copied)
+    - name: Create Table + Select 3 prompt
+      source: >-
+        Rajkumar N, Li R, Bahdanau D. Evaluating the Text-to-SQL Capabilities of Large Language Models.
+        arXiv:2204.00498, 2022
+      used: the schema layout of the prompt
+metrics:
+  primary: rs0
+  rs0: >-
+    hard tier, RS(0) over its 202 instances: +1 for a right answer to an answerable question and for an abstention
+    on an unanswerable one, 0 for an abstention on an answerable one, -c (here 0) for any other answer, a wrong,
+    failing or missing query on an answerable question or any query on an unanswerable one included
+  hard_ex: hard tier, execution accuracy on the 166 answerable instances (an abstention there is wrong)
+  hard_rs5: hard tier, RS(5)
+  hard_rsN: hard tier, RS(N) with N = 202 scored instances
+  easy_ex: easy tier, execution accuracy on its 308 instances (saturated; never ranked on its own)
+  abstention: hard tier, share of answerable and of unanswerable instances answered with ABSTAIN
+  cut_off_rate: >-
+    per tier, answers with neither SQL nor ABSTAIN whose output used the whole limit: wrong answers, and model
+    failures in the SOP format check (decision output_format); the task page states each model's share
+  format_failure_rate: per tier, any other answer with neither SQL nor ABSTAIN (text without a query)
+  api_error_rate: final errors of the serving route; 10% or more makes the SOP check incomplete
+  intervals: >-
+    95% percentile interval of a bootstrap over questions, the Korean and English versions of a question resampled
+    together (2,000 resamples, numpy seed 0); paired differences between two models resample the same questions
+  breakdowns: [tier, language, category, difficulty]
+baselines:
+  medbench/prior: >-
+    abstain on every item (on the easy tier, which has no abstention, that is no answer): the input-blind prior of
+    every reliability score, and EHRSQL-2024's simplest baseline; RS(0) is the hard tier's unanswerable share
+  medbench/text2sql-constant-query: >-
+    SELECT 0 for every item: the input-blind prior of execution accuracy. No reference returns it, because every
+    reference has a row that is not all zero or NULL (reference rules), so it scores 0
+  rule: >-
+    Both are input-blind rules: neither looks at the question or at any model's answer. Abstaining on every item is
+    EHRSQL-2024's own simplest baseline. SELECT 0 came in with this spec on 2026-10-30, after the dry runs were
+    scored and the vote was taken, and was not voted on; it was chosen because no reference returns it, so it scores 0
+    by construction, which leaves less headroom on EX than the freeze evidence's prior did (hard EX H 0.404 instead
+    of 0.409). The best single constant query, which the freeze evidence chose with the reference results in view, is
+    not a prior here.
+check:
+  roster:
+    weak: openai/gpt-oss-20b
+    strong: deepseek/deepseek-v4.1-flash-552b-a16b
+  priors:
+    rs: medbench/prior
+    ex: medbench/text2sql-constant-query
+  scope: >-
+    the benchmark's SOP check rests on the hard tier and its RS(0) (decision easy_tier_publication); the easy tier is
+    checked and reported the same way, but its result does not decide the benchmark's
+  format: >-
+    an answer cut off at the output limit without SQL is a model failure, not a format failure (decision
+    output_format); only text with neither SQL nor ABSTAIN counts against the 10% limit
+  note: >-
+    The roster was voted after the 2026-10-30 dry runs it was measured on (decision reference_roster, 3 of 3), so the
+    check is run again on the frozen task; the runs reuse those dry runs' answers wherever the prompt and the output
+    limit are the same (`medbench eval-text2sql --reuse`).
+deviations:
+  - >-
+    Items: the 255 questions (easy 154, hard 101), each asked in Korean and English, and their reference SQL were
+    written for this database: the easy tier by the medbench agent from the data, the hard tier by GPT-6 Astra,
+    Gemini 4 Argon and Claude Opus 5.5 (`text2sql hard-generate`). None was copied from EHRSQL or another benchmark.
+    Checked: every reference runs on the database under the reference rules (one SELECT; 1 to 1,000 rows that are not
+    all zero or NULL; no current date; `text2sql check`: 0 problems in both files), and every kept item was approved
+    by all three models (`text2sql llm-review`, `hard-review`, `llm-fix`).
+  - >-
+    Unanswerable items: the hard tier's 18 unanswerable questions ask only for data that has no place in this database
+    (tables present but empty, columns NULL in every row, both visible in the prompt); EHRSQL's unanswerable questions
+    also include requests outside the database's scope. Checked: each was approved by all three reviewers under the
+    rule that no table or column holds what it needs and that a careful model can tell from the schema and note.
+  - >-
+    Prompt: EHRSQL-2024 has no prompt (its participants trained models). The prompt follows Rajkumar et al. 2022
+    (Create Table + Select 3) with a database note in the role of BIRD's external knowledge and concepts counted by
+    vocabulary instead of concept rows; the hard tier's prompt adds a fixed today (2025-12-31), the columns NULL in
+    every row and the instruction to answer ABSTAIN. Checked: the prompt and schema are pinned by sha256 (tiers), and
+    in six open models' dry runs on both tiers no answer gave text without SQL or ABSTAIN.
+  - >-
+    Database: Synthetic-SNUH 4.0.0's 16 OMOP CDM v5.4 tables loaded into DuckDB by medbench (`medbench fetch
+    synthetic-snuh`), instead of the shared task's MIMIC-IV demo in SQLite. Checked: the release's MD5 sums and the
+    row counts its README publishes (synthetic_snuh.EXPECTED_ROWS).
+  - >-
+    Result comparison: both queries run on one read-only DuckDB connection (one SELECT, 30 s, at most 10,000 rows).
+    Rows are compared as multisets, in order only for questions that ask for one (Spider test-suite); column order is
+    ignored by a permutation search (Spider) but the column count must match; numbers are rounded to 3 decimals as the
+    shared task's process_item does; all rows are compared instead of the first 100 sorted rows; NULL is its own value
+    instead of the string 'None'. The authors' reliability_score receives the outcome (right, wrong or abstained).
+    Checked: unit tests of each rule (tests/test_text2sql.py).
+  - >-
+    Abstention: a model abstains with the word ABSTAIN as its final code block or last line instead of the shared
+    task's null prediction (a predictions file may also give JSON null or 'null'); an answer with neither SQL nor
+    ABSTAIN is scored as an answer (-c), as a failing query is in EHRSQL-2024. Checked: tests/test_text2sql.py and
+    tests/test_text2sql_task.py.
+  - >-
+    Output limit: every model gets 16,384 output tokens, thinking included (decision output_format, 2 of 3); a model
+    whose registry limit is lower is not run. An answer whose thinking used the whole limit and left no SQL is wrong
+    (-c) and is counted as cut off, a model failure, apart from format failures. Checked: in the six models' dry runs
+    every answer without SQL had used exactly 16,384 tokens and returned empty content.
+  - >-
+    Easy tier: v0's 154 questions are all answerable and scored by execution accuracy only, without abstention; the
+    tier is saturated and shown next to the headline, never ranked on its own (decision easy_tier_publication).
+    Checked: the SOP check is run and reported for both tiers; the hard tier decides the benchmark's.
+  - >-
+    Intervals: the shared task reports point estimates; medbench adds 95% intervals from a bootstrap over questions
+    (both languages of a question together) for every score, and paired differences on the same questions. Checked:
+    tests/test_text2sql_task.py (a question's two languages always move together).
+  - >-
+    Priors: two input-blind rules, abstain on every item (EHRSQL-2024's simplest baseline) and SELECT 0 for every
+    item, which came in with this spec after the dry runs were scored and was not voted on (see baselines). Checked:
+    both are recorded as baseline runs and scored by the same code as the models; SELECT 0 scores 0 on every metric.
+  - The shared task's scoring.py also reports RS(10); this task reports RS(0), RS(5) and RS(N).
+  - Each question is asked in Korean and in English, and each language is a scored instance.
+license: >-
+  CC BY-NC 4.0 (Synthetic-SNUH v4); vocabulary concepts keep their own licences (SNOMED CT, RxNorm, LOINC, ATC). The
+  questions and reference SQL name concepts, but the concept table is never republished.
+limitations:
+  - The data are synthetic and for building queries and agents, not for clinical inference; scores say nothing about
+    real SNUH patients.
+  - GPT-6 Astra, Gemini 4 Argon and Claude Opus 5.5 wrote the hard items and reviewed both tiers, so they are marked
+    as reviewers if the benchmark ever ranks them; the task is meant for open models.
+  - The output limit caps models that think long (alibaba/qwen3.8-max-2.4t-a95b had hard-tier EX 0.355 at 16,384
+    tokens and 0.711 at 32,768 in a diagnostic run); the task page states the limit and each model's share of answers
+    cut off at it.
+  - The reference roster was chosen after the dry runs it was measured on (decision reference_roster).
+  - Answers at temperature 0 are not reproducible item by item on a serving route; there is one run per model.
+  - The question files (registry/drafts/) are not part of the public code export; whether they are published with the
+    task is the maintainers' decision.
+items_release:  # presentational (registry.PRESENTATIONAL_FIELDS): editing it, the DOI included, keeps the spec hash
+  decided: >-
+    owner, 2026-10-30: the items of both tiers (questions and reference SQL) are released on KHDP as a dataset built
+    by medbench and submitted by the maintainers; the code that wrote, reviewed and scores them is public in
+    github.com/medbench-kr/benchmarks
+  khdp: synthetic-snuh-text2sql@1.0.0
+  package: >-
+    `medbench text2sql khdp-package` builds it into data/khdp/synthetic-snuh-text2sql-1.0.0 (item hashes as pinned
+    in tiers); the KHDP form text and the submission steps are in docs/khdp/synthetic-snuh-text2sql.md
+  status: prepared, not submitted
+  doi: null  # KHDP assigns it on publication; record it here (and in docs/khdp/synthetic-snuh-text2sql.md)
+decisions: >-
+  The decisions behind this spec, with every model's vote and reason, are in the two question files' `decisions`
+  blocks: v0 (headroom, unanswerable, relative_time, naewon and others) and hard-v0 (headline_metric, output_limit,
+  review_batch, second_round) and the freeze (output_format, easy_tier_publication, reference_roster; 2026-10-30,
+  `text2sql llm-decide --freeze`, evidence in docs/text2sql/2026-10-30-freeze-evidence.md).

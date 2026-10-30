@@ -22,3 +22,9 @@ scope-arrest@0:
 kor-surgical-robot-voice-command@0:
 - src/medbench/tasks/voice_command.py
 - src/medbench/tasks/voice_command_cli.py
+synthetic-snuh-text2sql@0:
+- src/medbench/tasks/text2sql_task.py
+- src/medbench/tasks/text2sql.py
+- src/medbench/tasks/text2sql_task_cli.py
+- src/medbench/tasks/synthetic_snuh.py
+- third_party/ehrsql-2024/README.md

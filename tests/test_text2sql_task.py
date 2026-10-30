@@ -31,7 +31,7 @@ needs_spec = pytest.mark.skipif(not SPEC_FILE.exists(),
 # What these tests use of the spec, for the public repository, where the spec is not (yet) exported; the private
 # repository checks that it agrees with the registered spec (test_the_stand_in_spec_agrees_with_the_registered_one).
 STAND_IN_SPEC = {
-    "slug": "synthetic-snuh-text2sql", "version": 0, "preview": True, "visibility": "hidden",
+    "slug": "synthetic-snuh-text2sql", "version": 0, "preview": True, "visibility": "open",
     "dataset": "synthetic-snuh", "kind": "text2sql", "primary_metric": "rs0",
     "title": "Synthetic-SNUH Text-to-SQL (OMOP CDM, Korean and English)",
     "tiers": {"hard": {"abstention": True}, "easy": {"abstention": False}},
