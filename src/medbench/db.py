@@ -110,6 +110,21 @@ class ReuseEvent(Base):
     at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
 
 
+class DownloadEvent(Base):
+    """A download of a published result, counted as a reuse next to lookup hits (medbench.analytics.record_download).
+    A table of its own: reuse_events.run_id is NOT NULL, a leaderboard CSV belongs to a task, and init_db cannot relax
+    the constraint on the live database. At most one row per visitor, kind, target and KST day; `visitor` is the
+    salted daily hash also used for page views, never an IP address or user agent."""
+    __tablename__ = "download_events"
+    __table_args__ = (UniqueConstraint("day", "visitor", "kind", "target"),)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    day: Mapped[str] = mapped_column(String, index=True)  # YYYY-MM-DD in Asia/Seoul
+    visitor: Mapped[str] = mapped_column(String)
+    kind: Mapped[str] = mapped_column(String)  # predictions | result_json | leaderboard_csv
+    target: Mapped[str] = mapped_column(String)  # run id, or slug@version for a leaderboard CSV
+
+
 class Paper(Base):
     """A paper the agent may validate. Holds metadata and the agent's own extraction, never the paper's text."""
     __tablename__ = "papers"

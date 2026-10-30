@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 import yaml
-from conftest import REGISTRY_DIR
+from conftest import REGISTRY_DIR, plain
 from test_voice_command import ROUTE, FakeLLM, make_release, oracle
 from typer.testing import CliRunner
 
@@ -80,9 +80,9 @@ def test_eval_baseline_and_compare_on_the_release(env, monkeypatch):
 def test_eval_refuses_missing_data_and_non_llm_models(env):
     _, cli = env
     result = CliRunner().invoke(cli.app, ["eval-voice-command", "--model", "alibaba/qwen3.8-flash-next-180b-a6b"])
-    assert result.exit_code != 0 and "fetch kor-surgical-robot-voice-command" in result.output
+    assert result.exit_code != 0 and "fetch kor-surgical-robot-voice-command" in plain(result.output)
     result = CliRunner().invoke(cli.app, ["eval-voice-command", "--model", "alibaba/qwen3-asr-1.7b"])
-    assert result.exit_code != 0 and "not an LLM" in result.output
+    assert result.exit_code != 0 and "not an LLM" in plain(result.output)
 
 
 def test_eval_subset_option_limits_the_run(env, monkeypatch):

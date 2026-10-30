@@ -1,4 +1,5 @@
 import pytest
+import yaml
 from sqlalchemy.exc import IntegrityError
 
 from conftest import REGISTRY_DIR
@@ -24,7 +25,7 @@ def test_load_registry_is_idempotent(tmp_session):
     load_registry(tmp_session, REGISTRY_DIR)
     load_registry(tmp_session, REGISTRY_DIR)
     assert tmp_session.query(Task).count() == len(list((REGISTRY_DIR / "tasks").glob("*.yaml"))) >= 6
-    assert tmp_session.query(Dataset).count() == 7
+    assert tmp_session.query(Dataset).count() == len(yaml.safe_load((REGISTRY_DIR / "datasets.yaml").read_text()))
     model = tmp_session.get(Model, "google/medgemma-27b")
     assert (model.type, model.developer) == ("llm", "Google")  # serving ids are deployment data
     assert model.digest == "google/medgemma-27b"

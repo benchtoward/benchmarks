@@ -1,7 +1,7 @@
 import pytest
 from typer.testing import CliRunner
 
-from conftest import REGISTRY_DIR
+from conftest import REGISTRY_DIR, plain
 from test_evaluate_asr import FakeASR
 from test_k_or_speech import make_release
 
@@ -63,9 +63,9 @@ def test_eval_asr_says_how_to_resume_after_an_outage(env, monkeypatch):
 def test_eval_asr_refuses_non_asr_models_and_missing_data(env):
     tmp_path, cli = env
     result = CliRunner().invoke(cli.app, ["eval-asr", "--model", "google/medgemma-27b"])
-    assert result.exit_code != 0 and "not an ASR model" in result.output
+    assert result.exit_code != 0 and "not an ASR model" in plain(result.output)
     result = CliRunner().invoke(cli.app, ["eval-asr", "--model", "alibaba/qwen3-asr-1.7b"])
-    assert result.exit_code != 0 and "fetch k-or-speech" in result.output
+    assert result.exit_code != 0 and "fetch k-or-speech" in plain(result.output)
 
 
 def test_commands_are_registered(env):

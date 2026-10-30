@@ -125,6 +125,95 @@ def threshold_metrics_ci(y_true: np.ndarray, y_score: np.ndarray, groups: np.nda
     return result
 
 
+def _multiclass(conf: np.ndarray, classes: Sequence[str], scored: np.ndarray) -> dict:
+    """Metrics from a confusion matrix whose rows are the reference classes and whose columns are the same classes
+    plus one column for every other answer (a miss of the reference class, never a false positive). Macro-F1 is the
+    mean F1 of the classes at the indices `scored`."""
+    k = len(classes)
+    tp = np.diag(conf[:, :k]).astype(float)
+    ref = conf.sum(axis=1).astype(float)
+    pred = conf[:, :k].sum(axis=0).astype(float)
+    total = float(conf.sum())
+    per_class = {}
+    for i, name in enumerate(classes):
+        fp, fn, negatives = pred[i] - tp[i], ref[i] - tp[i], total - ref[i]
+        per_class[name] = {"sensitivity": tp[i] / ref[i] if ref[i] else None,
+                           "ppv": tp[i] / pred[i] if pred[i] else None,
+                           "f1": 2 * tp[i] / (2 * tp[i] + fp + fn) if ref[i] else None,
+                           "fpr": fp / negatives if negatives else None}
+    f1s = [per_class[classes[i]]["f1"] for i in scored]
+    macro = float(np.mean(f1s)) if f1s and all(f is not None for f in f1s) else None
+    return {"macro_f1": macro, "accuracy": tp.sum() / total if total else None, "by_class": per_class}
+
+
+MAX_REDRAWS_PER_RESAMPLE = 100
+
+
+def multiclass_metrics_ci(y_true: Sequence[str], y_pred: Sequence[str | None], groups: Sequence, classes: Sequence[str],
+                          n_boot: int = 1000, seed: int = 0) -> dict:
+    """Macro-F1 (primary), accuracy and per-class sensitivity, positive predictivity (ppv), F1 and false-positive
+    rate, with 95% intervals from a cluster bootstrap over groups (e.g. patients).
+
+    Macro-F1 is the mean F1 of the classes present in the full reference (`classes_scored`), as the PhysioNet/CinC
+    2017 score averages per-class F1. Every resample keeps that fixed class set: a resample whose reference lacks
+    one of these classes is drawn again (counted in `bootstrap.redraws`), so a resample never averages fewer
+    classes than the point estimate; a RuntimeError is raised when one resample needs more than
+    MAX_REDRAWS_PER_RESAMPLE redraws. A prediction outside `classes` (or None) is a miss of the reference class and
+    no false positive for any class, as bxb counts AAMI F and Q answers."""
+    classes = list(classes)
+    y = np.asarray(y_true, dtype=object)
+    unknown = set(y) - set(classes)
+    if unknown:
+        raise ValueError(f"reference labels outside the classes: {sorted(map(str, unknown))}")
+    index = {name: i for i, name in enumerate(classes)}
+    rows = np.array([index[v] for v in y], dtype=int)
+    cols = np.array([index.get(v, len(classes)) for v in np.asarray(y_pred, dtype=object)], dtype=int)
+    unique, inverse = np.unique(np.asarray(groups), return_inverse=True)
+    k = len(classes)
+    by_group = np.zeros((len(unique), k, k + 1), dtype=np.int64)
+    np.add.at(by_group, (inverse, rows, cols), 1)
+    conf = by_group.sum(axis=0)
+    scored = np.flatnonzero(conf.sum(axis=1) > 0)
+    point = _multiclass(conf, classes, scored)
+
+    boots: dict[tuple, list[float]] = {}
+    rng = np.random.default_rng(seed)
+    accepted = redraws = tries = 0   # tries: redraws for the resample being drawn
+    while len(unique) and accepted < n_boot:
+        sample = by_group[rng.integers(0, len(unique), len(unique))].sum(axis=0)
+        if (sample[scored].sum(axis=1) == 0).any():
+            redraws += 1
+            tries += 1
+            if tries > MAX_REDRAWS_PER_RESAMPLE:
+                raise RuntimeError(f"resample {accepted + 1} of {n_boot} needed more than {MAX_REDRAWS_PER_RESAMPLE} "
+                                   "redraws: the reference classes are too rare across groups for this bootstrap")
+            continue
+        tries = 0
+        accepted += 1
+        m = _multiclass(sample, classes, scored)
+        for key in ("macro_f1", "accuracy"):
+            if m[key] is not None:
+                boots.setdefault((key,), []).append(m[key])
+        for name, values in m["by_class"].items():
+            for key, value in values.items():
+                if value is not None:
+                    boots.setdefault((name, key), []).append(value)
+
+    def entry(path: tuple, value) -> dict:
+        low, high = _interval(boots.get(path, [])) if value is not None else (None, None)
+        return {"value": None if value is None else float(value), "ci_low": low, "ci_high": high}
+
+    result: dict = {"macro_f1": entry(("macro_f1",), point["macro_f1"]),
+                    "accuracy": entry(("accuracy",), point["accuracy"]), "by_class": {}}
+    for i, name in enumerate(classes):
+        stats = point["by_class"][name]
+        result["by_class"][name] = {"n": int(conf[i].sum()), **{key: entry((name, key), v) for key, v in stats.items()}}
+    result["confusion"] = {"labels": classes, "predicted": [*classes, "other"], "matrix": conf.tolist()}
+    result.update({"classes_scored": [classes[i] for i in scored], "n": int(len(y)), "n_groups": int(len(unique)),
+                   "bootstrap": {"n": accepted, "by": "group", "redraws": redraws}})
+    return result
+
+
 def paired_rank_stats(stat_fn, n_items: int, groups: np.ndarray | None = None, higher_is_better: bool = True,
                       n_boot: int = 1000, seed: int = 0) -> list[dict]:
     """Rank statistics under a paired bootstrap.

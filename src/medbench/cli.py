@@ -28,13 +28,11 @@ if agent_app is not None:
     app.add_typer(agent_app, name="agent")
 register_arrhythmia(fetch_app, build_app, baseline_app)
 
-try:  # draft harness, published with its task after owner review
-    from medbench.tasks.text2sql_cli import text2sql_app  # noqa: E402
-except ModuleNotFoundError:
-    text2sql_app = None
+# Text-to-SQL: the question files, the frontier-model jobs and the KHDP release (public ahead of the task, owner
+# 2026-10-30)
+from medbench.tasks.text2sql_cli import text2sql_app  # noqa: E402
 
-if text2sql_app is not None:
-    app.add_typer(text2sql_app, name="text2sql")
+app.add_typer(text2sql_app, name="text2sql")
 
 from medbench.tasks.speech_cli import register as register_speech  # noqa: E402
 
@@ -215,9 +213,40 @@ except ModuleNotFoundError:
 if register_ioh_v1 is not None:
     register_ioh_v1(build_app, baseline_app)
 
+try:  # vitaldb-arrhythmia-rhythm@0 and -beat@0 are exported with their tasks once the maintainers publish them
+    from medbench.tasks.arrhythmia_rhythm_beat_cli import register as register_rhythm_beat  # noqa: E402
+except ModuleNotFoundError:
+    register_rhythm_beat = None
+if register_rhythm_beat is not None:
+    register_rhythm_beat(build_app, baseline_app)
+
+try:  # inspire-aki@0 is exported with its task once the maintainers publish it
+    from medbench.tasks.inspire_aki_cli import register as register_inspire_aki  # noqa: E402
+except ModuleNotFoundError:
+    register_inspire_aki = None
+if register_inspire_aki is not None:
+    register_inspire_aki(fetch_app, build_app, baseline_app)
+try:  # vitaldb-bis@0 is exported with its task once the maintainers publish it
+    from medbench.tasks.bis_cli import register as register_bis  # noqa: E402
+except ModuleNotFoundError:
+    register_bis = None
+if register_bis is not None:
+    register_bis(build_app, baseline_app)
+
+try:  # its pod extraction is deployment-only
+    from medbench.tasks.bis_pods_cli import register as register_bis_pods  # noqa: E402
+except ModuleNotFoundError:
+    register_bis_pods = None
+if register_bis_pods is not None:
+    register_bis_pods(app)
+
 from medbench.tasks.voice_command_cli import register as register_voice_command  # noqa: E402
 
 register_voice_command(app, fetch_app, baseline_app)
+
+from medbench.tasks.text2sql_task_cli import register as register_text2sql_task  # noqa: E402
+
+register_text2sql_task(app, fetch_app, baseline_app)  # synthetic-snuh-text2sql@0 (its code is public, owner 2026-10-30)
 
 try:  # deployment scheduling and job bookkeeping, not part of the published evaluation code
     from medbench.orch.cli import orch_app, register_jobs  # noqa: E402
@@ -227,3 +256,10 @@ except ModuleNotFoundError:
 if orch_app is not None:
     app.add_typer(orch_app, name="orch")
     register_jobs(app)  # eval commands hold a ledger lease while they run
+
+try:  # lydus-ecg12-dx@0 is exported with its task once the maintainers publish it
+    from medbench.tasks.lydus_cli import register as register_lydus  # noqa: E402
+except ModuleNotFoundError:
+    register_lydus = None
+if register_lydus is not None:
+    register_lydus(app, fetch_app, build_app, baseline_app)

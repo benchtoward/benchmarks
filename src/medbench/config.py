@@ -44,32 +44,29 @@ def get_settings() -> Settings:
     )
 
 
+def provider_routes() -> dict[str, dict]:
+    """registry/providers.yaml as written: route name -> its entry ({} without the file). The file is part of the
+    deployment, not of the evaluation code."""
+    path = registry_dir() / "providers.yaml"
+    return (yaml.safe_load(path.read_text()) or {}) if path.exists() else {}
+
+
 def _providers(env) -> dict[str, tuple[str, str | None]]:
     """Each entry of registry/providers.yaml: base_url, key_env (variable holding the API key), optional base_env
-    (variable that overrides base_url). The file is part of the deployment, not of the evaluation code."""
-    path = registry_dir() / "providers.yaml"
-    if not path.exists():
-        return {}
+    (variable that overrides base_url)."""
     routes = {}
-    for name, route in (yaml.safe_load(path.read_text()) or {}).items():
+    for name, route in provider_routes().items():
         base = env.get(route.get("base_env") or "") or route["base_url"]
         routes[name] = (base.rstrip("/"), env.get(route["key_env"]) or None)
     return routes
 
 
 def _audio_providers() -> tuple[str, ...]:
-    path = registry_dir() / "providers.yaml"
-    if not path.exists():
-        return ()
-    return tuple(name for name, route in (yaml.safe_load(path.read_text()) or {}).items() if route.get("audio"))
+    return tuple(name for name, route in provider_routes().items() if route.get("audio"))
 
 
 def _route_requests() -> dict[str, dict]:
-    path = registry_dir() / "providers.yaml"
-    if not path.exists():
-        return {}
-    return {name: route["request"] for name, route in (yaml.safe_load(path.read_text()) or {}).items()
-            if route.get("request")}
+    return {name: route["request"] for name, route in provider_routes().items() if route.get("request")}
 
 
 def registry_dir() -> Path:

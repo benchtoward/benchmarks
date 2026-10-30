@@ -1,4 +1,5 @@
 import asyncio
+from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
 
 import httpx
@@ -7,6 +8,7 @@ from medbench.config import Settings
 from medbench.db import Model
 
 RETRY_STATUS = {429, 500, 502, 503, 504}
+UNSENT_ERRORS = (httpx.ConnectError, httpx.ConnectTimeout)  # the request never reached the route
 # Non-streaming completions of up to 16K tokens can take minutes; a slow answer is not a dead connection.
 DEFAULT_TIMEOUT = httpx.Timeout(connect=10.0, read=900.0, write=60.0, pool=60.0)
 MAX_READ_TIMEOUT_RETRIES = 1  # each retry regenerates the whole answer, so retry a timeout only once
@@ -20,6 +22,11 @@ class ChatResult:
     tokens_out: int
     error: str | None
     transient: bool = False  # True: worth retrying later (5xx, 429, network, malformed); False: final for this item
+    cost_usd: float | None = None  # what the route billed, when its response says (usage.cost)
+    attempts: int = 1  # requests sent, retries included
+    failed_attempts: int = 0  # sent requests that failed but may have been billed (timeouts, 5xx, malformed 200s)
+    cached_tokens: int = 0  # prompt tokens the route served from its prompt cache, when it says
+    reasoning_tokens: int = 0  # completion tokens spent on thinking, when the route says
 
 
 class MissingCredential(Exception):
@@ -43,39 +50,56 @@ class LLMClient:
         self.sleep = sleep
 
     async def chat(self, model_id: str, messages: list[dict], *, max_tokens: int,
-                   temperature: float = 0.0, extra: dict | None = None) -> ChatResult:
+                   temperature: float = 0.0, extra: dict | None = None,
+                   before_attempt: Callable[[int], Awaitable[bool]] | None = None) -> ChatResult:
         """`extra`: further request fields a task's protocol needs (e.g. response_format); they never replace the
-        model, messages, max_tokens or temperature."""
+        model, messages, max_tokens or temperature. `before_attempt(n)` is awaited before request n (0 is the
+        first, then each retry); when it returns False nothing more is sent and the error is 'budget'. The result
+        counts the requests sent and the failed ones that may have been billed (read timeouts and other transport
+        errors after sending, 5xx answers, malformed 200s; not 429 or 4xx refusals, nor refused connections), so a
+        budget can charge retries too."""
         payload = {**(extra or {}), "model": model_id, "messages": messages, "max_tokens": max_tokens,
                    "temperature": temperature}
         headers = {"Authorization": f"Bearer {self.api_key}"}
         error, transient, read_timeouts = "unknown", True, 0
+        sent = billed = 0
         async with httpx.AsyncClient(transport=self.transport, timeout=self.timeout) as http:
             for attempt in range(self.max_retries + 1):
                 if attempt:
                     await self.sleep(2 ** (attempt - 1))
+                if before_attempt is not None and not await before_attempt(attempt):
+                    error, transient = "budget", True
+                    break
+                sent += 1
                 try:
                     response = await http.post(f"{self.base_url}/chat/completions", json=payload, headers=headers)
                 except httpx.ReadTimeout:
                     error, transient = "transport_ReadTimeout", True
+                    billed += 1
                     read_timeouts += 1
                     if read_timeouts > MAX_READ_TIMEOUT_RETRIES:
                         break
                     continue
                 except httpx.TransportError as exc:
                     error, transient = f"transport_{type(exc).__name__}", True
+                    billed += not isinstance(exc, UNSENT_ERRORS)
                     continue
                 if response.status_code == 200:
                     try:
-                        return _parse(response)
+                        result = _parse(response)
                     except _BadResponse:
                         error, transient = "bad_response", True
+                        billed += 1
                         continue
+                    result.attempts, result.failed_attempts = sent, billed
+                    return result
                 error = _error_code(response)
                 transient = response.status_code in RETRY_STATUS
+                billed += response.status_code >= 500
                 if not transient:
                     break
-        return ChatResult(content="", reasoning=None, tokens_in=0, tokens_out=0, error=error, transient=transient)
+        return ChatResult(content="", reasoning=None, tokens_in=0, tokens_out=0, error=error, transient=transient,
+                          attempts=sent, failed_attempts=billed)
 
 
 def _text(content) -> str:
@@ -84,6 +108,11 @@ def _text(content) -> str:
     if isinstance(content, list):
         return "".join(p.get("text", "") if isinstance(p, dict) else str(p) for p in content)
     return str(content)
+
+
+def _count(details, key: str) -> int:
+    value = details.get(key) if isinstance(details, dict) else None
+    return int(value) if isinstance(value, (int, float)) and not isinstance(value, bool) else 0
 
 
 def _parse(response: httpx.Response) -> ChatResult:
@@ -97,12 +126,16 @@ def _parse(response: httpx.Response) -> ChatResult:
         raise _BadResponse
     message = body["choices"][0]["message"]
     usage = body.get("usage") if isinstance(body.get("usage"), dict) else {}
+    cost = usage.get("cost")
     return ChatResult(
         content=_text(message.get("content")),
         reasoning=_text(message.get("reasoning_content")) or None,
         tokens_in=int(usage.get("prompt_tokens") or 0),
         tokens_out=int(usage.get("completion_tokens") or 0),
         error=None,
+        cost_usd=float(cost) if isinstance(cost, (int, float)) and not isinstance(cost, bool) else None,
+        cached_tokens=_count(usage.get("prompt_tokens_details"), "cached_tokens"),
+        reasoning_tokens=_count(usage.get("completion_tokens_details"), "reasoning_tokens"),
     )
 
 

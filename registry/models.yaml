@@ -94,6 +94,12 @@
   provider: medbench
   developer: medbench.kr
   reference: true
+- slug: medbench/text2sql-constant-query
+  name: Constant query (SELECT 0 for every question)
+  type: baseline
+  provider: medbench
+  developer: medbench.kr
+  reference: true
 - slug: medbench/ioh-logreg-lastmap
   name: Logistic regression on last-minute MAP
   type: baseline
@@ -124,6 +130,11 @@
   type: baseline
   provider: medbench
   developer: medbench.kr
+- slug: medbench/arrhythmia-hgb-rr-morph
+  name: Gradient boosting on RR-interval and beat morphology features
+  type: baseline
+  provider: medbench
+  developer: medbench.kr
 - slug: alibaba/qwen3-asr-1.7b
   name: Qwen3-ASR 1.7B
   type: asr
@@ -146,6 +157,46 @@
   developer: medbench.kr
 - slug: medbench/ioh-map-logreg
   name: MAP-only logistic regression (Yang et al. 2025 code)
+  type: baseline
+  provider: medbench
+  developer: medbench.kr
+- slug: medbench/lydus-hgb-beat-features
+  name: Gradient boosting on median-beat, amplitude and RR features
+  type: baseline
+  provider: medbench
+  developer: medbench.kr
+- slug: medbench/lydus-resnet1d
+  name: 1-D ResNet trained on LYDUS (Ribeiro et al. 2020 architecture)
+  type: baseline
+  provider: medbench
+  developer: medbench.kr
+- slug: medbench/inspire-aki-asa
+  name: ASA class / 6 (Do et al. 2026 asa_rule)
+  type: baseline
+  provider: medbench
+  developer: medbench.kr
+- slug: medbench/inspire-aki-gs-aki
+  name: Adapted GS-AKI count (Do et al. 2026 gs_aki_rule)
+  type: baseline
+  provider: medbench
+  developer: medbench.kr
+- slug: medbench/inspire-aki-logreg
+  name: Ridge logistic regression (Do et al. 2026 code)
+  type: baseline
+  provider: medbench
+  developer: medbench.kr
+- slug: medbench/inspire-aki-xgb
+  name: Gradient boosted trees (Do et al. 2026 code)
+  type: baseline
+  provider: medbench
+  developer: medbench.kr
+- slug: medbench/bis-openeeg-lgbm
+  name: 'openeeg predict_bis: LightGBM on 18 EEG features (VitalDB team''s trained model)'
+  type: baseline
+  provider: medbench
+  developer: medbench.kr
+- slug: medbench/bis-openibis
+  name: openeeg port of openibis (Connor 2022), no training
   type: baseline
   provider: medbench
   developer: medbench.kr

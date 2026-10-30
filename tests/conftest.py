@@ -1,8 +1,16 @@
+import re
 from pathlib import Path
 
 import pytest
 
 REGISTRY_DIR = Path(__file__).resolve().parents[1] / "registry"
+
+
+def plain(output: str) -> str:
+    """CLI output as one line of words, for checking a message. An error box wraps at the terminal width, so the
+    length of a temporary path in it decides where the rest of the message breaks; on GitHub Actions the box is also
+    coloured."""
+    return " ".join(re.sub(r"\x1b\[[0-9;]*m", "", output).replace("│", " ").split())
 
 
 def make_omop_db(path: Path) -> Path:

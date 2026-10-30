@@ -319,7 +319,7 @@ def test_registry_has_the_inspire_dataset_task_and_baselines(tmp_session):
     dataset = tmp_session.get(Dataset, "inspire")
     assert dataset.modality == "structured" and dataset.version == "1.3" and dataset.khdp_code == "inspire"
     assert dataset.source_url == "https://khdp.net/database/data-search-detail/660/inspire/1.3"
-    assert "10.13026/4evs-wq50" in dataset.citation and dataset.license == "CC BY 4.0"
+    assert "10.13026/46m4-f655" in dataset.citation and dataset.license == "CC BY 4.0"
     task = resolve_task(tmp_session, "inspire-mortality")
     assert (task.version, task.dataset_slug, task.kind, task.primary_metric, task.preview) == (0, "inspire", "binary",
                                                                                                "auroc", True)

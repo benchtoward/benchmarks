@@ -40,6 +40,14 @@ def test_parses_content_reasoning_usage():
     r = _chat(_client([_ok("C", reasoning="thinking")], calls))
     assert (r.content, r.reasoning, r.tokens_in, r.tokens_out, r.error) == ("C", "thinking", 11, 7, None)
     assert calls[0]["model"] == "m-1" and calls[0]["max_tokens"] == 64 and calls[0]["temperature"] == 0.0
+    assert r.cost_usd is None                                    # the route reported no cost
+
+
+def test_keeps_the_cost_the_route_reports():
+    body = {"choices": [{"message": {"content": "C"}}],
+            "usage": {"prompt_tokens": 11, "completion_tokens": 7, "cost": 0.0123}}
+    r = _chat(_client([httpx.Response(200, json=body)], []))
+    assert r.cost_usd == pytest.approx(0.0123)
 
 
 def test_retries_then_succeeds():
@@ -152,3 +160,54 @@ def test_extra_request_fields_are_sent_without_overriding_the_core_ones():
     assert calls[0]["response_format"] == {"type": "json_object"}
     assert calls[0]["chat_template_kwargs"] == {"enable_thinking": False}
     assert calls[0]["model"] == "m-1" and calls[0]["max_tokens"] == 64
+
+
+# ---- attempts, for budgets that must count retries ----
+
+def test_counts_attempts_and_the_failed_ones_that_may_have_been_billed():
+    responses = [httpx.Response(429, text="slow down"), httpx.Response(503, text="busy"),
+                 httpx.Response(200, text="<html>oops</html>"), _ok("A")]
+    r = _chat(_client(responses, []))
+    assert r.error is None and r.attempts == 4
+    assert r.failed_attempts == 2                       # the 503 and the malformed 200; a 429 ran no model
+    r = _chat(_client([httpx.Response(404, json={"error": "model_not_found"})], []))
+    assert r.attempts == 1 and r.failed_attempts == 0   # refused by the route: nothing generated
+
+
+def test_a_read_timeout_may_have_been_billed_but_a_refused_connection_not():
+    def timeout(request):
+        raise httpx.ReadTimeout("slow", request=request)
+
+    r = _chat(LLMClient("https://llm.test/v1", "tok", transport=httpx.MockTransport(timeout), sleep=_no_sleep))
+    assert r.attempts == 2 and r.failed_attempts == 2
+
+    def refused(request):
+        raise httpx.ConnectError("refused", request=request)
+
+    r = _chat(LLMClient("https://llm.test/v1", "tok", transport=httpx.MockTransport(refused), sleep=_no_sleep,
+                        max_retries=2))
+    assert r.attempts == 3 and r.failed_attempts == 0
+
+
+def test_before_attempt_is_asked_before_every_request_and_can_stop_the_retries():
+    calls, asked = [], []
+
+    async def before_attempt(n):
+        asked.append(n)
+        return n < 2                                    # the budget allows two requests
+
+    client = _client([httpx.Response(503, text="busy")] * 5, calls)
+    r = asyncio.run(client.chat("m-1", [{"role": "user", "content": "q"}], max_tokens=64,
+                                before_attempt=before_attempt))
+    assert asked == [0, 1, 2] and len(calls) == 2
+    assert r.error == "budget" and r.transient is True and r.attempts == 2 and r.failed_attempts == 2
+
+
+def test_cached_and_reasoning_tokens_are_kept_when_the_route_reports_them():
+    body = {"choices": [{"message": {"content": "C"}}],
+            "usage": {"prompt_tokens": 100, "completion_tokens": 40, "prompt_tokens_details": {"cached_tokens": 80},
+                      "completion_tokens_details": {"reasoning_tokens": 30}}}
+    r = _chat(_client([httpx.Response(200, json=body)], []))
+    assert (r.cached_tokens, r.reasoning_tokens) == (80, 30)
+    r = _chat(_client([_ok("A")], []))
+    assert (r.cached_tokens, r.reasoning_tokens) == (0, 0)

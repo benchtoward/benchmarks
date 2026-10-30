@@ -12,6 +12,9 @@ listed under third_party/ with its own license):
 - scope-arrest@0: Lee H, Yang HL, Ryu HG, Jung CW, Cho YJ, Yoon SB, Yoon HK, Lee HC. Real-time machine learning model to predict in-hospital cardiac arrest using heart rate variability in ICU. npj Digit Med. 2023;6:215. doi:10.1038/s41746-023-00960-2
 - vitaldb-arrhythmia-abnormal@0: Eun DI, Shim K, Lee H, Lim Y, Lim H, Lee H, Lee J, Lee HC. VitalDB Arrhythmia Database: an anesthesiologist-validated large-scale intraoperative arrhythmia dataset with beat and rhythm labels. Sci Data. 2026;13. doi:10.1038/s41597-026-07076-8 (section Technical Validation); https://github.com/vitaldb/arrdb @ 59b7722674e76592900cb8131d25337f2dd084b8; https://github.com/vitaldb/openecg @ 0d8610fdac1ec2bae25e2f9674d177c124041638
 
+Code adapted from other projects, with its license under third_party/:
+- third_party/ehrsql-2024: https://github.com/glee4810/ehrsql-2024 @ f9e1aa02160d39e3f8df52bf5c69c5cf2e472499 (CC BY 4.0, the EHRSQL 2024 shared task organisers Gyubok Lee, Sunjun Kweon, Seongsu Bae and Edward Choi): scoring_program/scoring_utils.py, unchanged; its reliability_score and penalize compute every reliability score of synthetic-snuh-text2sql@0 (src/medbench/tasks/text2sql_task.py)
+
 Datasets are cited on each task page and in registry/datasets.yaml.
 
 Third-party data in this repository (test fixtures, verbatim excerpts):

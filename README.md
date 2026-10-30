@@ -21,6 +21,16 @@ task version.
 | [`vitaldb-arrhythmia-abnormal@0`](https://medbench.kr/tasks/vitaldb-arrhythmia-abnormal) | Abnormal rhythm in 5-second intraoperative ECG (lead II) | [VitalDB Arrhythmia Database](https://khdp.net/database/data-search-detail/738/vitaldb-arrhythmia/1.0.0) | [Eun DI, Shim K, Lee H, Lim Y, Lim H, Lee H, Lee J, Lee HC](https://github.com/vitaldb/arrdb) | [spec](registry/tasks/vitaldb-arrhythmia-abnormal.yaml), [`vitaldb_arrhythmia_abnormal.py`](src/medbench/tasks/vitaldb_arrhythmia_abnormal.py), [`vitaldb_arrhythmia.py`](src/medbench/tasks/vitaldb_arrhythmia.py), [`arrhythmia.py`](src/medbench/baselines/arrhythmia.py) |
 | [`vitaldb-ioh@0`](https://medbench.kr/tasks/vitaldb-ioh) | Intraoperative hypotension 5 min ahead (numeric MAP) | [VitalDB](https://khdp.net/database/data-search-detail/658/vitaldb_open/1.0.0) | medbench.kr definition (no published protocol) | [spec](registry/tasks/vitaldb-ioh.yaml), [`vitaldb_ioh.py`](src/medbench/tasks/vitaldb_ioh.py), [`vitaldb_split.py`](src/medbench/tasks/vitaldb_split.py), [`ioh.py`](src/medbench/baselines/ioh.py) |
 
+## Code published ahead of its task
+
+The maintainers published this code before its benchmark. Its tests run here without the benchmark's items or specification (those that need them skip, saying why).
+
+| Task | Why | Code |
+|---|---|---|
+| `synthetic-snuh-text2sql@0` (in review) | owner, 2026-10-30: the code that wrote, reviewed, fixed and voted on the Synthetic-SNUH Text-to-SQL items (`medbench text2sql ...`) and the code that scores them are public while the task is in review. The items themselves (questions and reference SQL of both tiers) are released on KHDP as the medbench-built dataset synthetic-snuh-text2sql, not in this repository. | [`text2sql.py`](src/medbench/tasks/text2sql.py), [`text2sql_task.py`](src/medbench/tasks/text2sql_task.py), [`text2sql_task_cli.py`](src/medbench/tasks/text2sql_task_cli.py), [`text2sql_cli.py`](src/medbench/tasks/text2sql_cli.py), [`text2sql_review.py`](src/medbench/tasks/text2sql_review.py), [`text2sql_llm_review.py`](src/medbench/tasks/text2sql_llm_review.py), [`text2sql_llm_fix.py`](src/medbench/tasks/text2sql_llm_fix.py), [`text2sql_llm_decide.py`](src/medbench/tasks/text2sql_llm_decide.py), [`text2sql_hard.py`](src/medbench/tasks/text2sql_hard.py), [`text2sql_release.py`](src/medbench/tasks/text2sql_release.py) |
+
+`synthetic-snuh-text2sql@0`: The frontier-model jobs (`text2sql hard-generate`, `hard-review`, `llm-review`, `llm-fix`, `llm-decide`) ask the models through the route that `registry/providers.yaml` marks `frontier: true`; its optional `prices_url` (a public model list with prices) and `request.billing` (request fields that make the route report its bill) feed their budget. With the items from KHDP, `medbench text2sql dry-run --draft items/hard.yaml --predictions FILE` scores a model's answers.
+
 ## Reproduce a benchmark
 
 ```bash
