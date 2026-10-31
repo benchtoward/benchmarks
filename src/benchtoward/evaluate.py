@@ -246,7 +246,7 @@ def _finish_asr_run(session: Session, model: Model, run: Run, clips: list, data_
 
 def record_baseline_run(session: Session, model: Model, task: Task, rows: list[dict], metrics: dict, config: dict,
                         *, data_dir: Path | None = None) -> Run:
-    """Store a finished run computed outside the LLM runner (medbench baselines). Deduplicated by run key."""
+    """Store a finished run computed outside the LLM runner (BenchToward baselines). Deduplicated by run key."""
     if data_dir is None:
         from benchtoward.config import get_settings
         data_dir = get_settings().data_dir
@@ -278,14 +278,31 @@ def constant_answer_baseline(items: list[QAItem], letter: str) -> tuple[list[dic
     return rows, metrics
 
 
+class SyncConflict(RuntimeError):
+    """import_bundle refuses a bundle that cannot be merged without losing or duplicating results."""
+
+
 def rekey_runs(session: Session) -> int:
-    """Recompute run keys and task spec hashes after the spec-hash definition changes. Returns runs changed."""
+    """Recompute run keys after the digest or run-key definition changes, from each run's own task spec hash. A run's
+    spec hash is never moved here (that would list stale runs and collide with the current ones): a rename-only spec
+    edit moves hashes through a rename plan (benchtoward.rename). Returns runs changed; refuses colliding keys."""
+    digests = dict(session.query(Model.slug, Model.digest))
+    runs = session.query(Run).all()
+    keys = {}
+    for run in runs:
+        if run.model_slug not in digests:
+            raise ValueError(f"run {run.id} points at a missing model {run.model_slug}")
+        keys[run.id] = run_key(digests[run.model_slug], run.task_spec_hash, run.harness_version,
+                               json.loads(run.config_json or "{}"))
+    seen: dict[str, str] = {}
+    for run_id, key in sorted(keys.items()):
+        if key in seen:
+            raise ValueError(f"runs {seen[key]} and {run_id} would share run key {key[:12]}")
+        seen[key] = run_id
     changed = 0
-    for run in session.query(Run):
-        model, task = session.get(Model, run.model_slug), session.get(Task, run.task_id)
-        key = run_key(model.digest, task.spec_hash, run.harness_version, json.loads(run.config_json or "{}"))
-        if run.run_key != key or run.task_spec_hash != task.spec_hash:
-            run.run_key, run.task_spec_hash = key, task.spec_hash
+    for run in runs:
+        if run.run_key != keys[run.id]:
+            run.run_key = keys[run.id]
             changed += 1
     session.commit()
     return changed
@@ -317,8 +334,39 @@ def _copy(row, cls, skip: tuple = ()) -> dict:
     return {c.name: getattr(row, c.name) for c in cls.__table__.columns if c.name not in skip}
 
 
-def import_bundle(session: Session, source_db_url: str) -> dict[str, int]:
-    """Merge the paper agent's state and finished runs from another medbench database (the paper agent's) into this one.
+def _rename_guard(session: Session, source: Session, registry_dir: Path | None) -> None:
+    """Both databases must have applied the same committed rename plans (benchtoward.rename): a bundle from a host
+    that has not would bring back old model rows and runs on old spec hashes, and one migrated by a plan this code
+    lacks would bring keys this side cannot reproduce."""
+    from benchtoward.rename import applied_plan_ids, load_plans, rename_lag
+
+    if registry_dir is None:
+        from benchtoward.config import registry_dir as configured
+
+        registry_dir = configured()
+    plans = load_plans(registry_dir)
+    known = {p.id for p in plans}
+    unknown = applied_plan_ids(source) - known
+    if unknown:
+        raise SyncConflict(f"bundle was migrated by rename plan {', '.join(sorted(unknown))}, which this code does "
+                           f"not have: deploy it here first, then sync again")
+    if not plans:
+        return
+    ids = ", ".join(sorted(known))
+    lag = rename_lag(source, plans)
+    if lag:
+        more = f" and {len(lag) - 3} more" if len(lag) > 3 else ""
+        raise SyncConflict(f"bundle predates rename plan {ids} ({'; '.join(lag[:3])}{more}): on that host, git pull "
+                           f"and benchtoward init, then sync again")
+    lag = rename_lag(session, plans)
+    if lag:
+        more = f" and {len(lag) - 3} more" if len(lag) > 3 else ""
+        raise SyncConflict(f"this database has not applied rename plan {ids} ({'; '.join(lag[:3])}{more}): run "
+                           f"benchtoward rename-rekey here first")
+
+
+def import_bundle(session: Session, source_db_url: str, *, registry_dir: Path | None = None) -> dict[str, int]:
+    """Merge the paper agent's state and finished runs from another database (the paper agent's) into this one.
 
     Models upsert by slug; tasks match by (slug, version) and get this database's ids; papers upsert by DOI and
     attempts by id; runs with status done or held match by run key, with task ids remapped. Maintainer-only fields
@@ -330,6 +378,7 @@ def import_bundle(session: Session, source_db_url: str) -> dict[str, int]:
     counts = {"models": 0, "tasks": 0, "papers": 0, "attempts": 0, "proposals": 0, "needs": 0, "runs": 0}
     pending = _pending_targets(session)
     with session_factory(make_engine(source_db_url))() as source:
+        _rename_guard(session, source, registry_dir)
         for model in source.query(Model):
             values = _copy(model, Model)
             target = session.get(Model, model.slug)
@@ -405,6 +454,11 @@ def import_bundle(session: Session, source_db_url: str) -> dict[str, int]:
         session.flush()
 
         for run in source.query(Run).filter(Run.status.in_(("done", "held"))):
+            same_id = session.get(Run, run.id)
+            if same_id is not None and same_id.run_key != run.run_key:
+                session.rollback()
+                raise SyncConflict(f"run {run.id} has key {same_id.run_key[:12]} here and {run.run_key[:12]} in the "
+                                   f"bundle; both databases must apply the same rename plans")
             existing = session.query(Run).filter_by(run_key=run.run_key).one_or_none()
             if existing is not None and (existing.status in ("done", "unpublished") or existing.id in pending["runs"]
                                          or (existing.status == "held" and run.status == "held")):

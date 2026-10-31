@@ -1,7 +1,7 @@
-"""medbench baselines for scope-arrest@0, trained on the train split and scored on the test split.
+"""BenchToward baselines for scope-arrest@0, trained on the train split and scored on the test split.
 
-- medbench/prior: the train-split prevalence for every epoch (ignores the input; an unranked reference row).
-- medbench/scope-hrv-lgbm: the dataset authors' training script (Lee et al. 2023 setup) on the 33 HRV measures:
+- benchtoward/prior: the train-split prevalence for every epoch (ignores the input; an unranked reference row).
+- benchtoward/scope-hrv-lgbm: the dataset authors' training script (Lee et al. 2023 setup) on the 33 HRV measures:
   missing measures filled with medians; a 5-fold CV of the train split grouped by stay and stratified by label
   (StratifiedGroupKFold, shuffled, random_state 42); in each fold a Bayesian optimization (3 random and 50 guided
   points) of LightGBM's parameters, scored by AUPRC on the held-out fold with early stopping (300 rounds, at most
@@ -133,8 +133,8 @@ def fit_predict_hrv_lgbm(train: pd.DataFrame, test: pd.DataFrame, *, opt_inits: 
 
 
 BASELINES = {
-    "medbench/prior": fit_predict_prior,
-    "medbench/scope-hrv-lgbm": fit_predict_hrv_lgbm,
+    "benchtoward/prior": fit_predict_prior,
+    "benchtoward/scope-hrv-lgbm": fit_predict_hrv_lgbm,
 }
 
 
@@ -155,7 +155,7 @@ def run_scope_baselines(session, task, instances: pd.DataFrame, *, data_dir, n_b
     fingerprint = data_hash(instances)
     runs = []
     for slug, fit in BASELINES.items():
-        kwargs = (fit_kwargs or {}) if slug == "medbench/scope-hrv-lgbm" else {}
+        kwargs = (fit_kwargs or {}) if slug == "benchtoward/scope-hrv-lgbm" else {}
         scores, info = fit(train, test, **kwargs)
         metrics = binary_metrics_ci(test["label"].to_numpy(), scores, test["case_id"].to_numpy(), n_boot=n_boot)
         rows = [{"instance_id": iid, "score": float(s), "label": int(y)}

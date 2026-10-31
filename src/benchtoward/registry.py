@@ -1,10 +1,9 @@
+import json
 import re
 from pathlib import Path
 
 import yaml
 from sqlalchemy.orm import Session
-
-import json
 
 from benchtoward.db import Dataset, Model, Run, Task
 from benchtoward.runkey import canonical_json, run_key, spec_hash
@@ -13,6 +12,9 @@ DATASET_FIELDS = ("title", "modality", "license", "license_url", "source_url", "
 # Wording, badges, listing and where a task's items are released (with the DOI once assigned): changing them must
 # not invalidate results.
 PRESENTATIONAL_FIELDS = {"title", "preview", "visibility", "items_release"}
+# Baselines get a versioned digest. The provider was "medbench" before the 2026-11 rename plan, which moved every
+# baseline to "benchtoward"; a stale models.yaml line with the old provider gets a bare digest and fails the tests.
+BASELINE_PROVIDERS = ("benchtoward",)
 MODEL_FIELDS = ("name", "type", "provider", "provider_model_id", "price_in_usd_per_m", "price_out_usd_per_m",
                "price_usd_per_audio_min", "notes", "max_tokens", "reference", "developer")
 
@@ -45,54 +47,77 @@ def task_spec_files(registry_dir: Path) -> dict[tuple[str, int], Path]:
     return files
 
 
-def load_registry(session: Session, registry_dir: Path) -> None:
+def load_registry(session: Session, registry_dir: Path, *, commit: bool = True):
+    """Upsert datasets, models and tasks from the registry and apply its rename plans (benchtoward.rename), in one
+    transaction. With commit=False nothing is committed and no backup is taken, so a dry run can roll back. Returns
+    the rename report. Any failure rolls the session back and removes the backup this call took (the database is
+    unchanged, and a refusing startup in a restart loop must not fill the disk)."""
+    from benchtoward.rename import apply_renames, backup_before_moves, check_forward, load_plans
+
     registry_dir = Path(registry_dir)
+    backup = None
+    try:
+        plans = load_plans(registry_dir)
+        check_forward(session, plans)
+        # before the first write, so the copy is the state as committed; removed again if the load fails
+        backup = backup_before_moves(session, plans) if commit else None
 
-    for d in yaml.safe_load((registry_dir / "datasets.yaml").read_text(encoding="utf-8")):
-        values = {"slug": d["slug"], **{f: d.get(f) for f in DATASET_FIELDS}}
-        values["version"] = str(values["version"])
-        values["snuh_confirmed"] = True  # registry datasets are SNUH patient data by the maintainers' choice
-        _upsert(session, Dataset, d["slug"], values)
+        for d in yaml.safe_load((registry_dir / "datasets.yaml").read_text(encoding="utf-8")):
+            values = {"slug": d["slug"], **{f: d.get(f) for f in DATASET_FIELDS}}
+            values["version"] = str(values["version"])
+            values["snuh_confirmed"] = True  # registry datasets are SNUH patient data by the maintainers' choice
+            _upsert(session, Dataset, d["slug"], values)
 
-    models = yaml.safe_load((registry_dir / "models.yaml").read_text(encoding="utf-8"))
-    for m in models:
-        values = {"slug": m["slug"], **{f: m.get(f) for f in MODEL_FIELDS}}
-        values["digest"] = m.get("digest") or (f"{m['slug']}:v0" if m["provider"] == "medbench" else m["slug"])
-        values["enabled"] = m.get("enabled", True)
-        _upsert(session, Model, m["slug"], values)
+        models = yaml.safe_load((registry_dir / "models.yaml").read_text(encoding="utf-8"))
+        for m in models:
+            values = {"slug": m["slug"], **{f: m.get(f) for f in MODEL_FIELDS}}
+            values["digest"] = m.get("digest") or (f"{m['slug']}:v0" if m["provider"] in BASELINE_PROVIDERS
+                                                   else m["slug"])
+            values["enabled"] = m.get("enabled", True)
+            _upsert(session, Model, m["slug"], values)
 
-    session.flush()
-    for path in sorted((registry_dir / "tasks").glob("*.yaml")):
-        spec = yaml.safe_load(path.read_text(encoding="utf-8"))
-        values = {
-            "slug": spec["slug"],
-            "version": int(spec["version"]),
-            "dataset_slug": spec["dataset"],
-            "title": spec["title"],
-            "kind": spec["kind"],
-            "primary_metric": spec["primary_metric"],
-            "spec_json": canonical_json(spec),
-            "spec_hash": spec_hash({k: v for k, v in spec.items() if k not in PRESENTATIONAL_FIELDS}),
-            "preview": bool(spec.get("preview", False)),
-            "made_by": spec.get("made_by"),
-            "source_paper": spec.get("source_paper"),
-        }
-        row = session.query(Task).filter_by(slug=values["slug"], version=values["version"]).one_or_none()
-        if "visibility" in spec:  # otherwise keep the stored value, so a task hidden on /admin stays hidden
-            values["visibility"] = spec["visibility"]
-        if row is None:
-            session.add(Task(**values))
-        else:
-            for field, value in values.items():
-                setattr(row, field, value)
+        session.flush()
+        report = apply_renames(session, registry_dir, plans, models)
+        report.backup = backup
+        for path in sorted((registry_dir / "tasks").glob("*.yaml")):
+            spec = yaml.safe_load(path.read_text(encoding="utf-8"))
+            values = {
+                "slug": spec["slug"],
+                "version": int(spec["version"]),
+                "dataset_slug": spec["dataset"],
+                "title": spec["title"],
+                "kind": spec["kind"],
+                "primary_metric": spec["primary_metric"],
+                "spec_json": canonical_json(spec),
+                "spec_hash": spec_hash({k: v for k, v in spec.items() if k not in PRESENTATIONAL_FIELDS}),
+                "preview": bool(spec.get("preview", False)),
+                "made_by": spec.get("made_by"),
+                "source_paper": spec.get("source_paper"),
+            }
+            row = session.query(Task).filter_by(slug=values["slug"], version=values["version"]).one_or_none()
+            if "visibility" in spec:  # otherwise keep the stored value, so a task hidden on /admin stays hidden
+                values["visibility"] = spec["visibility"]
+            if row is None:
+                session.add(Task(**values))
+            else:
+                for field, value in values.items():
+                    setattr(row, field, value)
 
-    session.flush()
-    _apply_aliases(session, models)
-    session.commit()
+        session.flush()
+        _apply_aliases(session, models)
+        if commit:
+            session.commit()
+        return report
+    except BaseException:
+        session.rollback()
+        if backup is not None:
+            backup.unlink(missing_ok=True)
+        raise
 
 
 def _apply_aliases(session: Session, models: list[dict]) -> None:
-    """Move runs stored under an earlier slug to the current one, recompute their run keys, drop the old model."""
+    """Move runs stored under an earlier slug to the current one, recompute their run keys from each run's own spec
+    hash, drop the old model."""
     for m in models:
         for alias in m.get("aliases") or []:
             old = session.get(Model, alias)
@@ -100,9 +125,10 @@ def _apply_aliases(session: Session, models: list[dict]) -> None:
                 continue
             new = session.get(Model, m["slug"])
             for run in session.query(Run).filter_by(model_slug=alias):
-                task = session.get(Task, run.task_id)
+                # the run's own spec hash: a stale run keeps it, so its key stays distinct from the current run's
                 run.model_slug = new.slug
-                run.run_key = run_key(new.digest, task.spec_hash, run.harness_version, json.loads(run.config_json or "{}"))
+                run.run_key = run_key(new.digest, run.task_spec_hash, run.harness_version,
+                                      json.loads(run.config_json or "{}"))
             session.flush()
             session.delete(old)
             session.flush()

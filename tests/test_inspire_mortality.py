@@ -274,7 +274,7 @@ def test_run_inspire_baselines_records_three_runs(tmp_session, tmp_path):
     df = _instances(np.random.default_rng(2))
     runs = run_inspire_baselines(tmp_session, resolve_task(tmp_session, "inspire-mortality"), df, data_dir=tmp_path,
                                  n_boot=50)
-    assert [r.model_slug for r in runs] == ["medbench/inspire-asa", "medbench/inspire-logreg", "medbench/inspire-xgb"]
+    assert [r.model_slug for r in runs] == ["benchtoward/inspire-asa", "benchtoward/inspire-logreg", "benchtoward/inspire-xgb"]
     for r in runs:
         metrics = json.loads(r.metrics_json)
         assert set(metrics) == {"auroc", "auprc", "n", "n_groups", "prevalence"}
@@ -323,8 +323,8 @@ def test_registry_has_the_inspire_dataset_task_and_baselines(tmp_session):
     task = resolve_task(tmp_session, "inspire-mortality")
     assert (task.version, task.dataset_slug, task.kind, task.primary_metric, task.preview) == (0, "inspire", "binary",
                                                                                                "auroc", True)
-    for slug in ("medbench/inspire-asa", "medbench/inspire-logreg", "medbench/inspire-xgb"):
+    for slug in ("benchtoward/inspire-asa", "benchtoward/inspire-logreg", "benchtoward/inspire-xgb"):
         model = tmp_session.get(Model, slug)
-        assert (model.type, model.provider, model.developer) == ("baseline", "medbench", "medbench.kr")
+        assert (model.type, model.provider, model.developer) == ("baseline", "benchtoward", "BenchToward")
     planned = yaml.safe_load((REGISTRY_DIR / "planned.yaml").read_text(encoding="utf-8"))
     assert not any("INSPIRE" in p["dataset"] for p in planned)

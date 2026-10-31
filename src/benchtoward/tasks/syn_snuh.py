@@ -33,7 +33,7 @@ def sha256(path: Path) -> str:
 def fetch(data_dir: Path, client) -> Path:
     """Download `synthetic_snuh.duckdb` (open access) from KHDP with `client` (a KhdpClient) into
     data/datasets/syn-snuh/1.0.0/, unless a copy with the expected SHA-256 is already there. KHDP publishes no
-    checksum for this release, so the SHA-256 is medbench's, measured on the downloaded file; a file that differs is
+    checksum for this release, so the SHA-256 is BenchToward's, measured on the downloaded file; a file that differs is
     removed and refused."""
     dest = db_path(data_dir)
     if dest.exists() and sha256(dest) == SHA256:

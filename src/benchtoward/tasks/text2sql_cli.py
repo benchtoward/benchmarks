@@ -2,7 +2,7 @@
 the frontier-model jobs that wrote, reviewed, fixed and voted on them (hard-generate, hard-review, llm-review,
 llm-fix, llm-decide, send-back, spend), and the KHDP release of the frozen items (khdp-package).
 
-None of these commands writes to the medbench database: dry-run results and job caches stay in files under
+None of these commands writes to the BenchToward database: dry-run results and job caches stay in files under
 <data_dir>/drafts/. The frozen task synthetic-snuh-text2sql@0 runs through `benchtoward eval-text2sql`
 (text2sql_task_cli.py). The frontier models are served by the route that registry/providers.yaml marks
 `frontier: true` (`frontier_route`).
@@ -646,7 +646,7 @@ def dry_run_cmd(model: str | None = typer.Option(None, help="registry model slug
                 max_tokens: int | None = typer.Option(None, help="output limit per answer (default: the registry's); "
                                                                  "for diagnostic runs only"),
                 out: Path | None = typer.Option(None, help="output directory (default: <data_dir>/drafts/...)")) -> None:
-    """Score a model's SQL against the draft questions. Results go to files only, never to the medbench database."""
+    """Score a model's SQL against the draft questions. Results go to files only, never to the BenchToward database."""
     from benchtoward.evaluate import max_tokens_for
     from benchtoward.tasks.text2sql import LANGS, normalize_prediction, prompt_spec, run_dry_run, score_predictions
 
@@ -712,7 +712,7 @@ def dry_run_cmd(model: str | None = typer.Option(None, help="registry model slug
 @text2sql_app.command("khdp-package")
 def khdp_package_cmd(out: Path | None = typer.Option(None, help="release folder (default: <data_dir>/khdp/"
                                                                 "synthetic-snuh-text2sql-1.0.0)"),
-                     code_commit: str | None = typer.Option(None, help="the commit of github.com/medbench-kr/"
+                     code_commit: str | None = typer.Option(None, help="the commit of github.com/benchtoward/"
                                                                        "benchmarks that holds the evaluation code"),
                      force: bool = typer.Option(False, help="replace an earlier build in the folder")) -> None:
     """Build the KHDP dataset of the frozen items of both tiers (synthetic-snuh-text2sql 1.0.0) with the prompts,

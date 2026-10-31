@@ -1,8 +1,8 @@
 """The Synthetic-SNUH Text-to-SQL items as a KHDP dataset: synthetic-snuh-text2sql 1.0.0 (owner, 2026-10-30).
 
 The owner decided that the items of both tiers (questions and reference SQL) are published on KHDP as a dataset
-built by medbench, submitted by the maintainers (SOP: KHDP datasets), while the code that wrote, reviewed and scores
-them is public in github.com/medbench-kr/benchmarks. `build_release` turns the frozen question files that the task
+built by BenchToward, submitted by the maintainers (SOP: KHDP datasets), while the code that wrote, reviewed and scores
+them is public in github.com/benchtoward/benchmarks. `build_release` turns the frozen question files that the task
 spec pins into that dataset:
 
 - items/<tier>.yaml: the kept items of a tier with the fields that fix them and their scoring (and, on the hard tier,
@@ -23,6 +23,7 @@ from pathlib import Path
 
 import yaml
 
+from benchtoward.config import site_url
 from benchtoward.tasks.text2sql import LANGS, PromptSpec, Question, render_messages
 from benchtoward.tasks.text2sql_task import (TASK_REF, Tier, check_schemas, items_sha256, load_tiers, prompt_sha256,
                                           schema_sha256)
@@ -32,7 +33,7 @@ RELEASE_DIR = f"{CODE}-{VERSION}"  # under <data_dir>/khdp/ (git-ignored)
 TITLE = "Synthetic-SNUH Text-to-SQL: Korean and English questions with reference SQL over OMOP CDM"
 LICENCE = "CC BY-NC 4.0"
 LICENCE_URL = "https://creativecommons.org/licenses/by-nc/4.0/"
-PUBLIC_CODE = "https://github.com/medbench-kr/benchmarks"
+PUBLIC_CODE = "https://github.com/benchtoward/benchmarks"  # equals public_export.PUBLIC_REPO (tested)
 PENDING = "the commit is added once the code is exported"
 SOURCE = {
     "dataset": "synthetic-snuh@4.0.0",
@@ -103,7 +104,7 @@ def build_release(spec: dict, registry_root: Path, con, out: Path, *, code_commi
     shutil.rmtree(work, ignore_errors=True)
     (work / "items").mkdir(parents=True)
     meta = {"dataset": CODE, "version": VERSION, "title": TITLE, "licence": LICENCE, "licence_url": LICENCE_URL,
-            "doi": None, "source": SOURCE, "task": TASK_REF, "site": "https://medbench.kr",
+            "doi": None, "source": SOURCE, "task": TASK_REF, "site": site_url(),
             "code": {"repository": PUBLIC_CODE, "commit": code_commit, "licence": "Apache-2.0",
                      "files": list(CODE_FILES)},
             "languages": list(LANGS), "request": {"temperature": spec["request"].get("temperature", 0),
@@ -158,7 +159,7 @@ query, for evaluating Text-to-SQL models. There are {n} questions in two tiers, 
 - a hard tier of {hard['questions']} questions, {hard['unanswerable']} of which the database cannot answer;
 - an easy tier of {easy['questions']} questions.
 
-medbench.kr built the items for its benchmark `{meta['task']}`. They were written for this database; none was copied
+BenchToward built the items for its benchmark `{meta['task']}`. They were written for this database; none was copied
 from another benchmark.
 
 The data behind the questions are synthetic, so the answers say nothing about real SNUH patients.
@@ -188,7 +189,7 @@ Categories: hard tier {_counts(hard['categories'])}; easy tier {_counts(easy['ca
 
 ## How the items were made
 
-- Easy tier: drafted by the medbench agent (Claude) from the data on 2026-10-29.
+- Easy tier: drafted by the BenchToward agent (Claude) from the data on 2026-10-29.
 - Hard tier: written on 2026-10-30 by GPT-6 Astra, Gemini 4 Argon and Claude Opus 5.5. Each category was written in
   batches that rotated over the three models. A writer saw the schema and database note that evaluated models get,
   plus a profile of the concepts in use and of the data's quality problems.
@@ -219,11 +220,11 @@ results are compared:
 Hard tier ({hard['questions']} questions, prompt `{hard['prompt']['id']}`): today is fixed at 2025-12-31, and a model
 answers ABSTAIN when the database cannot answer. The headline is the EHRSQL-2024 reliability score RS(0): +1 for a
 right answer to an answerable question and for an abstention on an unanswerable one, 0 for an abstention on an
-answerable one, and -c for any other answer (c = 0 for RS(0)). The medbench.kr task computes it with the shared task's
+answerable one, and -c for any other answer (c = 0 for RS(0)). The BenchToward task computes it with the shared task's
 own `scoring_utils.py`. Execution accuracy on the answerable questions, RS(5) and RS(N) are reported next to it.
 
 Easy tier ({easy['questions']} questions, prompt `{easy['prompt']['id']}`): execution accuracy. Open models answered
-nearly all of it in medbench's trial runs, so it is reported next to the hard tier and never ranked on its own.
+nearly all of it in BenchToward's trial runs, so it is reported next to the hard tier and never ranked on its own.
 
 Request: temperature {meta['request']['temperature']} and {meta['request']['max_tokens']:,} output tokens, thinking
 included. An answer whose thinking uses the whole limit and leaves no SQL is wrong. The prompt follows Rajkumar et al.
@@ -246,21 +247,21 @@ uv run benchtoward text2sql dry-run --draft items/hard.yaml --predictions predic
 A predictions file has one JSON object per line with `instance_id` (`<id>-ko` or `<id>-en`) and `sql`; on the hard tier
 null, the string `null` or `ABSTAIN` abstains. `--model <slug>` asks a model through an OpenAI-compatible route
 instead (see the repository's README). The items' hash (`items_sha256`, over every item's id, questions, reference
-query and labels) is the one the medbench.kr task pins; a changed item makes a new version.
+query and labels) is the one the BenchToward task pins; a changed item makes a new version.
 
 ## Licence and attribution
 
 {LICENCE} ({LICENCE_URL}), the licence of the source data; non-commercial use only. See LICENSE.txt.
 
 This dataset is built on Synthetic-SNUH v4.0.0 by Hyung-Chul Lee, Seoul National University Hospital ({SOURCE['copyright']};
-{LICENCE}; doi:{SOURCE['doi']}). medbench.kr wrote the questions, reference queries, prompts and metadata. The schema
+{LICENCE}; doi:{SOURCE['doi']}). BenchToward wrote the questions, reference queries, prompts and metadata. The schema
 files hold 3 example rows of each non-empty table and counts of concepts from that release, unchanged. The questions
 and queries name its concepts, which come from OHDSI Athena (SNOMED CT, RxNorm, LOINC, ATC) and keep their own
 licences; the concept table is not included.
 
 ## Citation
 
-- medbench.kr. Synthetic-SNUH Text-to-SQL {meta['version']}: Korean and English questions with reference SQL over
+- BenchToward. Synthetic-SNUH Text-to-SQL {meta['version']}: Korean and English questions with reference SQL over
   Synthetic-SNUH 4.0.0. KHDP. 2026. (DOI assigned by KHDP)
 - {SOURCE['citation']}
 
@@ -279,9 +280,9 @@ Scoring and design follow:
 ## Limitations
 
 - The data are synthetic and meant for building queries and agents, not for clinical inference.
-- GPT-6 Astra, Gemini 4 Argon and Claude Opus 5.5 wrote the hard items and reviewed both tiers, and the medbench agent
-  (Claude) drafted the easy items. No clinician reviewed them, and a question may allow a reading the reviewers missed.
-  These models have seen the items and their answers, so their scores are not comparable with other models'.
+- GPT-6 Astra, Gemini 4 Argon and Claude Opus 5.5 wrote the hard items and reviewed both tiers, and the BenchToward
+  agent (Claude) drafted the easy items. No clinician reviewed them, and a question may allow a reading the reviewers
+  missed. These models have seen the items and their answers, so their scores are not comparable with other models'.
 - Each item has one reference query. An answer is judged by its result, so an equivalent query counts as right; one
   that returns extra or missing columns does not.
 - The unanswerable questions ask only for data that has no place in this database (tables present but empty, columns
@@ -298,7 +299,7 @@ def licence_text() -> str:
 Licence: Creative Commons Attribution-NonCommercial 4.0 International ({LICENCE})
 {LICENCE_URL} (legal code: {LICENCE_URL}legalcode)
 
-The questions, reference SQL queries, prompts and metadata were written by medbench.kr (2026) for Synthetic-SNUH
+The questions, reference SQL queries, prompts and metadata were written by BenchToward (2026) for Synthetic-SNUH
 v4.0.0.
 
 Source data: Synthetic-SNUH v4.0.0 by Hyung-Chul Lee, Seoul National University Hospital.

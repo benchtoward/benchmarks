@@ -53,7 +53,7 @@ class KhdpSubmission:
 
 
 def submission_label(status: str) -> str:
-    """KHDP submission status as shown on medbench.kr."""
+    """KHDP submission status as shown on BenchToward."""
     s = (status or "").lower()
     if "review" in s:
         return "under review"

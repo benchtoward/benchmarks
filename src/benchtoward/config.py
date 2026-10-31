@@ -20,7 +20,9 @@ class Settings:
     daily_goal: int = 100  # human visitors per day shown as the target on /admin
     analytics_secret: str | None = None  # salt for visitor hashes; generated into data_dir when unset
     agent_token: str | None = None  # shared secret for POST /v1/agent/events (paper agent -> site)
-    site_url: str = "https://medbench.kr"
+    # The site's public origin. Every absolute link the code writes (pages, sitemap, robots, BibTeX, API URLs,
+    # AGENTS.md, exports) comes from here. BENCHTOWARD_SITE_URL, or the old MEDBENCH_SITE_URL, in a .env overrides it.
+    site_url: str = "https://benchtoward.com"
     llm_wiki_dir: Path | None = None  # paper archive the paper agent reads (LLM_WIKI_DIR)
     khdp_token: str | None = None  # KHDP Gateway personal access token; sent only to api.khdp.net
     allow_shared_files: bool = False  # allow third-party code on a compute account that also holds other data
@@ -39,11 +41,16 @@ def get_settings() -> Settings:
         daily_goal=int(envnames.getenv("DAILY_GOAL", env=env) or defaults.daily_goal),
         analytics_secret=envnames.getenv("ANALYTICS_SECRET", env=env) or None,
         agent_token=envnames.getenv("AGENT_TOKEN", env=env) or None,
-        site_url=(envnames.getenv("SITE_URL", env=env) or defaults.site_url).rstrip("/"),
+        site_url=site_url(env),
         llm_wiki_dir=Path(env["LLM_WIKI_DIR"]).expanduser() if env.get("LLM_WIKI_DIR") else None,
         khdp_token=env.get("KHDP_TOKEN") or None,
         allow_shared_files=(envnames.getenv("ALLOW_SHARED_FILES", env=env) or "") in ("1", "true", "yes"),
     )
+
+
+def site_url(env=None) -> str:
+    """Settings.site_url without the rest of the settings (no registry files read), without a trailing slash."""
+    return (envnames.getenv("SITE_URL", env=env) or Settings.site_url).rstrip("/")
 
 
 def provider_routes() -> dict[str, dict]:

@@ -1,4 +1,4 @@
-"""medbench commands for INSPIRE: `fetch inspire`, `build inspire-mortality`, `baseline inspire-mortality`.
+"""benchtoward commands for INSPIRE: `fetch inspire`, `build inspire-mortality`, `baseline inspire-mortality`.
 
 Kept out of cli.py so INSPIRE work merges without touching the other commands; cli.py only calls `register`.
 """

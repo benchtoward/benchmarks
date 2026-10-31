@@ -1,4 +1,4 @@
-"""medbench commands for the K-OR speech task: fetch k-or-speech, eval-asr, eval-asr-all."""
+"""benchtoward commands for the K-OR speech task: fetch k-or-speech, eval-asr, eval-asr-all."""
 import asyncio
 
 import typer

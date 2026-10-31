@@ -12,10 +12,10 @@ version's page says why it was replaced.
 
 ## Code
 
-- Pull requests are welcome; the maintainers publish this repository from the code that runs medbench.kr, so an
+- Pull requests are welcome; the maintainers publish this repository from the code that runs BenchToward, so an
   accepted change is applied there and appears here with the next export.
 - Tests come with every change (`uv run pytest -q`); tests do not use the network.
-- Do not copy code from projects without a license that allows it. Several protocols medbench.kr adopts are
+- Do not copy code from projects without a license that allows it. Several protocols BenchToward adopts are
   published without a license; benchmarks reimplement them from their description and pin the original commit.
   Code under a compatible license (MIT, BSD, Apache-2.0) may be vendored under `third_party/<name>/` with its
   license file and a note of what changed.

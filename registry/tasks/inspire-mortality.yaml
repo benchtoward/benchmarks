@@ -52,9 +52,9 @@ metrics:
   auprc: average_precision   # sklearn average_precision_score
   bootstrap: {n: 1000, by: subject_id}
 baselines:
-  medbench/inspire-asa: "ASA class as the score, no training"
-  medbench/inspire-logreg: "SimpleImputer() (mean) then LogisticRegression(max_iter=5000) on inputs.script"
-  medbench/inspire-xgb: >-
+  benchtoward/inspire-asa: "ASA class as the score, no training"
+  benchtoward/inspire-logreg: "SimpleImputer() (mean) then LogisticRegression(max_iter=5000) on inputs.script"
+  benchtoward/inspire-xgb: >-
     XGBClassifier(max_depth=4, n_estimators=50, subsample=0.8, colsample_bytree=0.8, eval_metric='logloss') on
     inputs.script, missing values left to XGBoost
 deviations:

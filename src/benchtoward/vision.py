@@ -21,7 +21,7 @@ MIME = {".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".webp
 # for 0 (no paid call), never a higher one (image_check_cap_usd), and the spend counts every earlier paid run.
 CHECK_CAP_USD = 5.0
 IMAGE_CHECK_CAP_USD = 20.0
-# Upper bound on the prompt tokens one image costs on the routes medbench uses (they resize large images first:
+# Upper bound on the prompt tokens one image costs on the routes BenchToward uses (they resize large images first:
 # OpenAI high detail at most 765 + 170 per 512 px tile of a 2048 x 768 fit, Anthropic about 1,600 at 1568 px,
 # Gemini 258 per 768 px tile); 8,000 leaves room for routes that tile finer.
 IMAGE_TOKENS_MAX = 8000

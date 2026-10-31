@@ -106,7 +106,7 @@ def test_run_ioh_baselines_records_two_runs(tmp_session, tmp_path):
     df["instance_id"] = [f"ioh-{i}-0" for i in range(400)]
     df["split"] = np.where(df["subjectid"] < 140, "train", np.where(df["subjectid"] < 160, "validation", "test"))
     runs = run_ioh_baselines(tmp_session, resolve_task(tmp_session, "vitaldb-ioh"), df, data_dir=tmp_path, n_boot=50)
-    assert sorted(r.model_slug for r in runs) == ["medbench/ioh-hgb-summary", "medbench/ioh-logreg-lastmap"]
+    assert sorted(r.model_slug for r in runs) == ["benchtoward/ioh-hgb-summary", "benchtoward/ioh-logreg-lastmap"]
     for r in runs:
         metrics = json.loads(r.metrics_json)
         assert metrics["auroc"]["value"] > 0.9 and metrics["n"] == 80 and metrics["n_groups"] == 40

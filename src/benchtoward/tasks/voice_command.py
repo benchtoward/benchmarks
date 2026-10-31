@@ -411,7 +411,7 @@ def compare(rows_a: list[dict], rows_b: list[dict], metric: str = "exact", n_boo
             "only_a": only_a, "only_b": only_b, "mcnemar_p": mcnemar_exact(only_a, only_b)}
 
 
-# --- medbench.kr metrics ---------------------------------------------------------------------------------------------
+# --- BenchToward metrics ---------------------------------------------------------------------------------------------
 
 def clopper_pearson(x: float, n: int, level: float = 0.95) -> tuple[float, float]:
     """Exact binomial interval for x successes in n (x may be fractional: a share of n whole groups)."""

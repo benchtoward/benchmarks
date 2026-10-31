@@ -67,9 +67,9 @@ def test_eval_baseline_and_compare_on_the_release(env, monkeypatch):
 
     result = CliRunner().invoke(cli.app, ["baseline", "kor-surgical-robot-voice-command"])
     assert result.exit_code == 0, result.output
-    assert "medbench/prior" in result.output and "[done]" in result.output
+    assert "benchtoward/prior" in result.output and "[done]" in result.output
 
-    result = CliRunner().invoke(cli.app, ["compare-voice-command", "--a", "medbench/prior",
+    result = CliRunner().invoke(cli.app, ["compare-voice-command", "--a", "benchtoward/prior",
                                           "--b", "alibaba/qwen3.8-flash-next-180b-a6b"])
     assert result.exit_code == 0, result.output
     line = next(l for l in result.output.splitlines() if l.startswith("clean"))
@@ -113,7 +113,7 @@ def test_compare_uses_the_full_run_not_a_later_subset_or_smoke_run(env, monkeypa
     for extra in (["--subset", "overheard"], ["--limit", "3"]):
         assert CliRunner().invoke(cli.app, ["eval-voice-command", "--model", slug, *extra]).exit_code == 0
     assert CliRunner().invoke(cli.app, ["baseline", "kor-surgical-robot-voice-command"]).exit_code == 0
-    result = CliRunner().invoke(cli.app, ["compare-voice-command", "--a", "medbench/prior", "--b", slug])
+    result = CliRunner().invoke(cli.app, ["compare-voice-command", "--a", "benchtoward/prior", "--b", slug])
     assert result.exit_code == 0, result.output
     line = next(l for l in result.output.splitlines() if l.startswith("overheard"))
     assert "100.0 -> 100.0" in line  # the full run: the oracle never acts on overheard talk

@@ -4,8 +4,8 @@ The items, prompts and result comparison of the frozen task synthetic-snuh-text2
 (registry/tasks/synthetic-snuh-text2sql.yaml; its runner and metrics are in text2sql_task.py). The question files
 are in registry/drafts/, frozen and pinned by sha256 in the task spec; they are released on KHDP as the dataset
 synthetic-snuh-text2sql (text2sql_release.py), not with the code.
-`run_dry_run` asks a model outside the medbench database and caches its answers in a folder, which the task's runner
-can reuse; nothing here writes to the medbench database.
+`run_dry_run` asks a model outside the BenchToward database and caches its answers in a folder, which the task's runner
+can reuse; nothing here writes to the BenchToward database.
 
 Scoring is execution accuracy: the model's SQL and the reference SQL run on the same read-only database and their
 results are compared under the rules in `results_match` and `canonical_value` (adapted from the Spider test-suite
@@ -611,7 +611,7 @@ def score_predictions(con: duckdb.DuckDBPyConnection, items: list[Question], pre
     return rows, summary
 
 
-# ---- dry run with an LLM (no medbench database involved) ----
+# ---- dry run with an LLM (no BenchToward database involved) ----
 
 def _load_responses(path: Path) -> dict[str, dict]:
     latest = {}

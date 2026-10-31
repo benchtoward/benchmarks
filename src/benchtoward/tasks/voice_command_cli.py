@@ -1,7 +1,7 @@
-"""CLI commands (`medbench ...`) for kor-surgical-robot-voice-command@0: fetch, baseline, eval-voice-command, compare-voice-command.
+"""CLI commands (`benchtoward ...`) for kor-surgical-robot-voice-command@0: fetch, baseline, eval-voice-command, compare-voice-command.
 
     benchtoward fetch kor-surgical-robot-voice-command        # KHDP_TOKEN; every file SHA-256 checked
-    benchtoward baseline kor-surgical-robot-voice-command     # medbench/prior (input-blind)
+    benchtoward baseline kor-surgical-robot-voice-command     # benchtoward/prior (input-blind)
     benchtoward eval-voice-command --model <slug>             # all four subsets, run once, resumable
     benchtoward compare-voice-command --a <slug> --b <slug>   # paired difference per subset (cluster bootstrap)
 
@@ -66,7 +66,7 @@ def _subsets(subset: list[str] | None) -> list[str]:
 
 
 def baseline_voice_command(task: str = typer.Option(DEFAULT_TASK, help="task, slug@version")) -> None:
-    """Record medbench/prior: the most frequent training output (no action) for every item."""
+    """Record benchtoward/prior: the most frequent training output (no action) for every item."""
     from benchtoward.cli import _summary, open_session
     from benchtoward.evaluate import record_baseline_run
     from benchtoward.registry import resolve_task
@@ -79,7 +79,7 @@ def baseline_voice_command(task: str = typer.Option(DEFAULT_TASK, help="task, sl
     config = {"output": output, "rule": "most frequent (response, actions) of train/train_v0.2.jsonl",
               "subsets": list(SUBSETS)}
     with open_session() as session:
-        run = record_baseline_run(session, session.get(Model, "medbench/prior"), resolve_task(session, task, include_hidden=True), rows,
+        run = record_baseline_run(session, session.get(Model, "benchtoward/prior"), resolve_task(session, task, include_hidden=True), rows,
                                   metrics, config, data_dir=settings.data_dir)
         typer.echo(_summary(run))
 

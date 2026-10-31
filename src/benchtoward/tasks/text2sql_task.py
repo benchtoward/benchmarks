@@ -13,10 +13,10 @@ the same prompt from the same model, provided that dry run was asked under the s
 whose thinking used the whole limit and left no SQL is a wrong answer and, in the SOP format check, a model failure
 (`cut_off`); only text with neither SQL nor ABSTAIN is a format failure.
 
-Scoring: `text2sql.score_predictions` for each tier (DuckDB execution and medbench's result comparison); RS(c) through
+Scoring: `text2sql.score_predictions` for each tier (DuckDB execution and the task's result comparison); RS(c) through
 the EHRSQL-2024 authors' `scoring_utils.py` (third_party/ehrsql-2024, unchanged); 95% intervals from a bootstrap over
 questions, the Korean and English versions of a question resampled together. The priors are input-blind rules:
-abstain on every item (`medbench/prior`, EHRSQL-2024's simplest baseline) and `SELECT 0` for every item, which came
+abstain on every item (`benchtoward/prior`, EHRSQL-2024's simplest baseline) and `SELECT 0` for every item, which came
 in with the frozen spec after the dry runs were scored and the vote was taken (it was not voted on).
 """
 import asyncio
@@ -46,8 +46,8 @@ N_BOOT = 2000
 SEED = 0
 CI_METHOD = ("95% percentile interval of a bootstrap over questions (the Korean and English versions of a question "
              "resampled together), 2,000 resamples, seed 0")
-PRIOR = "medbench/prior"
-CONSTANT = "medbench/text2sql-constant-query"
+PRIOR = "benchtoward/prior"
+CONSTANT = "benchtoward/text2sql-constant-query"
 CONSTANT_QUERY = "SELECT 0"
 PRIOR_RULES = {
     "abstain": (PRIOR, "abstain on every item of both tiers (the easy tier has no abstention: no answer there)"),
@@ -500,7 +500,7 @@ def finish_text2sql_run(session, model, run, insts: list[Instance], tiers: list[
 
 
 def record_priors(session, task, tiers: list[Tier], con, *, data_dir: Path | None = None) -> list:
-    """Record both fixed-rule priors as medbench baseline runs (always abstain; SELECT 0)."""
+    """Record both fixed-rule priors as BenchToward baseline runs (always abstain; SELECT 0)."""
     from benchtoward.db import Model
     from benchtoward.evaluate import record_baseline_run
 

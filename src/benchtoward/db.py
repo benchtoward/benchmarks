@@ -51,7 +51,7 @@ class Model(Base):
     slug: Mapped[str] = mapped_column(String, primary_key=True)
     name: Mapped[str] = mapped_column(String)
     type: Mapped[str] = mapped_column(String)  # llm | asr | research | baseline
-    provider: Mapped[str] = mapped_column(String)  # serving route (registry/providers.yaml), or medbench for baselines
+    provider: Mapped[str] = mapped_column(String)  # serving route (registry/providers.yaml); baselines: benchtoward
     provider_model_id: Mapped[str | None] = mapped_column(String, nullable=True)
     digest: Mapped[str] = mapped_column(String)
     price_in_usd_per_m: Mapped[float | None] = mapped_column(Float, nullable=True)
@@ -270,13 +270,30 @@ class PageView(Base):
     status: Mapped[int | None] = mapped_column(Integer, nullable=True)
 
 
+class RenameProof(Base):
+    """What a committed rename plan (registry/renames/, benchtoward.rename) did to this database. One row per task pair
+    whose stored spec differed from the registry spec only by the plan's text rules, so a run that arrives on
+    `from_hash` later is moved without a second proof (the old spec text is gone by then). One row with task_ref "*"
+    marks that the plan was applied here at all, so code without that plan refuses the database."""
+    __tablename__ = "rename_proofs"
+    __table_args__ = (UniqueConstraint("plan_id", "task_ref", "from_hash"),)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    plan_id: Mapped[str] = mapped_column(String, index=True)
+    task_ref: Mapped[str] = mapped_column(String)  # slug@version, or "*" for the plan marker
+    from_hash: Mapped[str] = mapped_column(String)
+    to_hash: Mapped[str] = mapped_column(String)
+    proved_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
 def make_engine(db_url: str) -> Engine:
     if db_url in ("sqlite://", "sqlite:///:memory:"):
         return create_engine(db_url, connect_args={"check_same_thread": False}, poolclass=StaticPool)
     if db_url.startswith("sqlite:///"):
         from pathlib import Path
 
-        Path(db_url.removeprefix("sqlite:///")).parent.mkdir(parents=True, exist_ok=True)
+        path = db_url.removeprefix("sqlite:///")
+        if not path.startswith("file:"):  # a URI (sqlite:///file:...?uri=true) is no folder path
+            Path(path).parent.mkdir(parents=True, exist_ok=True)
         return create_engine(db_url, connect_args={"check_same_thread": False, "timeout": 60})
     return create_engine(db_url)
 

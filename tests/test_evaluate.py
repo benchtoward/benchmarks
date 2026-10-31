@@ -129,7 +129,7 @@ def test_constant_answer_baseline_recorded_once(ctx):
     rows, metrics = constant_answer_baseline(items, "B")
     assert metrics["accuracy"]["value"] == 0.4 and metrics["parse_rate"] == 1.0
     assert rows[0] == {"instance_id": "cqa-0", "prediction": "B", "label": "B", "correct": True}
-    model = session.get(Model, "medbench/majority-b")
+    model = session.get(Model, "benchtoward/majority-b")
     first = record_baseline_run(session, model, task, rows, metrics, {"letter": "B"}, data_dir=data_dir)
     second = record_baseline_run(session, model, task, rows, metrics, {"letter": "B"}, data_dir=data_dir)
     assert first.id == second.id and first.status == "done" and first.n_items == 5
@@ -173,12 +173,33 @@ def test_rekey_restores_deduplication(ctx):
 
     session = ctx[0]
     first = run(ctx, FakeClient(answers()))
-    first.run_key, first.task_spec_hash = "legacy-key", None
+    first.run_key = "legacy-key"
     session.commit()
     assert rekey_runs(session) == 1
     client = FakeClient(answers())
     assert run(ctx, client).id == first.id and client.calls == 0
     assert session.get(Run, first.id).task_spec_hash == ctx[2].spec_hash
+
+
+def test_rekey_never_promotes_stale_runs(ctx):
+    """A run on an older spec keeps its hash (it stays unlisted) and gets a key of its own; the old rekey moved every
+    run to the current hash, which collided with the current run (IntegrityError) or listed the stale one."""
+    from benchtoward.evaluate import rekey_runs
+    from benchtoward.runkey import run_key
+
+    session, model, task, _ = ctx
+    current = run(ctx, FakeClient(answers()))
+    stale = Run(id="stale0000001", run_key="legacy", model_slug=current.model_slug, task_id=task.id,
+                harness_version=current.harness_version, config_json=current.config_json, tier=current.tier,
+                status="done", task_spec_hash="0" * 64)
+    session.add(stale)
+    session.commit()
+    assert rekey_runs(session) == 1
+    session.expire_all()
+    stale = session.get(Run, "stale0000001")
+    assert stale.task_spec_hash == "0" * 64 != task.spec_hash  # listed runs need the task's current hash
+    assert stale.run_key == run_key(model.digest, "0" * 64, stale.harness_version, json.loads(stale.config_json))
+    assert session.get(Run, current.id).run_key != stale.run_key
 
 
 def test_import_runs_merges_finished_runs_without_touching_other_tables(ctx, tmp_path):

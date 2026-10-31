@@ -285,8 +285,8 @@ def test_registry_has_the_task_and_baseline_and_no_coming_soon_card(tmp_session)
     row = resolve_task(tmp_session, "vitaldb-arrhythmia-abnormal")
     assert (row.version, row.kind, row.primary_metric, row.dataset_slug, row.preview) == \
         (0, "binary", "auroc", "vitaldb-arrhythmia", True)
-    model = tmp_session.get(Model, "medbench/arrhythmia-hgb-rr")
-    assert (model.type, model.provider, model.developer) == ("baseline", "medbench", "medbench.kr")
+    model = tmp_session.get(Model, "benchtoward/arrhythmia-hgb-rr")
+    assert (model.type, model.provider, model.developer) == ("baseline", "benchtoward", "BenchToward")
     planned = yaml.safe_load((REGISTRY_DIR / "planned.yaml").read_text(encoding="utf-8"))
     assert not any("arrhythmia" in p["title"].lower() for p in planned)
 

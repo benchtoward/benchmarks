@@ -1,5 +1,5 @@
-# Models evaluated on medbench.kr. Baselines (provider: medbench) are built here. Served models use the
-# route `api`: point it at an OpenAI-compatible endpoint in registry/providers.yaml
+# Models evaluated on BenchToward. Baselines (provider: benchtoward) are built here. Served models use
+# the route `api`: point it at an OpenAI-compatible endpoint in registry/providers.yaml
 # (api: {base_url: ..., key_env: ...}) to evaluate a model yourself.
 - slug: alibaba/qwen3.8-flash-next-180b-a6b
   name: Qwen3.8 Flash Next 180B-A6B
@@ -82,59 +82,59 @@
   type: llm
   provider: api
   developer: DeepSeek
-- slug: medbench/majority-b
+- slug: benchtoward/majority-b
   name: Majority class (always B)
   type: baseline
-  provider: medbench
-  developer: medbench.kr
+  provider: benchtoward
+  developer: BenchToward
   reference: true
-- slug: medbench/prior
+- slug: benchtoward/prior
   name: Prior (ignores the input)
   type: baseline
-  provider: medbench
-  developer: medbench.kr
+  provider: benchtoward
+  developer: BenchToward
   reference: true
-- slug: medbench/text2sql-constant-query
+- slug: benchtoward/text2sql-constant-query
   name: Constant query (SELECT 0 for every question)
   type: baseline
-  provider: medbench
-  developer: medbench.kr
+  provider: benchtoward
+  developer: BenchToward
   reference: true
-- slug: medbench/ioh-logreg-lastmap
+- slug: benchtoward/ioh-logreg-lastmap
   name: Logistic regression on last-minute MAP
   type: baseline
-  provider: medbench
-  developer: medbench.kr
-- slug: medbench/ioh-hgb-summary
+  provider: benchtoward
+  developer: BenchToward
+- slug: benchtoward/ioh-hgb-summary
   name: Gradient boosting on window summary features
   type: baseline
-  provider: medbench
-  developer: medbench.kr
-- slug: medbench/inspire-asa
+  provider: benchtoward
+  developer: BenchToward
+- slug: benchtoward/inspire-asa
   name: ASA class alone (INSPIRE authors' baseline)
   type: baseline
-  provider: medbench
-  developer: medbench.kr
-- slug: medbench/inspire-logreg
+  provider: benchtoward
+  developer: BenchToward
+- slug: benchtoward/inspire-logreg
   name: Logistic regression, mean imputation (INSPIRE authors' script)
   type: baseline
-  provider: medbench
-  developer: medbench.kr
-- slug: medbench/inspire-xgb
+  provider: benchtoward
+  developer: BenchToward
+- slug: benchtoward/inspire-xgb
   name: XGBoost (INSPIRE authors' script)
   type: baseline
-  provider: medbench
-  developer: medbench.kr
-- slug: medbench/arrhythmia-hgb-rr
+  provider: benchtoward
+  developer: BenchToward
+- slug: benchtoward/arrhythmia-hgb-rr
   name: Gradient boosting on RR-interval features
   type: baseline
-  provider: medbench
-  developer: medbench.kr
-- slug: medbench/arrhythmia-hgb-rr-morph
+  provider: benchtoward
+  developer: BenchToward
+- slug: benchtoward/arrhythmia-hgb-rr-morph
   name: Gradient boosting on RR-interval and beat morphology features
   type: baseline
-  provider: medbench
-  developer: medbench.kr
+  provider: benchtoward
+  developer: BenchToward
 - slug: alibaba/qwen3-asr-1.7b
   name: Qwen3-ASR 1.7B
   type: asr
@@ -150,91 +150,91 @@
   type: asr
   provider: api
   developer: NVIDIA
-- slug: medbench/scope-hrv-lgbm
+- slug: benchtoward/scope-hrv-lgbm
   name: LightGBM on 33 HRV measures (SCOPE authors' training script)
   type: baseline
-  provider: medbench
-  developer: medbench.kr
-- slug: medbench/ioh-map-logreg
+  provider: benchtoward
+  developer: BenchToward
+- slug: benchtoward/ioh-map-logreg
   name: MAP-only logistic regression (Yang et al. 2025 code)
   type: baseline
-  provider: medbench
-  developer: medbench.kr
-- slug: medbench/constant-yes
+  provider: benchtoward
+  developer: BenchToward
+- slug: benchtoward/constant-yes
   name: Constant Yes (ignores the input)
   type: baseline
-  provider: medbench
-  developer: medbench.kr
+  provider: benchtoward
+  developer: BenchToward
   reference: true
-- slug: medbench/random
+- slug: benchtoward/random
   name: Random (Yes with probability 0.5, ignores the input)
   type: baseline
-  provider: medbench
-  developer: medbench.kr
+  provider: benchtoward
+  developer: BenchToward
   reference: true
-- slug: medbench/note-errors-conjunction-lr
+- slug: benchtoward/note-errors-conjunction-lr
   name: Word 1-2 and header-code conjunctions, logistic regression (trained on the train pairs)
   type: baseline
-  provider: medbench
-  developer: medbench.kr
-- slug: medbench/random-letter
+  provider: benchtoward
+  developer: BenchToward
+- slug: benchtoward/random-letter
   name: Random letters A-E (ignores the input, seed 0)
   type: baseline
-  provider: medbench
-  developer: medbench.kr
+  provider: benchtoward
+  developer: BenchToward
   reference: true
-- slug: medbench/lydus-hgb-beat-features
+- slug: benchtoward/lydus-hgb-beat-features
   name: Gradient boosting on median-beat, amplitude and RR features
   type: baseline
-  provider: medbench
-  developer: medbench.kr
-- slug: medbench/lydus-resnet1d
+  provider: benchtoward
+  developer: BenchToward
+- slug: benchtoward/lydus-resnet1d
   name: 1-D ResNet trained on LYDUS (Ribeiro et al. 2020 architecture)
   type: baseline
-  provider: medbench
-  developer: medbench.kr
-- slug: medbench/lydus-ecg-image-resnet18
+  provider: benchtoward
+  developer: BenchToward
+- slug: benchtoward/lydus-ecg-image-resnet18
   name: ResNet-18 on half-size ECG images (fine-tuned from ImageNet)
   type: baseline
-  provider: medbench
-  developer: medbench.kr
-- slug: medbench/lydus-ecg-image-trace
+  provider: benchtoward
+  developer: BenchToward
+- slug: benchtoward/lydus-ecg-image-trace
   name: Classical trace digitiser using the fixed page layout
   type: baseline
-  provider: medbench
-  developer: medbench.kr
-- slug: medbench/inspire-aki-asa
+  provider: benchtoward
+  developer: BenchToward
+- slug: benchtoward/inspire-aki-asa
   name: ASA class / 6 (Do et al. 2026 asa_rule)
   type: baseline
-  provider: medbench
-  developer: medbench.kr
-- slug: medbench/inspire-aki-gs-aki
+  provider: benchtoward
+  developer: BenchToward
+- slug: benchtoward/inspire-aki-gs-aki
   name: Adapted GS-AKI count (Do et al. 2026 gs_aki_rule)
   type: baseline
-  provider: medbench
-  developer: medbench.kr
-- slug: medbench/inspire-aki-logreg
+  provider: benchtoward
+  developer: BenchToward
+- slug: benchtoward/inspire-aki-logreg
   name: Ridge logistic regression (Do et al. 2026 code)
   type: baseline
-  provider: medbench
-  developer: medbench.kr
-- slug: medbench/inspire-aki-xgb
+  provider: benchtoward
+  developer: BenchToward
+- slug: benchtoward/inspire-aki-xgb
   name: Gradient boosted trees (Do et al. 2026 code)
   type: baseline
-  provider: medbench
-  developer: medbench.kr
-- slug: medbench/bis-openeeg-lgbm
+  provider: benchtoward
+  developer: BenchToward
+- slug: benchtoward/bis-openeeg-lgbm
   name: 'openeeg predict_bis: LightGBM on 18 EEG features (VitalDB team''s trained model)'
   type: baseline
-  provider: medbench
-  developer: medbench.kr
-- slug: medbench/bis-openibis
+  provider: benchtoward
+  developer: BenchToward
+- slug: benchtoward/bis-openibis
   name: openeeg port of openibis (Connor 2022), no training
   type: baseline
-  provider: medbench
-  developer: medbench.kr
-- slug: medbench/syn-icu-sofa-hgb
+  provider: benchtoward
+  developer: BenchToward
+- slug: benchtoward/syn-icu-sofa-hgb
   name: Gradient boosting on frame summaries (no SOFA rules)
   type: baseline
-  provider: medbench
-  developer: medbench.kr
+  provider: benchtoward
+  developer: BenchToward

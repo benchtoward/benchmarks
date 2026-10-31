@@ -1,4 +1,4 @@
-"""Two medbench baselines for vitaldb-ioh, trained on the train split."""
+"""Two BenchToward baselines for vitaldb-ioh, trained on the train split."""
 import numpy as np
 import pandas as pd
 from sklearn.ensemble import HistGradientBoostingClassifier
@@ -38,8 +38,8 @@ def fit_predict_hgb(train: pd.DataFrame, test: pd.DataFrame) -> np.ndarray:
 
 
 BASELINES = {
-    "medbench/ioh-logreg-lastmap": fit_predict_logreg_lastmap,
-    "medbench/ioh-hgb-summary": fit_predict_hgb,
+    "benchtoward/ioh-logreg-lastmap": fit_predict_logreg_lastmap,
+    "benchtoward/ioh-hgb-summary": fit_predict_hgb,
 }
 
 

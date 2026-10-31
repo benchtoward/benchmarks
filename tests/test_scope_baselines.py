@@ -88,20 +88,20 @@ def test_run_records_runs_with_a_stay_bootstrap(tmp_session, tmp_path, monkeypat
     from benchtoward.db import ItemResult
     from benchtoward.registry import load_registry, resolve_task
 
-    monkeypatch.setitem(scope_arrest.BASELINES, "medbench/scope-hrv-lgbm",
+    monkeypatch.setitem(scope_arrest.BASELINES, "benchtoward/scope-hrv-lgbm",
                         lambda train, test: fit_predict_hrv_lgbm(train, test, **FAST))
     load_registry(tmp_session, REGISTRY_DIR)
     df = data(1)
     task = resolve_task(tmp_session, "scope-arrest", include_hidden=True)
     runs = scope_arrest.run_scope_baselines(tmp_session, task, df, data_dir=tmp_path, n_boot=30)
-    assert sorted(r.model_slug for r in runs) == sorted(BASELINES) == ["medbench/prior", "medbench/scope-hrv-lgbm"]
+    assert sorted(r.model_slug for r in runs) == sorted(BASELINES) == ["benchtoward/prior", "benchtoward/scope-hrv-lgbm"]
     n_test = int((df.split == "test").sum())
     for run in runs:
         metrics = json.loads(run.metrics_json)
         assert metrics["n"] == n_test and metrics["n_groups"] == 30 and "auprc" in metrics
         assert tmp_session.query(ItemResult).filter_by(run_id=run.id).count() == n_test
         assert (tmp_path / "artifacts" / run.id / "predictions.parquet").exists()
-    lgbm = next(r for r in runs if r.model_slug == "medbench/scope-hrv-lgbm")
+    lgbm = next(r for r in runs if r.model_slug == "benchtoward/scope-hrv-lgbm")
     assert json.loads(lgbm.metrics_json)["auroc"]["value"] > 0.9
     config = json.loads(lgbm.config_json)
     assert config["calibration"] == "beta" and "params" in config and "_raw_test" not in config

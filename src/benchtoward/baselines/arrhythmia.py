@@ -1,7 +1,7 @@
-"""Two medbench baselines for vitaldb-arrhythmia-abnormal, trained on the train split.
+"""Two BenchToward baselines for vitaldb-arrhythmia-abnormal, trained on the train split.
 
-- medbench/prior: the train-split share of abnormal segments, for every segment (ignores the ECG).
-- medbench/arrhythmia-hgb-rr: gradient boosting on RR-interval and amplitude features. R-peaks come from a simple
+- benchtoward/prior: the train-split share of abnormal segments, for every segment (ignores the ECG).
+- benchtoward/arrhythmia-hgb-rr: gradient boosting on RR-interval and amplitude features. R-peaks come from a simple
   QRS detector run on the 5-second segment itself; the annotated beat times are never used as input.
 """
 from functools import lru_cache
@@ -156,8 +156,8 @@ def run_arrhythmia_baselines(session, task, instances: pd.DataFrame, features: n
     fingerprint = data_hash(instances)
     y_train = instances.loc[train, "label"].to_numpy(dtype=int)
     predictions = {
-        "medbench/prior": (np.full(test.sum(), y_train.mean()), {"prior": "train share of abnormal segments"}),
-        "medbench/arrhythmia-hgb-rr": (fit_predict_hgb(features[train], y_train, features[test]),
+        "benchtoward/prior": (np.full(test.sum(), y_train.mean()), {"prior": "train share of abnormal segments"}),
+        "benchtoward/arrhythmia-hgb-rr": (fit_predict_hgb(features[train], y_train, features[test]),
                                        {"features": FEATURE_VERSION, "model": "HistGradientBoostingClassifier",
                                         "random_state": 0}),
     }

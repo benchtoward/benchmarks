@@ -1,4 +1,4 @@
-"""The three models of the INSPIRE authors' mortality script (gbm_mortality.py), as medbench baselines.
+"""The three models of the INSPIRE authors' mortality script (gbm_mortality.py), as BenchToward baselines.
 
 Each is trained on the train split only and scored on the test split. The settings are the script's; xgboost is a
 dev dependency: baselines run on a workstation, and the web service does not need it.
@@ -57,10 +57,10 @@ def _xgboost_version() -> dict:
 
 # slug -> (fit, settings recorded in the run config, library versions)
 BASELINES = {
-    "medbench/inspire-asa": (fit_predict_asa, {"score": "asa"}, dict),
-    "medbench/inspire-logreg": (fit_predict_logreg, {"imputer": "SimpleImputer(mean)", **LOGREG_PARAMS},
+    "benchtoward/inspire-asa": (fit_predict_asa, {"score": "asa"}, dict),
+    "benchtoward/inspire-logreg": (fit_predict_logreg, {"imputer": "SimpleImputer(mean)", **LOGREG_PARAMS},
                                 _sklearn_version),
-    "medbench/inspire-xgb": (fit_predict_xgb, dict(XGB_PARAMS), _xgboost_version),
+    "benchtoward/inspire-xgb": (fit_predict_xgb, dict(XGB_PARAMS), _xgboost_version),
 }
 
 

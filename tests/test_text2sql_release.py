@@ -28,7 +28,7 @@ def test_the_release_holds_the_kept_items_with_the_hash_the_spec_pins(fx, tmp_pa
     out = tmp_path / "release"
     meta = _build(fx, out, code_commit="0123abc")
     for tier, prompt, rows in (("hard", HARD_PROMPT, HARD), ("easy", P0, EASY)):
-        file_meta, items = load_questions(out / "items" / f"{tier}.yaml")  # the medbench loader reads it as is
+        file_meta, items = load_questions(out / "items" / f"{tier}.yaml")  # the benchmark's loader reads it as is
         assert t2s.items_sha256(items) == fx.spec["tiers"][tier]["items"]["sha256"]
         assert meta["tiers"][tier]["items_sha256"] == fx.spec["tiers"][tier]["items"]["sha256"]
         assert [q.id for q in items] == [r["id"] for r in rows] and file_meta["prompt"]["id"] == prompt.id
@@ -70,7 +70,7 @@ def test_the_release_carries_readme_licence_and_checksums(fx, tmp_path):
     _build(fx, out, code_commit="0123abc")
     readme = (out / "README.md").read_text(encoding="utf-8")
     for needed in ("CC BY-NC 4.0", "10.23421/2026.03183", "Seoul National University Hospital",
-                   "https://github.com/medbench-kr/benchmarks", "0123abc", "RS(0)", "ABSTAIN",
+                   "https://github.com/benchtoward/benchmarks", "0123abc", "RS(0)", "ABSTAIN",
                    "10.18653/v1/2024.clinicalnlp-1.62", "GPT-6 Astra", "Gemini 4 Argon", "Claude Opus 5.5",
                    "## Limitations", "## Citation"):
         assert needed in readme, needed
@@ -115,6 +115,24 @@ def test_anything_that_differs_from_the_pins_is_refused_and_nothing_is_written(f
     with pytest.raises(ValueError, match="schema of tier easy"):
         _build(fx, out)
     assert not out.exists()
+
+
+def test_the_release_names_benchtoward_its_site_and_repository(fx, tmp_path, monkeypatch):
+    """Rename to BenchToward (2026-10-31): the package text, metadata and licence name the project, its site and the
+    repository under the organisation's new name, at the commit given."""
+    monkeypatch.delenv("BENCHTOWARD_SITE_URL", raising=False)
+    monkeypatch.delenv("MEDBENCH_SITE_URL", raising=False)
+    out = tmp_path / "release"
+    meta = _build(fx, out, code_commit="0123abc")
+    assert meta["site"] == "https://benchtoward.com"
+    assert meta["code"]["repository"] == "https://github.com/benchtoward/benchmarks"
+    assert meta["code"]["commit"] == "0123abc"
+    readme = (out / "README.md").read_text(encoding="utf-8")
+    assert "BenchToward built the items for its benchmark" in readme and "- BenchToward. Synthetic-SNUH" in readme
+    assert "The evaluation code is in https://github.com/benchtoward/benchmarks (commit 0123abc;" in readme
+    assert "written by BenchToward (2026)" in (out / "LICENSE.txt").read_text(encoding="utf-8")
+    for name in ("README.md", "LICENSE.txt", "metadata.json"):
+        assert "medbench" not in (out / name).read_text(encoding="utf-8").lower(), name
 
 
 def test_without_the_public_commit_the_release_says_it_is_pending(fx, tmp_path):

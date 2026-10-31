@@ -1,10 +1,10 @@
 [project]
-name = "medbench-kr-benchmarks"
+name = "benchtoward-benchmarks"
 version = "0.1.0"
-description = "Evaluation code of medbench.kr: task definitions, data builders, scoring and baselines for open SNUH datasets"
+description = "Evaluation code of BenchToward: task definitions, data builders, scoring and baselines for open SNUH datasets"
 readme = "README.md"
 license = "Apache-2.0"
-authors = [{ name = "medbench.kr contributors" }]
+authors = [{ name = "BenchToward contributors" }]
 requires-python = ">=3.12"
 dependencies = [
     "duckdb>=2.0.0",
@@ -21,13 +21,11 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://medbench.kr"
-Repository = "https://github.com/medbench-kr/benchmarks"
+Homepage = "https://benchtoward.com"
+Repository = "https://github.com/benchtoward/benchmarks"
 
 [project.scripts]
 benchtoward = "benchtoward.cli:app"
-# The README's commands say `medbench` until the site moves to its new name (Phase B of the rename, 2026-10-31).
-medbench = "benchtoward.cli:app"
 
 [build-system]
 requires = ["uv_build>=0.9.7,<0.10.0"]

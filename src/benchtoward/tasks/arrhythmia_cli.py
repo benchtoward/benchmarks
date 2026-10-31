@@ -1,4 +1,4 @@
-"""medbench commands for vitaldb-arrhythmia-abnormal@0: ECG cache, build, baselines.
+"""benchtoward commands for vitaldb-arrhythmia-abnormal@0: ECG cache, build, baselines.
 
     benchtoward fetch vitaldb-arrhythmia                 # annotations from KHDP (needs KHDP_TOKEN)
     benchtoward fetch vitaldb-arrhythmia-ecg             # ECG lead II from VitalDB, annotated spans only
@@ -57,7 +57,7 @@ def build_cmd() -> None:
 
 
 def baseline_cmd(n_boot: int = 1000) -> None:
-    """Train and score the two medbench baselines (prior, gradient boosting on RR features)."""
+    """Train and score the two BenchToward baselines (prior, gradient boosting on RR features)."""
     import pandas as pd
 
     from benchtoward.baselines.arrhythmia import features_for, run_arrhythmia_baselines

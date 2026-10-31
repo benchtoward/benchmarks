@@ -46,14 +46,14 @@ items_note: >-
   decisions taken on them. The sha256 of each tier covers every kept item's id, Korean and English question, reference
   SQL, order_matters, answerable, category, difficulty and scope; the runner refuses a file that no longer matches, so
   any change to an item is a new task version. The prompt hashes cover the system prompt and database note in the code
-  (src/medbench/tasks/text2sql.py), and the schema hashes the schema text built from the database.
+  (src/benchtoward/tasks/text2sql.py), and the schema hashes the schema text built from the database.
 instance_id: "<tier>/<question id>-<lang>, e.g. hard/syn-hard-001-ko (510 instances: hard 202, easy 308)"
 request:
   messages: >-
     system: the tier's system prompt; user: the database schema (CREATE TABLE statements with 3 example rows per
     non-empty table, the empty tables named, concepts counted by domain and vocabulary; on the hard tier also the
     columns that are NULL in every row), the tier's database note and the question in Korean or in English.
-    `medbench-admin text2sql prompt <id>` prints one.
+    `benchtoward-admin text2sql prompt <id>` prints one.
   temperature: 0
   max_tokens: 16384
   thinking: >-
@@ -73,7 +73,7 @@ protocol:
     scoring_program/scoring_utils.py (reliability_score, penalize; unchanged since e207f57a2d0af32b273d7ed69c37e30fa9862b68),
     vendored unchanged in third_party/ehrsql-2024/ (CC BY 4.0) and called for every reliability score
   transfer: true
-  medbench_made: [items, unanswerable items, prompt, database, result comparison, abstention, output limit,
+  benchmark_made: [items, unanswerable items, prompt, database, result comparison, abstention, output limit,
                   easy tier, intervals, priors]
   also_adopted:
     - name: Spider test-suite evaluation
@@ -122,10 +122,10 @@ metrics:
     together (2,000 resamples, numpy seed 0); paired differences between two models resample the same questions
   breakdowns: [tier, language, category, difficulty]
 baselines:
-  medbench/prior: >-
+  benchtoward/prior: >-
     abstain on every item (on the easy tier, which has no abstention, that is no answer): the input-blind prior of
     every reliability score, and EHRSQL-2024's simplest baseline; RS(0) is the hard tier's unanswerable share
-  medbench/text2sql-constant-query: >-
+  benchtoward/text2sql-constant-query: >-
     SELECT 0 for every item: the input-blind prior of execution accuracy. No reference returns it, because every
     reference has a row that is not all zero or NULL (reference rules), so it scores 0
   rule: >-
@@ -140,8 +140,8 @@ check:
     weak: openai/gpt-oss-20b
     strong: deepseek/deepseek-v4.1-flash-552b-a16b
   priors:
-    rs: medbench/prior
-    ex: medbench/text2sql-constant-query
+    rs: benchtoward/prior
+    ex: benchtoward/text2sql-constant-query
   scope: >-
     the benchmark's SOP check rests on the hard tier and its RS(0) (decision easy_tier_publication); the easy tier is
     checked and reported the same way, but its result does not decide the benchmark's
@@ -151,11 +151,11 @@ check:
   note: >-
     The roster was voted after the 2026-10-30 dry runs it was measured on (decision reference_roster, 3 of 3), so the
     check is run again on the frozen task; the runs reuse those dry runs' answers wherever the prompt and the output
-    limit are the same (`medbench eval-text2sql --reuse`).
+    limit are the same (`benchtoward eval-text2sql --reuse`).
 deviations:
   - >-
     Items: the 255 questions (easy 154, hard 101), each asked in Korean and English, and their reference SQL were
-    written for this database: the easy tier by the medbench agent from the data, the hard tier by GPT-6 Astra,
+    written for this database: the easy tier by the BenchToward agent from the data, the hard tier by GPT-6 Astra,
     Gemini 4 Argon and Claude Opus 5.5 (`text2sql hard-generate`). None was copied from EHRSQL or another benchmark.
     Checked: every reference runs on the database under the reference rules (one SELECT; 1 to 1,000 rows that are not
     all zero or NULL; no current date; `text2sql check`: 0 problems in both files), and every kept item was approved
@@ -172,7 +172,7 @@ deviations:
     every row and the instruction to answer ABSTAIN. Checked: the prompt and schema are pinned by sha256 (tiers), and
     in six open models' dry runs on both tiers no answer gave text without SQL or ABSTAIN.
   - >-
-    Database: Synthetic-SNUH 4.0.0's 16 OMOP CDM v5.4 tables loaded into DuckDB by medbench (`medbench fetch
+    Database: Synthetic-SNUH 4.0.0's 16 OMOP CDM v5.4 tables loaded into DuckDB by BenchToward (`benchtoward fetch
     synthetic-snuh`), instead of the shared task's MIMIC-IV demo in SQLite. Checked: the release's MD5 sums and the
     row counts its README publishes (synthetic_snuh.EXPECTED_ROWS).
   - >-
@@ -197,7 +197,7 @@ deviations:
     tier is saturated and shown next to the headline, never ranked on its own (decision easy_tier_publication).
     Checked: the SOP check is run and reported for both tiers; the hard tier decides the benchmark's.
   - >-
-    Intervals: the shared task reports point estimates; medbench adds 95% intervals from a bootstrap over questions
+    Intervals: the shared task reports point estimates; BenchToward adds 95% intervals from a bootstrap over questions
     (both languages of a question together) for every score, and paired differences on the same questions. Checked:
     tests/test_text2sql_task.py (a question's two languages always move together).
   - >-
@@ -224,11 +224,11 @@ limitations:
 items_release:  # presentational (registry.PRESENTATIONAL_FIELDS): editing it, the DOI included, keeps the spec hash
   decided: >-
     owner, 2026-10-30: the items of both tiers (questions and reference SQL) are released on KHDP as a dataset built
-    by medbench and submitted by the maintainers; the code that wrote, reviewed and scores them is public in
-    github.com/medbench-kr/benchmarks
+    by BenchToward and submitted by the maintainers; the code that wrote, reviewed and scores them is public in
+    github.com/benchtoward/benchmarks
   khdp: synthetic-snuh-text2sql@1.0.0
   package: >-
-    `medbench text2sql khdp-package` builds it into data/khdp/synthetic-snuh-text2sql-1.0.0 (item hashes as pinned
+    `benchtoward text2sql khdp-package` builds it into data/khdp/synthetic-snuh-text2sql-1.0.0 (item hashes as pinned
     in tiers); the KHDP form text and the submission steps are in docs/khdp/synthetic-snuh-text2sql.md
   status: prepared, not submitted
   doi: null  # KHDP assigns it on publication; record it here (and in docs/khdp/synthetic-snuh-text2sql.md)

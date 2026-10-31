@@ -10,15 +10,15 @@ from benchtoward.llm import MissingCredential, client_for
 from benchtoward.registry import load_registry, resolve_task
 from benchtoward.tasks.clinicalqa import fetch_clinicalqa, load_items
 
-app = typer.Typer(help="medbench.kr benchmark commands", no_args_is_help=True)
+app = typer.Typer(help="BenchToward benchmark commands", no_args_is_help=True)
 fetch_app = typer.Typer(help="Download datasets", no_args_is_help=True)
 build_app = typer.Typer(help="Build task instances", no_args_is_help=True)
-baseline_app = typer.Typer(help="Run medbench baselines", no_args_is_help=True)
+baseline_app = typer.Typer(help="Run BenchToward baselines", no_args_is_help=True)
 app.add_typer(fetch_app, name="fetch")
 app.add_typer(build_app, name="build")
 app.add_typer(baseline_app, name="baseline")
 
-try:  # the paper agent is part of the medbench.kr deployment, not of the published evaluation code
+try:  # the paper agent is part of the BenchToward deployment, not of the published evaluation code
     from benchtoward.agent.cli import agent_app  # noqa: E402
 except ModuleNotFoundError:
     agent_app = None
@@ -76,25 +76,93 @@ def init() -> None:
 
 @app.command()
 def rekey() -> None:
-    """Recompute run keys and task spec hashes after the spec-hash definition changes."""
+    """Recompute run keys from each run's own spec hash (after a digest or run-key rule change). Never moves a run's
+    spec hash: a rename-only spec edit goes through `rename-rekey`."""
     with open_session() as session:
         load_registry(session, registry_dir())
         typer.echo(f"{rekey_runs(session)} run(s) updated")
 
 
+@app.command("rename-rekey")
+def rename_rekey(plan: str = typer.Option(None, help="plan file for --write-to-hashes (default: every plan in "
+                                                       "registry/renames/); the other modes always use them all"),
+                 db: str = typer.Option(None, help="database URL (default: the configured one), e.g. a scratch DB"),
+                 apply: bool = typer.Option(False, "--apply", help="back up the database, then apply the plans"),
+                 check: bool = typer.Option(False, "--check", help="dry run; exit 1 on a refusal, a scan hit, lag or "
+                                                                   "a skipped pair of an open task in a database "
+                                                                   "the plan has not migrated"),
+                 status: bool = typer.Option(False, "--status", help="applied plans and lag, read-only"),
+                 write_to_hashes: bool = typer.Option(False, "--write-to-hashes",
+                                                      help="fill the plan's `to` hashes from the registry specs")) -> None:
+    """Rename plans (registry/renames/): proofs, run moves and rekeys. Default: a dry run on a copy of the database
+    that prints the report and changes nothing."""
+    from pathlib import Path
+
+    from benchtoward import rename
+
+    if sum((apply, check, status, write_to_hashes)) > 1:
+        raise typer.BadParameter("choose one of --apply, --check, --status, --write-to-hashes")
+    registry = registry_dir()
+    url = db or get_settings().db_url
+    try:
+        if write_to_hashes:
+            paths = [Path(plan)] if plan else sorted((registry / "renames").glob("*.yaml"))
+            if not paths:
+                typer.echo("no rename plans")
+                raise typer.Exit(1)
+            for path in paths:
+                for line in rename.write_to_hashes(path, registry):
+                    typer.echo(line)
+            return
+        plans = rename.load_plans(registry)
+        if plan and Path(plan).resolve() not in {p.path.resolve() for p in plans}:
+            raise typer.BadParameter(f"{plan} is not a plan in {registry / 'renames'}")
+        if status:
+            lines, failed = rename.status_lines(url, plans)
+        elif apply:
+            src = rename.sqlite_file(url)
+            if src is not None and not src.is_file():
+                raise rename.NoDatabase(f"no database at {src}: nothing to apply")
+            engine = make_engine(url)
+            init_db(engine)
+            with session_factory(engine)() as session:
+                report = load_registry(session, registry)
+                report.lag = rename.rename_lag(session, plans)
+            lines, failed = report.lines(), False
+        else:
+            report = rename.dry_run(url, registry)
+            lines = report.lines()
+            failed = check and bool(report.scan_hits or report.lag or report.open_skips)
+    except rename.RenameRefused as exc:
+        typer.echo(f"refused: {exc}")
+        raise typer.Exit(1)
+    except rename.UnsupportedURL as exc:
+        typer.echo(str(exc))
+        raise typer.Exit(1)
+    except rename.NoDatabase as exc:
+        # only the configured database may be missing (the deploy preflight on a first deploy); a --db that names no
+        # file is a typo, and --status has nothing to report
+        typer.echo(str(exc))
+        raise typer.Exit(0 if db is None and not (status or apply) else 1)
+    for line in lines:
+        typer.echo(line)
+    if failed:
+        raise typer.Exit(1)
+
+
 @app.command("import-bundle")
-def import_bundle_cmd(source: str = typer.Argument(..., help="path to another medbench SQLite database")) -> None:
+def import_bundle_cmd(source: str = typer.Argument(..., help="path to another BenchToward SQLite database")) -> None:
     """Merge the paper agent's state and finished runs from another database (tasks remapped by slug and version)."""
     from benchtoward.evaluate import import_bundle
 
     with open_session() as session:
         load_registry(session, registry_dir())
-        counts = import_bundle(session, f"sqlite:///{source}")
+        counts = import_bundle(session, f"sqlite:///{source}", registry_dir=registry_dir())
         typer.echo(" ".join(f"{k}={v}" for k, v in counts.items()))
 
 
 @app.command("import-runs")
-def import_runs_cmd(source: str = typer.Argument(..., help="path to another medbench SQLite database")) -> None:
+def import_runs_cmd(source: str = typer.Argument(..., help="path to another BenchToward SQLite database")) -> None:
     """Merge finished runs from another database by run key, keeping this database's other data."""
     with open_session() as session:
         load_registry(session, registry_dir())
@@ -150,7 +218,7 @@ def baseline_clinicalqa() -> None:
     with open_session() as session:
         task = resolve_task(session, "clinicalqa")
         rows, metrics = constant_answer_baseline(load_items(fetch_clinicalqa(settings.data_dir)), "B")
-        run = record_baseline_run(session, session.get(Model, "medbench/majority-b"), task, rows, metrics,
+        run = record_baseline_run(session, session.get(Model, "benchtoward/majority-b"), task, rows, metrics,
                                   {"letter": "B"}, data_dir=settings.data_dir)
         typer.echo(_summary(run))
 
@@ -195,7 +263,7 @@ def build_vitaldb_ioh() -> None:
 
 @baseline_app.command("vitaldb-ioh")
 def baseline_vitaldb_ioh() -> None:
-    """Train and score the two medbench baselines."""
+    """Train and score the two BenchToward baselines."""
     import pandas as pd
 
     from benchtoward.baselines.ioh import run_ioh_baselines

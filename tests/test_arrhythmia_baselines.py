@@ -85,7 +85,7 @@ def test_run_baselines_records_prior_and_gradient_boosting(tmp_session, tmp_path
     runs = base.run_arrhythmia_baselines(tmp_session, resolve_task(tmp_session, "vitaldb-arrhythmia-abnormal"), df,
                                          features, data_dir=tmp_path, n_boot=50)
     by_slug = {r.model_slug: r for r in runs}
-    assert sorted(by_slug) == ["medbench/arrhythmia-hgb-rr", "medbench/prior"]
+    assert sorted(by_slug) == ["benchtoward/arrhythmia-hgb-rr", "benchtoward/prior"]
     n_test = int((df["split"] == "test").sum())
     for run in runs:
         m = json.loads(run.metrics_json)
@@ -94,8 +94,8 @@ def test_run_baselines_records_prior_and_gradient_boosting(tmp_session, tmp_path
         assert "N: false-positive rate" in m["by_category"]
         assert tmp_session.query(ItemResult).filter_by(run_id=run.id).count() == n_test
         assert (tmp_path / "artifacts" / run.id / "predictions.parquet").exists()
-    prior = json.loads(by_slug["medbench/prior"].metrics_json)
-    hgb = json.loads(by_slug["medbench/arrhythmia-hgb-rr"].metrics_json)
+    prior = json.loads(by_slug["benchtoward/prior"].metrics_json)
+    hgb = json.loads(by_slug["benchtoward/arrhythmia-hgb-rr"].metrics_json)
     assert prior["auroc"]["value"] == 0.5 and hgb["auroc"]["value"] > 0.9
 
 

@@ -37,7 +37,7 @@ STAND_IN_SPEC = {
     "tiers": {"hard": {"abstention": True}, "easy": {"abstention": False}},
     "request": {"temperature": 0, "max_tokens": 16384},
     "check": {"roster": {"weak": "openai/gpt-oss-20b", "strong": "deepseek/deepseek-v4.1-flash-552b-a16b"},
-              "priors": {"rs": "medbench/prior", "ex": "medbench/text2sql-constant-query"}},
+              "priors": {"rs": "benchtoward/prior", "ex": "benchtoward/text2sql-constant-query"}},
 }
 
 
@@ -138,7 +138,7 @@ def test_spec_is_one_hidden_preview_task_with_two_tiers():
     assert spec["request"]["max_tokens"] == 16384 and spec["request"]["temperature"] == 0  # decision output_format
     assert spec["check"]["roster"] == {"weak": "openai/gpt-oss-20b",
                                        "strong": "deepseek/deepseek-v4.1-flash-552b-a16b"}  # reference_roster
-    assert spec["check"]["priors"] == {"rs": "medbench/prior", "ex": "medbench/text2sql-constant-query"}
+    assert spec["check"]["priors"] == {"rs": "benchtoward/prior", "ex": "benchtoward/text2sql-constant-query"}
 
 
 @needs_spec
@@ -177,12 +177,13 @@ def test_schema_must_match_the_pinned_prompt(fx):
         t2s.check_schemas(fx.spec, fx.tiers(), fx.con)
 
 
-RUN_SPEC_HASH = "abb0fa4ae8e35e706e34c4862ff8a1c1a3aba1f57c39900eb3ee3d6685f4650c"  # the runs' (PR #109 review)
+# the runs' (PR #109 review), moved by the rename-only plan registry/renames/2026-11-benchtoward.yaml (was abb0fa4a)
+RUN_SPEC_HASH = "ac017b1c69ca1976ff65ebd4469eb681344d4db9dacf9f137f61347344340a25"
 
 
 @needs_spec
 def test_the_items_release_and_its_doi_never_change_the_spec_hash():
-    """Owner, 2026-10-30: the items are released on KHDP as a medbench-built dataset. The spec says where, and gets
+    """Owner, 2026-10-30: the items are released on KHDP as a BenchToward-built dataset. The spec says where, and gets
     the DOI once KHDP assigns it, in `items_release`, a presentational field: recording either leaves the spec hash,
     and so every recorded run, as it is."""
     from benchtoward.registry import PRESENTATIONAL_FIELDS
@@ -201,15 +202,15 @@ def test_the_items_release_and_its_doi_never_change_the_spec_hash():
 
 
 @needs_spec
-def test_spec_is_a_protocol_transfer_with_every_medbench_made_part_listed():
+def test_spec_is_a_protocol_transfer_with_every_benchmark_made_part_listed():
     """SOP A1 protocol transfers (PR #97): the authors' scoring code at a full commit, and one deviation starting with
-    the name of each part medbench made."""
+    the name of each part BenchToward made."""
     spec = yaml.safe_load(SPEC_FILE.read_text(encoding="utf-8"))
     protocol = spec["protocol"]
     assert protocol["transfer"] is True and protocol["repository"] == "https://github.com/glee4810/ehrsql-2024"
     assert len(protocol["commit"]) == 40 and all(c in "0123456789abcdef" for c in protocol["commit"])
     heads = {" ".join(str(d).split()).partition(":")[0].strip().lower() for d in spec["deviations"] if ":" in str(d)}
-    assert protocol["medbench_made"] and all(part.lower() in heads for part in protocol["medbench_made"])
+    assert protocol["benchmark_made"] and all(part.lower() in heads for part in protocol["benchmark_made"])
 
 
 @needs_spec
@@ -224,7 +225,7 @@ def test_registry_loads_the_task_with_its_dataset_and_priors(tmp_session):
         with pytest.raises(LookupError):
             resolve_task(tmp_session, "synthetic-snuh-text2sql@0")
     assert resolve_task(tmp_session, "synthetic-snuh-text2sql@0", include_hidden=True).id == task.id
-    for slug in ("medbench/prior", "medbench/text2sql-constant-query"):
+    for slug in ("benchtoward/prior", "benchtoward/text2sql-constant-query"):
         model = tmp_session.get(Model, slug)
         assert model.type == "baseline" and model.reference
 
@@ -469,8 +470,8 @@ def test_baselines_are_recorded_as_runs(fx, tmp_session):
     task, _ = _db(tmp_session, fx)
     runs = t2s.record_priors(tmp_session, task, fx.tiers(), fx.con, data_dir=fx.data_dir)
     by = {r.model_slug: json.loads(r.metrics_json) for r in runs}
-    assert by["medbench/prior"]["rs0"]["value"] == 0.5
-    assert by["medbench/text2sql-constant-query"]["rs0"]["value"] == 0.0
+    assert by["benchtoward/prior"]["rs0"]["value"] == 0.5
+    assert by["benchtoward/text2sql-constant-query"]["rs0"]["value"] == 0.0
     assert json.loads(runs[1].config_json)["rule"] == "SELECT 0 for every item of both tiers"
 
 
@@ -574,7 +575,7 @@ def test_commands_record_the_priors_and_the_references_and_print_the_check(tmp_p
     assert env.invoke("init").exit_code == 0
     out = env.invoke("baseline", "synthetic-snuh-text2sql")
     assert out.exit_code == 0, out.stdout
-    assert "medbench/prior" in out.stdout and "medbench/text2sql-constant-query" in out.stdout
+    assert "benchtoward/prior" in out.stdout and "benchtoward/text2sql-constant-query" in out.stdout
     tiers = fx.tiers()
     served = {m["slug"]: m.get("provider_model_id") or m["slug"]
               for m in yaml.safe_load((REGISTRY_DIR / "models.yaml").read_text(encoding="utf-8"))}

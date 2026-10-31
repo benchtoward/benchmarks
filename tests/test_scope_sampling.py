@@ -83,13 +83,13 @@ def test_registry_spec_matches_the_code_and_the_published_split():
     from benchtoward.tasks.scope_hrv import FEATURES, FLAT_S, QUALITY_RATIO
 
     spec = yaml.safe_load((REGISTRY_DIR / "tasks" / "scope-arrest.yaml").read_text(encoding="utf-8"))
-    assert spec["protocol"]["name"] == "medbench.kr definition" and spec["features"] == FEATURES
+    assert spec["protocol"]["name"] == "BenchToward definition" and spec["features"] == FEATURES
     assert spec["controls"]["seed"] == SEED == spec["split"]["seed"] == SPLIT_SEED
     assert spec["split"]["fractions"] == [1 - TEST_SIZE, TEST_SIZE] and spec["epoch_rules"]["flat_s"] == FLAT_S
     assert "80%" in spec["epoch_rules"]["quality"] and QUALITY_RATIO == 0.8
     assert spec["cohort"] == {"label_1": "Cardiac Arrest", "label_0": "Discharge", "excluded": ["Death"]}
     assert spec["signal"]["hz"] == HZ and spec["signal"]["epoch_s"] * HZ == EPOCH_SAMPLES
-    lgbm = " ".join(spec["baselines"]["medbench/scope-hrv-lgbm"].split())
+    lgbm = " ".join(spec["baselines"]["benchtoward/scope-hrv-lgbm"].split())
     assert all(f"{name} {lo}-{hi}" in lgbm for name, (lo, hi) in PARAM_BOUNDS.items())
     path = REGISTRY_DIR.parent / spec["split"]["file"]
     assert hashlib.sha256(path.read_bytes()).hexdigest() == spec["split"]["sha256"]

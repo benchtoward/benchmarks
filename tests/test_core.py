@@ -31,9 +31,30 @@ def test_load_registry_is_idempotent(tmp_session):
     model = tmp_session.get(Model, "google/medgemma-27b")
     assert (model.type, model.developer) == ("llm", "Google")  # serving ids are deployment data
     assert model.digest == "google/medgemma-27b"
-    assert tmp_session.get(Model, "medbench/majority-b").digest == "medbench/majority-b:v0"
+    assert tmp_session.get(Model, "benchtoward/majority-b").digest == "benchtoward/majority-b:v0"
     task = tmp_session.query(Task).filter_by(slug="vitaldb-ioh", version=0).one()
     assert task.preview is True and task.primary_metric == "auroc" and len(task.spec_hash) == 64
+
+
+def test_digest_rule(tmp_path):
+    """Baselines (provider benchtoward) get the versioned digest <slug>:v0; any other provider keeps its slug. The
+    pre-rename provider "medbench" is no longer a baseline provider (2026-11 rename), so a stale models.yaml line
+    with it would get a bare digest and fail the rename tests rather than pass unnoticed."""
+    from benchtoward.db import init_db, make_engine, session_factory
+
+    reg = tmp_path / "registry"
+    (reg / "tasks").mkdir(parents=True)
+    (reg / "datasets.yaml").write_text("[]\n")
+    (reg / "models.yaml").write_text(
+        "- {slug: benchtoward/x, name: X, type: baseline, provider: benchtoward, developer: BenchToward}\n"
+        "- {slug: lab/y, name: Y, type: llm, provider: lab, provider_model_id: y, developer: Lab}\n"
+        "- {slug: old/z, name: Z, type: baseline, provider: medbench, developer: Old}\n")
+    engine = make_engine("sqlite://")
+    init_db(engine)
+    with session_factory(engine)() as session:
+        load_registry(session, reg)
+        assert {m.slug: m.digest for m in session.query(Model)} == {"benchtoward/x": "benchtoward/x:v0",
+                                                                    "lab/y": "lab/y", "old/z": "old/z"}
 
 
 def test_run_key_is_unique(tmp_session):

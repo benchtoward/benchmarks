@@ -22,7 +22,7 @@ request:
 protocol_source: >-
   The dataset's usage notes (KHDP Synthetic-K-OR-Speech-Audio 1.0.0) recommend CER and WER against the v1.0 text,
   reported by intent, code-switching style, voice and speaker role. They define no text normalisation; the rules below
-  are medbench.kr's.
+  are BenchToward's.
 normalisation:
   version: kor-norm-0
   applied_to: reference and transcript alike

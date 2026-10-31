@@ -5,7 +5,7 @@ and speaker role. License: Apache-2.0 with a use restriction (no TTS, voice-clon
 redistribution keeps the restriction). Audio is read straight from the pinned release archive.
 
 Protocol source: the dataset's usage notes ask for CER and WER against the v1.0 text, stratified by intent,
-code-switching style, voice and speaker role. They give no normalisation, so `normalise` below is medbench's
+code-switching style, voice and speaker role. They give no normalisation, so `normalise` below is BenchToward's
 (version NORMALISER_VERSION, documented in registry/tasks/k-or-speech-asr.yaml).
 """
 import csv

@@ -85,7 +85,7 @@ def test_client_for_uses_the_provider_table():
     client = client_for(model, Settings(providers={"example": ("https://llm.example/v1", "k")}))
     assert client.base_url == "https://llm.example/v1"
     with pytest.raises(ValueError):
-        client_for(Model(slug="b/x", name="x", type="baseline", provider="medbench", digest="b/x"), Settings())
+        client_for(Model(slug="b/x", name="x", type="baseline", provider="benchtoward", digest="b/x"), Settings())
 
 
 def test_providers_come_from_the_registry_file_and_environment(tmp_path, monkeypatch):

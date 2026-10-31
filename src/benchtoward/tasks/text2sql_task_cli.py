@@ -60,7 +60,7 @@ def fetch_synthetic_snuh(force: bool = typer.Option(False, help="rebuild the Duc
 
 
 def baseline_text2sql(task: str = typer.Option(TASK_REF, help="task, slug@version")) -> None:
-    """Record the fixed-rule priors: abstain on every item (medbench/prior) and SELECT 0 for every item."""
+    """Record the fixed-rule priors: abstain on every item (benchtoward/prior) and SELECT 0 for every item."""
     from benchtoward.cli import _summary, open_session
 
     settings = get_settings()
