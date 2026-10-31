@@ -2,8 +2,8 @@ import numpy as np
 import pandas as pd
 from sklearn.metrics import roc_auc_score
 
-from medbench.baselines.ioh import features, fit_predict_hgb, fit_predict_logreg_lastmap
-from medbench.tasks.vitaldb_ioh import build_task, make_windows, split_subjects
+from benchtoward.baselines.ioh import features, fit_predict_hgb, fit_predict_logreg_lastmap
+from benchtoward.tasks.vitaldb_ioh import build_task, make_windows, split_subjects
 
 N = 150  # samples per 300 s window at 2 s
 
@@ -95,9 +95,9 @@ def test_run_ioh_baselines_records_two_runs(tmp_session, tmp_path):
     import json
 
     from conftest import REGISTRY_DIR
-    from medbench.baselines.ioh import run_ioh_baselines
-    from medbench.db import ItemResult
-    from medbench.registry import load_registry, resolve_task
+    from benchtoward.baselines.ioh import run_ioh_baselines
+    from benchtoward.db import ItemResult
+    from benchtoward.registry import load_registry, resolve_task
 
     load_registry(tmp_session, REGISTRY_DIR)
     rng = np.random.default_rng(1)
@@ -115,7 +115,7 @@ def test_run_ioh_baselines_records_two_runs(tmp_session, tmp_path):
 
 
 def test_series_completeness_check():
-    from medbench.tasks.vitaldb_ioh import series_is_complete
+    from benchtoward.tasks.vitaldb_ioh import series_is_complete
 
     assert series_is_complete([80.0] * 600, caseend_s=1200, interval_s=2)
     assert not series_is_complete([80.0] * 300, caseend_s=1200, interval_s=2)
@@ -139,8 +139,8 @@ def test_build_task_refuses_missing_cohort_cases(tmp_path):
 
 def test_baseline_runs_change_when_data_changes(tmp_session, tmp_path):
     from conftest import REGISTRY_DIR
-    from medbench.baselines.ioh import run_ioh_baselines
-    from medbench.registry import load_registry, resolve_task
+    from benchtoward.baselines.ioh import run_ioh_baselines
+    from benchtoward.registry import load_registry, resolve_task
 
     load_registry(tmp_session, REGISTRY_DIR)
     task = resolve_task(tmp_session, "vitaldb-ioh")

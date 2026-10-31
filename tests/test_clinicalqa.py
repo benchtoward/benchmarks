@@ -1,6 +1,6 @@
 import pandas as pd
 
-from medbench.tasks.clinicalqa import QAItem, load_items, parse_answer, render_messages
+from benchtoward.tasks.clinicalqa import QAItem, load_items, parse_answer, render_messages
 
 ABCDE = set("ABCDE")
 

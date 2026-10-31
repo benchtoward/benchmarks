@@ -5,11 +5,11 @@ import pandas as pd
 import pytest
 
 from conftest import REGISTRY_DIR
-from medbench.asr import Transcription
-from medbench.db import ItemResult, Model, Run, Task
-from medbench.evaluate import ASR_HARNESS_VERSION, run_asr_task
-from medbench.registry import load_registry
-from medbench.tasks.k_or_speech import ROOT_IN_ZIP, Clip
+from benchtoward.asr import Transcription
+from benchtoward.db import ItemResult, Model, Run, Task
+from benchtoward.evaluate import ASR_HARNESS_VERSION, run_asr_task
+from benchtoward.registry import load_registry
+from benchtoward.tasks.k_or_speech import ROOT_IN_ZIP, Clip
 
 REFS = {"U1": "석션 주세요.", "U2": "BP 90 대로 떨어집니다.", "U3": "로큐 50 미리 들어갑니다."}
 CLIPS = [Clip(instance_id=f"{u}-{v}", utterance_id=u, voice=v, reference=ref, intent="status_update",
@@ -177,7 +177,7 @@ def test_runner_with_real_client_over_mock_transport(ctx):
     """503s are retried inside the call, a 400 is final for its clip, and an outage leaves the run resumable."""
     import httpx
 
-    from medbench.asr import ASRClient
+    from benchtoward.asr import ASRClient
 
     calls: dict[str, int] = {}
     outage = {"on": True}

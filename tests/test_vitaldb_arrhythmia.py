@@ -4,9 +4,9 @@ import httpx
 import pandas as pd
 import pytest
 
-from medbench.khdp import KhdpClient, KhdpEntry, page_url
-from medbench.tasks.vitaldb_arrhythmia import fetch_annotations, load_annotations
-from medbench.tasks.vitaldb_split import caseid_split, vitaldb_subject_split
+from benchtoward.khdp import KhdpClient, KhdpEntry, page_url
+from benchtoward.tasks.vitaldb_arrhythmia import fetch_annotations, load_annotations
+from benchtoward.tasks.vitaldb_split import caseid_split, vitaldb_subject_split
 
 FIXTURE = Path(__file__).parent / "fixtures" / "arrhythmia"
 

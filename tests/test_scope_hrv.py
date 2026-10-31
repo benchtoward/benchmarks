@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from medbench.tasks.scope_hrv import (CANDIDATES, FEATURES, QUALITY_RATIO, keep_quality, process_epoch,
+from benchtoward.tasks.scope_hrv import (CANDIDATES, FEATURES, QUALITY_RATIO, keep_quality, process_epoch,
                                       quality_ratio, screen_epoch)
 
 FS = 250

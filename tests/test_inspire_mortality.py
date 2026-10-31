@@ -2,8 +2,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from medbench.khdp import KhdpFile
-from medbench.tasks.inspire_mortality import (assign_split, build_cohort, build_task, dataset_dir, fetch_inspire,
+from benchtoward.khdp import KhdpFile
+from benchtoward.tasks.inspire_mortality import (assign_split, build_cohort, build_task, dataset_dir, fetch_inspire,
                                               load_spec)
 
 DAY = 24 * 60
@@ -66,7 +66,7 @@ def test_fetch_fails_when_a_file_is_missing_from_the_release(tmp_path):
 def test_cli_registers_fetch_build_and_baseline(monkeypatch):
     from typer.testing import CliRunner
 
-    from medbench.cli import app
+    from benchtoward.cli import app
 
     runner = CliRunner()
     assert "inspire" in runner.invoke(app, ["fetch", "--help"]).output
@@ -202,7 +202,7 @@ def test_build_task_writes_instances(tmp_path):
 # ---- metrics and baselines ----
 
 def test_binary_metrics_can_skip_brier_for_scores_that_are_not_probabilities():
-    from medbench.scoring import binary_metrics_ci
+    from benchtoward.scoring import binary_metrics_ci
 
     y = np.array([0, 0, 1, 0, 1, 1, 0, 0])
     asa = np.array([1, 2, 3, 1, 4, 3, 2, 2], dtype=float)
@@ -226,7 +226,7 @@ def _toy(n, rng, start=0):
 
 
 def test_asa_baseline_scores_are_the_asa_class():
-    from medbench.baselines.inspire import fit_predict_asa
+    from benchtoward.baselines.inspire import fit_predict_asa
 
     rng = np.random.default_rng(0)
     train, test = _toy(50, rng), _toy(30, rng, start=50)
@@ -236,7 +236,7 @@ def test_asa_baseline_scores_are_the_asa_class():
 def test_logreg_and_xgb_learn_a_signal_despite_missing_values():
     from sklearn.metrics import roc_auc_score
 
-    from medbench.baselines.inspire import fit_predict_logreg, fit_predict_xgb
+    from benchtoward.baselines.inspire import fit_predict_logreg, fit_predict_xgb
 
     rng = np.random.default_rng(1)
     train, test = _toy(600, rng), _toy(300, rng, start=600)
@@ -247,7 +247,7 @@ def test_logreg_and_xgb_learn_a_signal_despite_missing_values():
 
 
 def test_baseline_settings_are_the_scripts():
-    from medbench.baselines.inspire import LOGREG_PARAMS, XGB_PARAMS, model_inputs
+    from benchtoward.baselines.inspire import LOGREG_PARAMS, XGB_PARAMS, model_inputs
 
     assert XGB_PARAMS == {"max_depth": 4, "n_estimators": 50, "subsample": 0.8, "colsample_bytree": 0.8,
                           "eval_metric": "logloss"}
@@ -266,9 +266,9 @@ def test_run_inspire_baselines_records_three_runs(tmp_session, tmp_path):
     import json
 
     from conftest import REGISTRY_DIR
-    from medbench.baselines.inspire import run_inspire_baselines
-    from medbench.db import ItemResult
-    from medbench.registry import load_registry, resolve_task
+    from benchtoward.baselines.inspire import run_inspire_baselines
+    from benchtoward.db import ItemResult
+    from benchtoward.registry import load_registry, resolve_task
 
     load_registry(tmp_session, REGISTRY_DIR)
     df = _instances(np.random.default_rng(2))
@@ -291,8 +291,8 @@ def test_run_inspire_baselines_records_three_runs(tmp_session, tmp_path):
 
 def test_inspire_baseline_runs_change_when_data_changes(tmp_session, tmp_path):
     from conftest import REGISTRY_DIR
-    from medbench.baselines.inspire import run_inspire_baselines
-    from medbench.registry import load_registry, resolve_task
+    from benchtoward.baselines.inspire import run_inspire_baselines
+    from benchtoward.registry import load_registry, resolve_task
 
     load_registry(tmp_session, REGISTRY_DIR)
     task = resolve_task(tmp_session, "inspire-mortality")
@@ -312,8 +312,8 @@ def test_registry_has_the_inspire_dataset_task_and_baselines(tmp_session):
     import yaml
 
     from conftest import REGISTRY_DIR
-    from medbench.db import Dataset, Model
-    from medbench.registry import load_registry, resolve_task
+    from benchtoward.db import Dataset, Model
+    from benchtoward.registry import load_registry, resolve_task
 
     load_registry(tmp_session, REGISTRY_DIR)
     dataset = tmp_session.get(Dataset, "inspire")

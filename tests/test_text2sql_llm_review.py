@@ -5,7 +5,7 @@ import json
 
 import pytest
 
-from medbench.llm import ChatResult
+from benchtoward.llm import ChatResult
 from test_text2sql_review import DRAFT  # the three-question draft used for the workbook tests
 
 REVIEWERS = ["openai/gpt-6-astra", "google/gemini-4-argon", "anthropic/claude-opus-5.5"]
@@ -26,9 +26,9 @@ def draft(tmp_path):
 
 
 def test_review_messages_carry_schema_conventions_question_sql_and_result(draft, omop_db):
-    from medbench.tasks.synthetic_snuh import connect_readonly
-    from medbench.tasks.text2sql import CONVENTIONS, load_questions
-    from medbench.tasks.text2sql_llm_review import render_review_messages
+    from benchtoward.tasks.synthetic_snuh import connect_readonly
+    from benchtoward.tasks.text2sql import CONVENTIONS, load_questions
+    from benchtoward.tasks.text2sql_llm_review import render_review_messages
     _, items = load_questions(draft)
     con = connect_readonly(omop_db)
     msgs = render_review_messages(items[0], con, "SCHEMA-TEXT")
@@ -40,10 +40,10 @@ def test_review_messages_carry_schema_conventions_question_sql_and_result(draft,
 
 
 def test_v0_review_prompt_is_unchanged_so_its_cached_answers_stay_valid(draft, omop_db):
-    from medbench.tasks.synthetic_snuh import connect_readonly
-    from medbench.tasks.text2sql import load_questions
-    from medbench.tasks.text2sql_llm_fix import _sha
-    from medbench.tasks.text2sql_llm_review import render_review_messages
+    from benchtoward.tasks.synthetic_snuh import connect_readonly
+    from benchtoward.tasks.text2sql import load_questions
+    from benchtoward.tasks.text2sql_llm_fix import _sha
+    from benchtoward.tasks.text2sql_llm_review import render_review_messages
     _, items = load_questions(draft)
     # ed3f396669425253 until 2026-10-30, when the fixture item stopped quoting a real v0 item (public export); the
     # code gave that same hash for the old fixture before the hash here was updated
@@ -51,9 +51,9 @@ def test_v0_review_prompt_is_unchanged_so_its_cached_answers_stay_valid(draft, o
 
 
 def test_hard_review_messages_extend_the_rubric_and_handle_unanswerable_items(omop_db):
-    from medbench.tasks.synthetic_snuh import connect_readonly
-    from medbench.tasks.text2sql import CONVENTIONS, HARD_CONVENTIONS, HARD_PROMPT, Question
-    from medbench.tasks.text2sql_llm_review import SYSTEM, render_review_messages
+    from benchtoward.tasks.synthetic_snuh import connect_readonly
+    from benchtoward.tasks.text2sql import CONVENTIONS, HARD_CONVENTIONS, HARD_PROMPT, Question
+    from benchtoward.tasks.text2sql_llm_review import SYSTEM, render_review_messages
     con = connect_readonly(omop_db)
     item = Question(id="h-1", question_ko="당뇨 환자 수", question_en="How many T2DM patients?", category="clinical_terms",
                     difficulty="hard", sql="SELECT count(DISTINCT person_id) FROM condition_occurrence",
@@ -72,7 +72,7 @@ def test_hard_review_messages_extend_the_rubric_and_handle_unanswerable_items(om
 
 
 def test_parse_review_reads_json_from_fenced_or_plain_text_and_rejects_garbage():
-    from medbench.tasks.text2sql_llm_review import parse_review
+    from benchtoward.tasks.text2sql_llm_review import parse_review
     fenced = "Here you go:\n```json\n" + json.dumps(_verdict("approve")) + "\n```"
     assert parse_review(fenced)["verdict"] == "approve"
     assert parse_review(json.dumps(_verdict("needs_edit", fix="say outpatient")))["fix"] == "say outpatient"
@@ -81,7 +81,7 @@ def test_parse_review_reads_json_from_fenced_or_plain_text_and_rejects_garbage()
 
 
 def test_aggregate_is_unanimous_for_approval():
-    from medbench.tasks.text2sql_llm_review import aggregate
+    from benchtoward.tasks.text2sql_llm_review import aggregate
     a, e, r = _verdict("approve"), _verdict("needs_edit", fix="F1"), _verdict("reject", reason="R")
     assert aggregate({"m1": a, "m2": a, "m3": a})[0] == "approved"
     assert aggregate({"m1": r, "m2": r, "m3": a})[0] == "rejected"
@@ -103,8 +103,8 @@ class FakeClient:
 
 
 def test_run_review_resumes_counts_cost_and_stops_at_the_budget(draft, omop_db, tmp_path):
-    from medbench.tasks.text2sql import load_questions
-    from medbench.tasks.text2sql_llm_review import run_review
+    from benchtoward.tasks.text2sql import load_questions
+    from benchtoward.tasks.text2sql_llm_review import run_review
     _, items = load_questions(draft)
     replies = {m: {i.id: _verdict("approve") for i in items} for m in REVIEWERS}
     calls = []
@@ -136,10 +136,10 @@ class Retrying:
 
 
 def test_run_review_reserves_every_attempt_and_charges_failed_ones_like_the_asker(draft, omop_db, tmp_path):
-    from medbench.tasks.synthetic_snuh import connect_readonly
-    from medbench.tasks.text2sql import load_questions, schema_summary
-    from medbench.tasks.text2sql_llm_fix import Budget, worst_case_usd
-    from medbench.tasks.text2sql_llm_review import MAX_TOKENS, render_review_messages, run_review
+    from benchtoward.tasks.synthetic_snuh import connect_readonly
+    from benchtoward.tasks.text2sql import load_questions, schema_summary
+    from benchtoward.tasks.text2sql_llm_fix import Budget, worst_case_usd
+    from benchtoward.tasks.text2sql_llm_review import MAX_TOKENS, render_review_messages, run_review
     _, items = load_questions(draft)
     items = items[:1]
     con = connect_readonly(omop_db)
@@ -160,9 +160,9 @@ def test_run_review_reserves_every_attempt_and_charges_failed_ones_like_the_aske
 
 
 def test_a_review_request_that_raises_is_charged_and_recorded(draft, omop_db, tmp_path):
-    from medbench.tasks.text2sql import load_questions
-    from medbench.tasks.text2sql_llm_fix import Budget
-    from medbench.tasks.text2sql_llm_review import run_review
+    from benchtoward.tasks.text2sql import load_questions
+    from benchtoward.tasks.text2sql_llm_fix import Budget
+    from benchtoward.tasks.text2sql_llm_review import run_review
 
     class Broken:
         async def chat(self, model_id, messages, *, max_tokens, temperature=0.0, extra=None, before_attempt=None):
@@ -181,9 +181,9 @@ def test_a_review_request_that_raises_is_charged_and_recorded(draft, omop_db, tm
 def test_review_workbook_has_consensus_and_each_models_verdict(draft, omop_db, tmp_path):
     import openpyxl
 
-    from medbench.tasks.text2sql import load_questions
-    from medbench.tasks.text2sql_llm_review import run_review, write_review_workbook
-    from medbench.tasks.text2sql_review import HEADERS, apply_review
+    from benchtoward.tasks.text2sql import load_questions
+    from benchtoward.tasks.text2sql_llm_review import run_review, write_review_workbook
+    from benchtoward.tasks.text2sql_review import HEADERS, apply_review
     _, items = load_questions(draft)
     replies = {m: {i.id: _verdict("approve") for i in items} for m in REVIEWERS}
     replies["google/gemini-4-argon"]["q-002"] = _verdict("needs_edit", fix="say 'persons', not 'patients'")
@@ -203,7 +203,7 @@ def test_review_workbook_has_consensus_and_each_models_verdict(draft, omop_db, t
 def test_preview_is_stable_when_row_order_does_not_matter():
     from types import SimpleNamespace
 
-    from medbench.tasks.text2sql_llm_review import _preview
+    from benchtoward.tasks.text2sql_llm_review import _preview
     a = SimpleNamespace(error=None, columns=["x"], rows=[(2,), (1,), (3,)])
     b = SimpleNamespace(error=None, columns=["x"], rows=[(3,), (2,), (1,)])
     assert _preview(a, order_matters=False) == _preview(b, order_matters=False)   # cache key must not change
@@ -211,6 +211,6 @@ def test_preview_is_stable_when_row_order_does_not_matter():
 
 
 def test_parse_review_accepts_raw_newlines_inside_strings():
-    from medbench.tasks.text2sql_llm_review import parse_review
+    from benchtoward.tasks.text2sql_llm_review import parse_review
     text = '{"verdict": "approve", "reason": "line one\nline two", "fix": ""}'
     assert parse_review(text)["reason"] == "line one\nline two"

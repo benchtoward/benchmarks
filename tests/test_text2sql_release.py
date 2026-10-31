@@ -9,9 +9,9 @@ import pytest
 import yaml
 from typer.testing import CliRunner
 
-from medbench.tasks import text2sql_release as rel
-from medbench.tasks import text2sql_task as t2s
-from medbench.tasks.text2sql import HARD_PROMPT, P0, load_questions, render_messages, schema_summary
+from benchtoward.tasks import text2sql_release as rel
+from benchtoward.tasks import text2sql_task as t2s
+from benchtoward.tasks.text2sql import HARD_PROMPT, P0, load_questions, render_messages, schema_summary
 from test_text2sql_task import DRAFTS, EASY, HARD, SPEC_FILE, Fixture, _write_draft, needs_drafts, needs_spec
 
 
@@ -126,9 +126,9 @@ def test_without_the_public_commit_the_release_says_it_is_pending(fx, tmp_path):
 
 def test_the_command_builds_into_the_data_folder_and_keeps_an_earlier_build(fx, tmp_path, monkeypatch):
     reg = fx.write_registry()
-    monkeypatch.setenv("MEDBENCH_REGISTRY_DIR", str(reg))
-    monkeypatch.setenv("MEDBENCH_DATA_DIR", str(fx.data_dir))
-    from medbench.cli import app
+    monkeypatch.setenv("BENCHTOWARD_REGISTRY_DIR", str(reg))
+    monkeypatch.setenv("BENCHTOWARD_DATA_DIR", str(fx.data_dir))
+    from benchtoward.cli import app
     runner = CliRunner()
     result = runner.invoke(app, ["text2sql", "khdp-package"])
     assert result.exit_code == 0, result.stdout

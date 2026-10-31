@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 from sklearn.metrics import roc_auc_score
 
-from medbench.baselines import arrhythmia as base
+from benchtoward.baselines import arrhythmia as base
 
 HZ = 500
 
@@ -77,8 +77,8 @@ def _instances(n=300, seed=3):
 
 def test_run_baselines_records_prior_and_gradient_boosting(tmp_session, tmp_path):
     from conftest import REGISTRY_DIR
-    from medbench.db import ItemResult
-    from medbench.registry import load_registry, resolve_task
+    from benchtoward.db import ItemResult
+    from benchtoward.registry import load_registry, resolve_task
 
     load_registry(tmp_session, REGISTRY_DIR)
     df, features = _instances()
@@ -101,7 +101,7 @@ def test_run_baselines_records_prior_and_gradient_boosting(tmp_session, tmp_path
 
 def test_baseline_runs_change_when_data_changes(tmp_session, tmp_path):
     from conftest import REGISTRY_DIR
-    from medbench.registry import load_registry, resolve_task
+    from benchtoward.registry import load_registry, resolve_task
 
     load_registry(tmp_session, REGISTRY_DIR)
     task = resolve_task(tmp_session, "vitaldb-arrhythmia-abnormal")

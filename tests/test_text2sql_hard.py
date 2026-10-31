@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pytest
 
-from medbench.llm import ChatResult
+from benchtoward.llm import ChatResult
 
 CLAUDE, GPT, GEMINI = "anthropic/claude-opus-5.5", "openai/gpt-6-astra", "google/gemini-4-argon"
 MODELS = [CLAUDE, GPT, GEMINI]
@@ -138,7 +138,7 @@ def _verdict(v="approve", reason=None, fix=""):
 # ---- generation ----
 
 def test_proposers_rotate_by_category_so_every_category_has_every_model():
-    from medbench.tasks.text2sql_hard import PLAN, plan_batches
+    from benchtoward.tasks.text2sql_hard import PLAN, plan_batches
     batches = plan_batches(MODELS)
     by_category = {}
     for b in batches:
@@ -154,7 +154,7 @@ def test_proposers_rotate_by_category_so_every_category_has_every_model():
 
 
 def test_parse_items_takes_the_batch_category_and_keeps_answerability():
-    from medbench.tasks.text2sql_hard import parse_items
+    from benchtoward.tasks.text2sql_hard import parse_items
     text = json.dumps({"items": [item("가", "a", "SELECT 1;", category="other"), item("나", "b", None),
                                  {"question_ko": "다"}, item("라", "d", "SELECT 2", order=True)]})
     rows = parse_items("Here:\n```json\n" + text + "\n```", "clinical_terms")
@@ -166,8 +166,8 @@ def test_parse_items_takes_the_batch_category_and_keeps_answerability():
 
 
 def test_a_question_may_not_quote_a_concept_name_its_reference_uses(hard_db):
-    from medbench.tasks.synthetic_snuh import connect_readonly
-    from medbench.tasks.text2sql_hard import as_question, item_problem
+    from benchtoward.tasks.synthetic_snuh import connect_readonly
+    from benchtoward.tasks.text2sql_hard import as_question, item_problem
     con = connect_readonly(hard_db)
     sql = ("SELECT count(DISTINCT co.person_id) FROM condition_occurrence co JOIN concept c ON c.concept_id = "
            "co.condition_concept_id WHERE c.concept_name = 'Type 2 diabetes mellitus'")
@@ -181,8 +181,8 @@ def test_a_question_may_not_quote_a_concept_name_its_reference_uses(hard_db):
 
 
 def test_the_profile_lists_concepts_in_use_and_the_data_quality_facts(hard_db):
-    from medbench.tasks.synthetic_snuh import connect_readonly
-    from medbench.tasks.text2sql_hard import data_profile
+    from benchtoward.tasks.synthetic_snuh import connect_readonly
+    from benchtoward.tasks.text2sql_hard import data_profile
     text = data_profile(connect_readonly(hard_db))
     assert "201826 | Type 2 diabetes mellitus | 2 | 3 | E11.9" in text                 # patients, records, KCD
     assert "Screening procedure (Measurement) 1" in text                               # non-Condition domain
@@ -201,8 +201,8 @@ def _good(category, n):
 
 
 def test_generation_checks_every_reference_and_sends_failures_back_once(hard_db, tmp_path):
-    from medbench.tasks.text2sql_hard import run_generate
-    from medbench.tasks.text2sql_llm_fix import Budget
+    from benchtoward.tasks.text2sql_hard import run_generate
+    from benchtoward.tasks.text2sql_llm_fix import Budget
     plan = {"clinical_terms": [3, 2], "unanswerable": [2]}
 
     def generate(model, category, user):
@@ -238,8 +238,8 @@ def test_generation_checks_every_reference_and_sends_failures_back_once(hard_db,
 
 
 def test_a_duplicate_across_categories_is_dropped_from_the_later_one(hard_db, tmp_path):
-    from medbench.tasks.text2sql_hard import run_generate
-    from medbench.tasks.text2sql_llm_fix import Budget
+    from benchtoward.tasks.text2sql_hard import run_generate
+    from benchtoward.tasks.text2sql_llm_fix import Budget
     same = "SELECT count(*) FROM drug_exposure WHERE atc_cd IS NULL"
     fake = Models(lambda model, category, user: [item(f"{category}", f"{category} q", same)],
                   repair=lambda *a: [])
@@ -251,8 +251,8 @@ def test_a_duplicate_across_categories_is_dropped_from_the_later_one(hard_db, tm
 
 
 def test_the_budget_stops_generation_and_reports_the_batch(hard_db, tmp_path):
-    from medbench.tasks.text2sql_hard import run_generate
-    from medbench.tasks.text2sql_llm_fix import Budget
+    from benchtoward.tasks.text2sql_hard import run_generate
+    from benchtoward.tasks.text2sql_llm_fix import Budget
     fake = Models(lambda *a: _good("clinical_terms", 2))
     result = asyncio.run(run_generate(hard_db, fake.clients(), {m: (10.0, 50.0) for m in MODELS}, tmp_path / "gen",
                                       Budget(0.5), models=MODELS, existing=[], plan={"clinical_terms": [2]}))
@@ -270,8 +270,8 @@ questions: []
 
 
 def test_append_items_writes_pending_items_that_read_back(tmp_path):
-    from medbench.tasks.text2sql import load_questions
-    from medbench.tasks.text2sql_hard import append_items
+    from benchtoward.tasks.text2sql import load_questions
+    from benchtoward.tasks.text2sql_hard import append_items
     draft = tmp_path / "hard.yaml"
     draft.write_text(HARD_HEADER, encoding="utf-8")
     rows = [{**item("제2형 당뇨병: 환자 수", "T2DM: how many?", "SELECT 1\n\nFROM person", category="clinical_terms",
@@ -289,7 +289,7 @@ def test_append_items_writes_pending_items_that_read_back(tmp_path):
     text = draft.read_text(encoding="utf-8")
     assert text.startswith("# DRAFT header") and "proposed_by: openai/gpt-6-astra" in text
     assert "# ---------------------------------------------------------------- unanswerable" in text
-    from medbench.tasks.text2sql_hard import batch_round, draft_batches, parse_plan
+    from benchtoward.tasks.text2sql_hard import batch_round, draft_batches, parse_plan
     assert draft_batches(draft) == {"syn-hard-001": "clinical_terms/g1/b1", "syn-hard-002": "unanswerable/g1/b1",
                                     "syn-hard-003": "clinical_terms/g2/b1"}
     assert batch_round("clinical_terms/g2/b1") == 2 and batch_round(None) is None
@@ -301,7 +301,7 @@ def test_append_items_writes_pending_items_that_read_back(tmp_path):
 # ---- review ----
 
 def _draft_with_items(tmp_path, hard_db):
-    from medbench.tasks.text2sql_hard import append_items
+    from benchtoward.tasks.text2sql_hard import append_items
     draft = tmp_path / "hard.yaml"
     draft.write_text(HARD_HEADER, encoding="utf-8")
     rows = [{**r, "category": c, "proposer": CLAUDE, "gen_round": 1, "batch": f"{c}/g1/b1"}
@@ -314,9 +314,9 @@ def _draft_with_items(tmp_path, hard_db):
 
 
 def test_only_unanimous_approval_keeps_an_item_and_everything_else_goes_to_the_fix(hard_db, tmp_path):
-    from medbench.tasks.text2sql import load_questions
-    from medbench.tasks.text2sql_hard import apply_reviews, collect_reviews, run_hard_review
-    from medbench.tasks.text2sql_llm_fix import Budget
+    from benchtoward.tasks.text2sql import load_questions
+    from benchtoward.tasks.text2sql_hard import apply_reviews, collect_reviews, run_hard_review
+    from benchtoward.tasks.text2sql_llm_fix import Budget
     draft = _draft_with_items(tmp_path, hard_db)
     _, items = load_questions(draft)
 
@@ -349,9 +349,9 @@ def test_only_unanimous_approval_keeps_an_item_and_everything_else_goes_to_the_f
 
 
 def test_the_first_review_asks_about_several_items_at_once_with_the_same_rubric(hard_db, tmp_path):
-    from medbench.tasks.text2sql import load_questions
-    from medbench.tasks.text2sql_hard import collect_reviews, run_hard_review
-    from medbench.tasks.text2sql_llm_fix import Budget
+    from benchtoward.tasks.text2sql import load_questions
+    from benchtoward.tasks.text2sql_hard import collect_reviews, run_hard_review
+    from benchtoward.tasks.text2sql_llm_fix import Budget
     draft = _draft_with_items(tmp_path, hard_db)
     _, items = load_questions(draft)
     seen = []
@@ -379,16 +379,16 @@ def test_the_first_review_asks_about_several_items_at_once_with_the_same_rubric(
 
 
 def test_parse_batch_review_keeps_only_valid_verdicts_for_the_asked_ids():
-    from medbench.tasks.text2sql_llm_review import parse_batch_review
+    from benchtoward.tasks.text2sql_llm_review import parse_batch_review
     body = {"reviews": [{"id": "a", **_verdict()}, {"id": "b", "verdict": "maybe"}, {"id": "z", **_verdict()}]}
     assert parse_batch_review(json.dumps(body), ["a", "b"]) == {"a": {"id": "a", **_verdict()}}
     assert parse_batch_review("nothing", ["a"]) is None
 
 
 def test_review_incomplete_under_the_budget_leaves_items_pending(hard_db, tmp_path):
-    from medbench.tasks.text2sql import load_questions
-    from medbench.tasks.text2sql_hard import apply_reviews, run_hard_review
-    from medbench.tasks.text2sql_llm_fix import Budget
+    from benchtoward.tasks.text2sql import load_questions
+    from benchtoward.tasks.text2sql_hard import apply_reviews, run_hard_review
+    from benchtoward.tasks.text2sql_llm_fix import Budget
     draft = _draft_with_items(tmp_path, hard_db)
     _, items = load_questions(draft)
     fake = Models(None, review=lambda m, u: _verdict())
@@ -400,7 +400,7 @@ def test_review_incomplete_under_the_budget_leaves_items_pending(hard_db, tmp_pa
 
 
 def test_spend_report_separates_route_billed_from_estimates(tmp_path):
-    from medbench.tasks.text2sql_hard import spend_report
+    from benchtoward.tasks.text2sql_hard import spend_report
     (tmp_path / "generate").mkdir()
     (tmp_path / "fix").mkdir()
     (tmp_path / "generate" / "m.jsonl").write_text(

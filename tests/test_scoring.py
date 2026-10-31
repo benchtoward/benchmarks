@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from medbench.scoring import accuracy_ci, binary_metrics_ci
+from benchtoward.scoring import accuracy_ci, binary_metrics_ci
 
 
 def test_accuracy_counts_none_as_wrong():
@@ -39,7 +39,7 @@ def test_binary_metrics_ci_brackets_value():
 
 
 def test_paired_rank_ranges_separated_and_tied():
-    from medbench.scoring import paired_rank_ranges
+    from benchtoward.scoring import paired_rank_ranges
 
     rng = np.random.default_rng(0)
     strong = rng.random(1000) < 0.9
@@ -55,7 +55,7 @@ def test_paired_rank_ranges_separated_and_tied():
 
 
 def test_paired_rank_ranges_lower_is_better_and_groups():
-    from medbench.scoring import paired_rank_ranges
+    from benchtoward.scoring import paired_rank_ranges
 
     groups = np.repeat(np.arange(100), 3)
     ranges = paired_rank_ranges(lambda idx: [0.1, 0.3], n_items=300, groups=groups, higher_is_better=False, n_boot=50)
@@ -63,7 +63,7 @@ def test_paired_rank_ranges_lower_is_better_and_groups():
 
 
 def test_shared_rank_counts_only_clearly_better_models():
-    from medbench.scoring import paired_rank_stats
+    from benchtoward.scoring import paired_rank_stats
 
     rng = np.random.default_rng(0)
     a = rng.random(1000) < 0.90
@@ -77,7 +77,7 @@ def test_shared_rank_counts_only_clearly_better_models():
 
 
 def test_threshold_metrics_known_confusion():
-    from medbench.scoring import threshold_metrics_ci
+    from benchtoward.scoring import threshold_metrics_ci
 
     y = np.array([1, 1, 0, 0, 1, 0])
     s = np.array([0.9, 0.2, 0.6, 0.1, 0.5, 0.49])   # 0.5 counts as positive
@@ -88,7 +88,7 @@ def test_threshold_metrics_known_confusion():
 
 
 def test_threshold_metrics_perfect_and_cluster_bootstrap():
-    from medbench.scoring import threshold_metrics_ci
+    from benchtoward.scoring import threshold_metrics_ci
 
     rng = np.random.default_rng(0)
     y = rng.integers(0, 2, 400)
@@ -104,7 +104,7 @@ def test_threshold_metrics_perfect_and_cluster_bootstrap():
 
 
 def test_threshold_metrics_skip_resamples_without_a_class():
-    from medbench.scoring import threshold_metrics_ci
+    from benchtoward.scoring import threshold_metrics_ci
 
     y = np.array([1, 0, 0, 0])
     r = threshold_metrics_ci(y, np.array([0.9, 0.1, 0.1, 0.1]), np.array([0, 1, 2, 3]), n_boot=200)
@@ -117,7 +117,7 @@ def test_threshold_metrics_skip_resamples_without_a_class():
 
 
 def test_multiclass_metrics_known_confusion():
-    from medbench.scoring import multiclass_metrics_ci
+    from benchtoward.scoring import multiclass_metrics_ci
 
     y = np.array(["N"] * 6 + ["S"] * 3 + ["V"] * 1)
     p = np.array(["N", "N", "N", "N", "S", "Q", "S", "S", "N", "V"])   # Q: a valid answer that is no class here
@@ -136,7 +136,7 @@ def test_multiclass_metrics_known_confusion():
 
 
 def test_multiclass_macro_f1_averages_classes_present_in_the_reference():
-    from medbench.scoring import multiclass_metrics_ci
+    from benchtoward.scoring import multiclass_metrics_ci
 
     y = np.array(["N", "N", "S", "S"])
     r = multiclass_metrics_ci(y, y.copy(), np.arange(4), classes=["N", "S", "V"], n_boot=50)
@@ -148,7 +148,7 @@ def test_multiclass_macro_f1_averages_classes_present_in_the_reference():
 
 
 def test_multiclass_bootstrap_is_by_group_seeded_and_brackets_the_value():
-    from medbench.scoring import multiclass_metrics_ci
+    from benchtoward.scoring import multiclass_metrics_ci
 
     rng = np.random.default_rng(0)
     y = rng.choice(["A", "B", "C"], 600)
@@ -167,7 +167,7 @@ def test_multiclass_bootstrap_is_by_group_seeded_and_brackets_the_value():
 def test_multiclass_bootstrap_keeps_the_full_reference_classes_and_redraws_resamples_without_one():
     from sklearn.metrics import f1_score
 
-    from medbench.scoring import multiclass_metrics_ci
+    from benchtoward.scoring import multiclass_metrics_ci
 
     rng = np.random.default_rng(1)
     groups = np.repeat(np.arange(12), 20)
@@ -194,7 +194,7 @@ def test_multiclass_bootstrap_keeps_the_full_reference_classes_and_redraws_resam
 
 
 def test_multiclass_bootstrap_gives_up_on_a_reference_it_cannot_resample():
-    from medbench.scoring import multiclass_metrics_ci
+    from benchtoward.scoring import multiclass_metrics_ci
 
     groups = np.arange(400)
     y = np.array(["A"] * 360 + [f"C{i}" for i in range(40)])   # 40 classes in one group each
@@ -206,7 +206,7 @@ def test_multiclass_bootstrap_gives_up_on_a_reference_it_cannot_resample():
 def test_multiclass_bootstrap_caps_redraws_per_resample_not_in_total(monkeypatch):
     """The bootstrap gives up when one resample needs more than MAX_REDRAWS_PER_RESAMPLE redraws in a row, however
     few redraws the other resamples needed (review of PR #89)."""
-    from medbench import scoring
+    from benchtoward import scoring
 
     rng = np.random.default_rng(1)
     groups = np.repeat(np.arange(12), 20)

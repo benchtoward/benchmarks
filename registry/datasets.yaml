@@ -69,6 +69,16 @@
   khdp_code: kor-surgical-robot-voice-command
   version: 1.0.0
 
+- slug: syn-snuh
+  title: "Synthetic SNUH (SYN-SNUH): OMOP CDM v5.4 synthetic EHR with LLM-generated Korean clinical notes"
+  modality: text
+  license: CC BY 4.0
+  license_url: https://creativecommons.org/licenses/by/4.0/
+  source_url: https://doi.org/10.23421/2026.0770
+  citation: "Hyungchul. Synthetic SNUH (version 1.0.0). Seoul National University Hospital. KHDP. 2026. doi:10.23421/2026.0770"
+  khdp_code: SYN-SNUH
+  version: 1.0.0
+
 - slug: lydus-snuh-ecg-50k
   title: SNUH LYDUS ECG 50K
   modality: biosignal
@@ -81,6 +91,17 @@
   khdp_code: LYDUS-SNUH-ECG-50K
   version: 1.1.1
 
+- slug: syn-icu
+  title: Synthetic K-MIMIC (SYN-ICU)
+  modality: structured
+  license: CC BY 4.0
+  license_url: https://creativecommons.org/licenses/by/4.0/
+  source_url: https://khdp.net/database/data-search-detail/723/SYN-ICU/2.0.0
+  # GAN-generated (EHR-safe) from SNUH's ICU registry K-MIMIC; accepted as SNUH data by the owner (2026-10-30).
+  # The patient split comes from its MEDS version KMM 1.0.0 (doi:10.23421/2026.0762, CC BY 4.0).
+  citation: "Seoul National University Hospital. Synthetic K-MIMIC (SYN-ICU), version 2.0.0. KHDP. 2025. doi:10.23421/2025.0723"
+  khdp_code: SYN-ICU
+  version: 2.0.0
 - slug: synthetic-snuh
   title: Synthetic-SNUH v4
   modality: structured

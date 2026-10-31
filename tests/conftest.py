@@ -59,7 +59,7 @@ def omop_db(tmp_path) -> Path:
 
 @pytest.fixture
 def tmp_session():
-    from medbench.db import init_db, make_engine, session_factory
+    from benchtoward.db import init_db, make_engine, session_factory
 
     engine = make_engine("sqlite://")
     init_db(engine)
@@ -73,6 +73,8 @@ def _scratch_job_ledger(tmp_path_factory):
     """Commands that record their jobs in a ledger write to a scratch folder during tests, never the real one."""
     import os
 
-    os.environ["MEDBENCH_ORCH_DIR"] = str(tmp_path_factory.mktemp("orch"))
-    os.environ.pop("MEDBENCH_ORCH_JOB", None)
+    for name in [k for k in os.environ if k.startswith("MEDBENCH_")]:  # old names are still read (benchtoward.envnames):
+        os.environ.pop(name)                                           # none from the shell may reach a test
+    os.environ["BENCHTOWARD_ORCH_DIR"] = str(tmp_path_factory.mktemp("orch"))
+    os.environ.pop("BENCHTOWARD_ORCH_JOB", None)
     yield

@@ -1,6 +1,6 @@
 import httpx
 
-from medbench.khdp import KhdpClient, submission_label
+from benchtoward.khdp import KhdpClient, submission_label
 
 
 def _client(handler):

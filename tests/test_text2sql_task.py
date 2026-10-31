@@ -14,12 +14,12 @@ import yaml
 from typer.testing import CliRunner
 
 from conftest import REGISTRY_DIR, make_omop_db, plain
-from medbench.db import ItemResult, Model, Run, Task
-from medbench.llm import ChatResult
-from medbench.registry import load_registry
-from medbench.tasks.synthetic_snuh import connect_readonly, db_path
-from medbench.tasks.text2sql import ABSTAIN, HARD_PROMPT, P0, _prompt_sha, render_messages, schema_summary
-from medbench.tasks import text2sql_task as t2s
+from benchtoward.db import ItemResult, Model, Run, Task
+from benchtoward.llm import ChatResult
+from benchtoward.registry import load_registry
+from benchtoward.tasks.synthetic_snuh import connect_readonly, db_path
+from benchtoward.tasks.text2sql import ABSTAIN, HARD_PROMPT, P0, _prompt_sha, render_messages, schema_summary
+from benchtoward.tasks import text2sql_task as t2s
 
 SPEC_FILE = REGISTRY_DIR / "tasks" / "synthetic-snuh-text2sql.yaml"
 DRAFTS = REGISTRY_DIR / "drafts"
@@ -185,8 +185,8 @@ def test_the_items_release_and_its_doi_never_change_the_spec_hash():
     """Owner, 2026-10-30: the items are released on KHDP as a medbench-built dataset. The spec says where, and gets
     the DOI once KHDP assigns it, in `items_release`, a presentational field: recording either leaves the spec hash,
     and so every recorded run, as it is."""
-    from medbench.registry import PRESENTATIONAL_FIELDS
-    from medbench.runkey import spec_hash
+    from benchtoward.registry import PRESENTATIONAL_FIELDS
+    from benchtoward.runkey import spec_hash
 
     spec = yaml.safe_load(SPEC_FILE.read_text(encoding="utf-8"))
     release = spec["items_release"]
@@ -214,7 +214,7 @@ def test_spec_is_a_protocol_transfer_with_every_medbench_made_part_listed():
 
 @needs_spec
 def test_registry_loads_the_task_with_its_dataset_and_priors(tmp_session):
-    from medbench.registry import resolve_task
+    from benchtoward.registry import resolve_task
 
     load_registry(tmp_session, REGISTRY_DIR)
     task = tmp_session.query(Task).filter_by(slug="synthetic-snuh-text2sql", version=0).one()
@@ -559,10 +559,10 @@ class CliEnv:
         self.fx = fx
         self.db = tmp_path / "medbench.db"
         reg = fx.write_registry()
-        monkeypatch.setenv("MEDBENCH_REGISTRY_DIR", str(reg))
-        monkeypatch.setenv("MEDBENCH_DATA_DIR", str(fx.data_dir))
-        monkeypatch.setenv("MEDBENCH_DB_URL", f"sqlite:///{self.db}")
-        from medbench.cli import app
+        monkeypatch.setenv("BENCHTOWARD_REGISTRY_DIR", str(reg))
+        monkeypatch.setenv("BENCHTOWARD_DATA_DIR", str(fx.data_dir))
+        monkeypatch.setenv("BENCHTOWARD_DB_URL", f"sqlite:///{self.db}")
+        from benchtoward.cli import app
         self.app, self.runner = app, CliRunner()
 
     def invoke(self, *args):

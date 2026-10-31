@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pytest
 
-from medbench.tasks.text2sql import load_questions
+from benchtoward.tasks.text2sql import load_questions
 
 DRAFT = """# DRAFT header comment that must survive
 status: "DRAFT"
@@ -52,7 +52,7 @@ def draft(tmp_path):
 def test_export_writes_one_row_per_question_with_results_and_a_dropdown(draft, omop_db, tmp_path):
     import openpyxl
 
-    from medbench.tasks.text2sql_review import HEADERS, export_review
+    from benchtoward.tasks.text2sql_review import HEADERS, export_review
     out = export_review(draft, omop_db, tmp_path / "review.xlsx")
     wb = openpyxl.load_workbook(out)
     ws = wb["검토"]
@@ -72,7 +72,7 @@ def test_export_writes_one_row_per_question_with_results_and_a_dropdown(draft, o
 def test_apply_writes_decisions_and_notes_back_and_keeps_comments(draft, omop_db, tmp_path):
     import openpyxl
 
-    from medbench.tasks.text2sql_review import HEADERS, apply_review, export_review
+    from benchtoward.tasks.text2sql_review import HEADERS, apply_review, export_review
     out = export_review(draft, omop_db, tmp_path / "review.xlsx")
     wb = openpyxl.load_workbook(out)
     ws = wb["검토"]
@@ -97,7 +97,7 @@ def test_apply_writes_decisions_and_notes_back_and_keeps_comments(draft, omop_db
 def test_apply_rejects_unknown_ids_and_values(draft, omop_db, tmp_path):
     import openpyxl
 
-    from medbench.tasks.text2sql_review import HEADERS, apply_review, export_review
+    from benchtoward.tasks.text2sql_review import HEADERS, apply_review, export_review
     out = export_review(draft, omop_db, tmp_path / "review.xlsx")
     wb = openpyxl.load_workbook(out)
     ws = wb["검토"]

@@ -5,8 +5,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from medbench.tasks import vitaldb_arrhythmia_abnormal as task
-from medbench.tasks.vitaldb_split import caseid_split
+from benchtoward.tasks import vitaldb_arrhythmia_abnormal as task
+from benchtoward.tasks.vitaldb_split import caseid_split
 
 HZ = 500
 
@@ -278,8 +278,8 @@ def test_registry_has_the_task_and_baseline_and_no_coming_soon_card(tmp_session)
     import yaml
 
     from conftest import REGISTRY_DIR
-    from medbench.db import Model
-    from medbench.registry import load_registry, resolve_task
+    from benchtoward.db import Model
+    from benchtoward.registry import load_registry, resolve_task
 
     load_registry(tmp_session, REGISTRY_DIR)
     row = resolve_task(tmp_session, "vitaldb-arrhythmia-abnormal")
@@ -294,7 +294,7 @@ def test_registry_has_the_task_and_baseline_and_no_coming_soon_card(tmp_session)
 def test_cli_registers_fetch_build_and_baseline():
     from typer.testing import CliRunner
 
-    from medbench.cli import app
+    from benchtoward.cli import app
 
     runner = CliRunner()
     assert "vitaldb-arrhythmia-ecg" in runner.invoke(app, ["fetch", "--help"]).output

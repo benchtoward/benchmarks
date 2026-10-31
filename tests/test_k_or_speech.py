@@ -6,9 +6,9 @@ import httpx
 import numpy as np
 import pytest
 
-from medbench.khdp import KhdpClient
-from medbench.scoring import edit_distance, error_rate_ci
-from medbench.tasks.k_or_speech import (ROOT_IN_ZIP, VOICES, AudioReader, Clip, asr_metrics, fetch_audio, load_clips,
+from benchtoward.khdp import KhdpClient
+from benchtoward.scoring import edit_distance, error_rate_ci
+from benchtoward.tasks.k_or_speech import (ROOT_IN_ZIP, VOICES, AudioReader, Clip, asr_metrics, fetch_audio, load_clips,
                                         normalise, score_item)
 
 # ---- normalisation ----

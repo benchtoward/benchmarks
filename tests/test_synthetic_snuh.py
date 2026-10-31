@@ -7,8 +7,8 @@ import httpx
 import pandas as pd
 import pytest
 
-from medbench.khdp import KhdpClient
-from medbench.tasks.synthetic_snuh import (CDM_ZIP, build_duckdb, connect_readonly, db_path, dataset_dir, fetch_cdm,
+from benchtoward.khdp import KhdpClient
+from benchtoward.tasks.synthetic_snuh import (CDM_ZIP, build_duckdb, connect_readonly, db_path, dataset_dir, fetch_cdm,
                                            table_counts)
 
 ROWS = {"person": 3, "concept": 4, "condition_occurrence": 3, "death": 0}

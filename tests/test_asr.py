@@ -3,10 +3,10 @@ import asyncio
 import httpx
 import pytest
 
-from medbench.asr import ASRClient, asr_client_for, audio_cost_usd, billed_minutes
-from medbench.config import Settings
-from medbench.db import Model
-from medbench.llm import MissingCredential
+from benchtoward.asr import ASRClient, asr_client_for, audio_cost_usd, billed_minutes
+from benchtoward.config import Settings
+from benchtoward.db import Model
+from benchtoward.llm import MissingCredential
 
 
 class Sleeps(list):

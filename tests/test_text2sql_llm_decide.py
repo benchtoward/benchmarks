@@ -7,7 +7,7 @@ from pathlib import Path
 import pytest
 import yaml
 
-from medbench.llm import ChatResult
+from benchtoward.llm import ChatResult
 
 CLAUDE, GPT, GEMINI = "anthropic/claude-opus-5.5", "openai/gpt-6-astra", "google/gemini-4-argon"
 MODELS = [GPT, GEMINI, CLAUDE]
@@ -48,7 +48,7 @@ questions:
 
 
 def _decisions():
-    from medbench.tasks.text2sql_llm_decide import Decision, Option
+    from benchtoward.tasks.text2sql_llm_decide import Decision, Option
     return [
         Decision("naewon", 'Korean "내원"', "How should Korean 내원 be read?", "keep", [
             Option("keep", "Leave everything as it is.", "none"),
@@ -94,7 +94,7 @@ def draft(tmp_path):
 
 
 def test_parse_choice_accepts_only_offered_options():
-    from medbench.tasks.text2sql_llm_decide import parse_choice
+    from benchtoward.tasks.text2sql_llm_decide import parse_choice
     assert parse_choice("```json\n" + _vote("note") + "\n```", ["keep", "note"]) == {"choice": "note",
                                                                                       "reason": "r note"}
     assert parse_choice(_vote("something_else"), ["keep", "note"]) is None
@@ -102,7 +102,7 @@ def test_parse_choice_accepts_only_offered_options():
 
 
 def test_two_of_three_win_and_no_majority_keeps_v0():
-    from medbench.tasks.text2sql_llm_decide import tally
+    from benchtoward.tasks.text2sql_llm_decide import tally
     def v(c):
         return {"choice": c, "reason": ""}
     assert tally({"a": v("note"), "b": v("note"), "c": v("keep")}, "keep") == ("note", True)
@@ -112,8 +112,8 @@ def test_two_of_three_win_and_no_majority_keeps_v0():
 
 
 def test_run_decide_asks_every_model_about_every_decision_with_protocol_options_and_facts(draft, tmp_path):
-    from medbench.tasks.text2sql_llm_decide import run_decide
-    from medbench.tasks.text2sql_llm_fix import Budget
+    from benchtoward.tasks.text2sql_llm_decide import run_decide
+    from benchtoward.tasks.text2sql_llm_fix import Budget
     votes = {"naewon": {GPT: _vote("note"), GEMINI: _vote("note"), CLAUDE: _vote("reword")},
              "unanswerable": {GPT: _vote("later"), GEMINI: _vote("not_in_v0"), CLAUDE: _vote("later")},
              "split": {GPT: _vote("none"), GEMINI: _vote("dev_test"), CLAUDE: "no idea"},
@@ -139,9 +139,9 @@ def test_run_decide_asks_every_model_about_every_decision_with_protocol_options_
 
 
 def test_write_decisions_records_votes_and_removes_resolved_entries(draft, tmp_path):
-    from medbench.tasks.text2sql import load_questions
-    from medbench.tasks.text2sql_llm_decide import run_decide, write_decisions
-    from medbench.tasks.text2sql_llm_fix import Budget
+    from benchtoward.tasks.text2sql import load_questions
+    from benchtoward.tasks.text2sql_llm_decide import run_decide, write_decisions
+    from benchtoward.tasks.text2sql_llm_fix import Budget
     votes = {"naewon": {GPT: _vote("note"), GEMINI: _vote("note"), CLAUDE: _vote("reword")},
              "unanswerable": {GPT: _vote("later"), GEMINI: _vote("later"), CLAUDE: _vote("later")},
              "split": {GPT: _vote("none"), GEMINI: _vote("none"), CLAUDE: _vote("none")}}
@@ -168,9 +168,9 @@ def test_write_decisions_records_votes_and_removes_resolved_entries(draft, tmp_p
 
 
 def test_write_decisions_is_idempotent_and_keeps_earlier_records(draft, tmp_path):
-    from medbench.tasks.text2sql import load_questions
-    from medbench.tasks.text2sql_llm_decide import run_decide, write_decisions
-    from medbench.tasks.text2sql_llm_fix import Budget
+    from benchtoward.tasks.text2sql import load_questions
+    from benchtoward.tasks.text2sql_llm_decide import run_decide, write_decisions
+    from benchtoward.tasks.text2sql_llm_fix import Budget
     votes = {"naewon": {m: _vote("keep") for m in MODELS}, "unanswerable": {m: _vote("later") for m in MODELS}}
     first, second = _decisions()[:1], _decisions()[1:2]
     for decisions in (first, second, second):
@@ -183,8 +183,8 @@ def test_write_decisions_is_idempotent_and_keeps_earlier_records(draft, tmp_path
 
 
 def test_facts_give_the_dry_run_score_and_the_failed_questions(draft):
-    from medbench.tasks.text2sql import load_questions
-    from medbench.tasks.text2sql_llm_decide import facts_text
+    from benchtoward.tasks.text2sql import load_questions
+    from benchtoward.tasks.text2sql_llm_decide import facts_text
     _, items = load_questions(draft)
     summary = {"model": "free-model", "execution_accuracy": {"value": 306 / 308, "n": 308},
                "by_language": {"ko": {"value": 0.987}, "en": {"value": 1.0}}, "by_difficulty": {}}
@@ -195,7 +195,7 @@ def test_facts_give_the_dry_run_score_and_the_failed_questions(draft):
 
 @needs_drafts
 def test_every_decision_in_the_table_matches_the_real_draft():
-    from medbench.tasks.text2sql_llm_decide import DECISIONS, FREEZE
+    from benchtoward.tasks.text2sql_llm_decide import DECISIONS, FREEZE
     doc = yaml.safe_load((REPO / "registry/drafts/synthetic-snuh-text2sql-v0.yaml").read_text(encoding="utf-8"))
     entries = [" ".join(e.split()) for e in doc.get("open_decisions") or []]
     recorded = {d["key"] for d in doc.get("decisions") or []}
@@ -207,16 +207,16 @@ def test_every_decision_in_the_table_matches_the_real_draft():
 
 
 def test_v0_decide_prompt_is_unchanged_so_its_cached_votes_stay_valid(draft):
-    from medbench.tasks.text2sql import load_questions
-    from medbench.tasks.text2sql_llm_decide import _entries, render_decide_messages
-    from medbench.tasks.text2sql_llm_fix import _sha
+    from benchtoward.tasks.text2sql import load_questions
+    from benchtoward.tasks.text2sql_llm_decide import _entries, render_decide_messages
+    from benchtoward.tasks.text2sql_llm_fix import _sha
     meta, _ = load_questions(draft)
     assert _sha(render_decide_messages(_decisions()[0], meta, "FACTS", _entries(meta))) == "f9132f85c4238751"
 
 
 @needs_drafts
 def test_every_hard_decision_matches_the_hard_draft():
-    from medbench.tasks.text2sql_llm_decide import FREEZE, HARD
+    from benchtoward.tasks.text2sql_llm_decide import FREEZE, HARD
     doc = yaml.safe_load((REPO / "registry/drafts/synthetic-snuh-text2sql-hard-v0.yaml").read_text(encoding="utf-8"))
     entries = [" ".join(e.split()) for e in doc.get("open_decisions") or []]
     recorded = {d["key"] for d in doc.get("decisions") or []}
@@ -231,9 +231,9 @@ def test_every_hard_decision_matches_the_hard_draft():
 
 
 def test_the_harder_sets_vote_uses_its_note_and_records_its_own_statuses(tmp_path):
-    from medbench.tasks.text2sql import CONVENTIONS, HARD_CONVENTIONS, load_questions
-    from medbench.tasks.text2sql_llm_decide import HARD, Decision, Option, run_decide, write_decisions
-    from medbench.tasks.text2sql_llm_fix import Budget
+    from benchtoward.tasks.text2sql import CONVENTIONS, HARD_CONVENTIONS, load_questions
+    from benchtoward.tasks.text2sql_llm_decide import HARD, Decision, Option, run_decide, write_decisions
+    from benchtoward.tasks.text2sql_llm_fix import Budget
     draft = tmp_path / "hard.yaml"
     draft.write_text(DRAFT.replace("id: text2sql-omop-p0", "id: text2sql-omop-hard-p0"), encoding="utf-8")
     table = [Decision("naewon", 'Korean "내원"', "Round two?", "no", [
@@ -254,8 +254,8 @@ def test_the_harder_sets_vote_uses_its_note_and_records_its_own_statuses(tmp_pat
 
 
 def test_hard_facts_give_each_runs_scores_answers_without_sql_and_right_answers_with_sql():
-    from medbench.tasks.text2sql import Question
-    from medbench.tasks.text2sql_llm_decide import hard_facts_text
+    from benchtoward.tasks.text2sql import Question
+    from benchtoward.tasks.text2sql_llm_decide import hard_facts_text
     items = [Question("h-1", "가", "a", "SELECT 1", "clinical_terms", "hard", review="approved"),
              Question("h-2", "나", "b", None, "unanswerable", "hard", answerable=False, review="approved")]
     summary = {"model": "free", "execution_accuracy": {"value": 0.5, "n": 2, "ci_low": 0.1, "ci_high": 0.9},
@@ -277,7 +277,7 @@ def test_hard_facts_give_each_runs_scores_answers_without_sql_and_right_answers_
 # ---- the freeze decisions, shared by both tiers (2026-10-30) ----
 
 def _freeze_draft(prompt_id: str, metric: str, keys: list[str]) -> str:
-    from medbench.tasks.text2sql_llm_decide import FREEZE
+    from benchtoward.tasks.text2sql_llm_decide import FREEZE
     entries = "".join(f"  - {d.match} Background of {d.key}.\n" for d in FREEZE.table if d.key in keys)
     return (DRAFT.replace("id: text2sql-omop-p0", f"id: {prompt_id}").replace("execution accuracy (EX)", metric)
             .split("open_decisions:")[0] + "open_decisions:\n" + entries + "\nquestions:" + DRAFT.split("questions:")[1])
@@ -294,22 +294,22 @@ def tiers(tmp_path):
 
 
 def _freeze_facts(easy, hard):
-    from medbench.tasks.text2sql import load_questions
-    from medbench.tasks.text2sql_llm_decide import freeze_facts
+    from benchtoward.tasks.text2sql import load_questions
+    from benchtoward.tasks.text2sql_llm_decide import freeze_facts
     return freeze_facts(load_questions(easy)[0], load_questions(hard)[0], "SOP: the Checks section.",
                         "EVIDENCE: deepseek-v4.1-flash 0.596.")
 
 
 def _freeze_votes(**chosen):
-    from medbench.tasks.text2sql_llm_decide import FREEZE
+    from benchtoward.tasks.text2sql_llm_decide import FREEZE
     first = {d.key: d.options[0].id for d in FREEZE.table}
     return {k: {m: _vote(chosen.get(k, {}).get(m, first[k])) for m in MODELS} for k in first}
 
 
 def test_the_freeze_vote_is_asked_once_and_serves_both_tiers(tiers, tmp_path):
-    from medbench.tasks.text2sql import load_questions
-    from medbench.tasks.text2sql_llm_decide import FREEZE, run_decide, write_decisions
-    from medbench.tasks.text2sql_llm_fix import Budget
+    from benchtoward.tasks.text2sql import load_questions
+    from benchtoward.tasks.text2sql_llm_decide import FREEZE, run_decide, write_decisions
+    from benchtoward.tasks.text2sql_llm_fix import Budget
     easy, hard = tiers
     facts = _freeze_facts(easy, hard)
     voters = Voters(_freeze_votes())
@@ -341,9 +341,9 @@ def test_the_freeze_vote_is_asked_once_and_serves_both_tiers(tiers, tmp_path):
 
 
 def test_a_freeze_decision_without_majority_keeps_and_records_its_status_quo(tiers, tmp_path):
-    from medbench.tasks.text2sql import load_questions
-    from medbench.tasks.text2sql_llm_decide import FREEZE, run_decide, write_decisions
-    from medbench.tasks.text2sql_llm_fix import Budget
+    from benchtoward.tasks.text2sql import load_questions
+    from benchtoward.tasks.text2sql_llm_decide import FREEZE, run_decide, write_decisions
+    from benchtoward.tasks.text2sql_llm_fix import Budget
     easy, hard = tiers
     output = next(d for d in FREEZE.table if d.key == "output_format")
     a, b, c = (o.id for o in output.options)
@@ -361,9 +361,9 @@ def test_a_freeze_decision_without_majority_keeps_and_records_its_status_quo(tie
 
 
 def test_earlier_decisions_stay_first_when_a_later_table_is_recorded(draft, tmp_path):
-    from medbench.tasks.text2sql import load_questions
-    from medbench.tasks.text2sql_llm_decide import FREEZE, run_decide, write_decisions
-    from medbench.tasks.text2sql_llm_fix import Budget
+    from benchtoward.tasks.text2sql import load_questions
+    from benchtoward.tasks.text2sql_llm_decide import FREEZE, run_decide, write_decisions
+    from benchtoward.tasks.text2sql_llm_fix import Budget
     votes = {"naewon": {m: _vote("keep") for m in MODELS}}
     results = asyncio.run(run_decide(draft, Voters(votes).clients(), {m: (0, 0) for m in MODELS}, tmp_path / "d",
                                      Budget(30.0), facts="f", decisions=_decisions()[:1]))
@@ -378,7 +378,7 @@ def test_earlier_decisions_stay_first_when_a_later_table_is_recorded(draft, tmp_
 
 @needs_docs
 def test_sop_section_is_the_checks_section_of_the_real_sop():
-    from medbench.tasks.text2sql_llm_decide import SOP_CHECKS, sop_section
+    from benchtoward.tasks.text2sql_llm_decide import SOP_CHECKS, sop_section
     text = sop_section((REPO / "docs/sop/benchmarks-and-models.md").read_text(encoding="utf-8"), SOP_CHECKS)
     assert text.startswith(SOP_CHECKS) and "Reference roster per benchmark" in text and "| Format |" in text
     assert "| Headroom" in text and "| Separation |" in text and "$5 per benchmark" in text
@@ -390,10 +390,10 @@ def test_sop_section_is_the_checks_section_of_the_real_sop():
 @needs_drafts
 @needs_docs
 def test_the_freeze_decisions_match_both_real_drafts_and_ask_the_same_from_either():
-    from medbench.tasks.text2sql import load_questions
-    from medbench.tasks.text2sql_llm_decide import (FREEZE, SOP_CHECKS, _entries, freeze_facts,
+    from benchtoward.tasks.text2sql import load_questions
+    from benchtoward.tasks.text2sql_llm_decide import (FREEZE, SOP_CHECKS, _entries, freeze_facts,
                                                     render_shared_messages, sop_section)
-    from medbench.tasks.text2sql_llm_fix import _sha
+    from benchtoward.tasks.text2sql_llm_fix import _sha
     easy, _ = load_questions(REPO / "registry/drafts/synthetic-snuh-text2sql-v0.yaml")
     hard, _ = load_questions(REPO / "registry/drafts/synthetic-snuh-text2sql-hard-v0.yaml")
     assert {d.key for d in FREEZE.table} == {"output_format", "easy_tier_publication", "reference_roster"}

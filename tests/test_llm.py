@@ -4,9 +4,9 @@ import json
 import httpx
 import pytest
 
-from medbench.config import Settings
-from medbench.db import Model
-from medbench.llm import LLMClient, MissingCredential, client_for, cost_usd
+from benchtoward.config import Settings
+from benchtoward.db import Model
+from benchtoward.llm import LLMClient, MissingCredential, client_for, cost_usd
 
 
 async def _no_sleep(_seconds):
@@ -89,17 +89,17 @@ def test_client_for_uses_the_provider_table():
 
 
 def test_providers_come_from_the_registry_file_and_environment(tmp_path, monkeypatch):
-    from medbench.config import get_settings
+    from benchtoward.config import get_settings
     (tmp_path / "providers.yaml").write_text(
         "example: {base_url: 'https://llm.example/v1', key_env: EXAMPLE_API_KEY, base_env: EXAMPLE_API_BASE}\n"
         "other: {base_url: 'https://other.example/v1/', key_env: OTHER_KEY}\n")
-    monkeypatch.setenv("MEDBENCH_REGISTRY_DIR", str(tmp_path))
+    monkeypatch.setenv("BENCHTOWARD_REGISTRY_DIR", str(tmp_path))
     monkeypatch.setenv("EXAMPLE_API_KEY", "k1")
     monkeypatch.setenv("EXAMPLE_API_BASE", "https://override.example/v1")
     monkeypatch.delenv("OTHER_KEY", raising=False)
     assert get_settings().providers == {"example": ("https://override.example/v1", "k1"),
                                         "other": ("https://other.example/v1", None)}
-    monkeypatch.setenv("MEDBENCH_REGISTRY_DIR", str(tmp_path / "missing"))
+    monkeypatch.setenv("BENCHTOWARD_REGISTRY_DIR", str(tmp_path / "missing"))
     assert get_settings().providers == {}
 
 
@@ -211,3 +211,21 @@ def test_cached_and_reasoning_tokens_are_kept_when_the_route_reports_them():
     assert (r.cached_tokens, r.reasoning_tokens) == (80, 30)
     r = _chat(_client([_ok("A")], []))
     assert (r.cached_tokens, r.reasoning_tokens) == (0, 0)
+
+
+def test_finish_reason_is_kept_so_a_truncated_reply_can_be_told_apart():
+    body = {"choices": [{"message": {"content": "Evidence: x"}, "finish_reason": "length"}],
+            "usage": {"prompt_tokens": 5, "completion_tokens": 2048}}
+    r = _chat(_client([httpx.Response(200, json=body)], []))
+    assert r.finish_reason == "length"
+    assert _chat(_client([_ok("A")], [])).finish_reason is None       # the route did not say
+
+
+def test_reasoning_is_read_from_either_field_name():
+    """Some servers return gpt-oss's reasoning in `reasoning`, not `reasoning_content`: a thinking audit that read
+    only one name would call a reasoning run thinking-off."""
+    body = {"choices": [{"message": {"content": "OK", "reasoning": "User wants OK."}, "finish_reason": "stop"}],
+            "usage": {"prompt_tokens": 74, "completion_tokens": 17}}
+    assert _chat(_client([httpx.Response(200, json=body)], [])).reasoning == "User wants OK."
+    assert _chat(_client([_ok("C", reasoning="thinking")], [])).reasoning == "thinking"
+    assert _chat(_client([_ok("C")], [])).reasoning is None

@@ -160,6 +160,29 @@
   type: baseline
   provider: medbench
   developer: medbench.kr
+- slug: medbench/constant-yes
+  name: Constant Yes (ignores the input)
+  type: baseline
+  provider: medbench
+  developer: medbench.kr
+  reference: true
+- slug: medbench/random
+  name: Random (Yes with probability 0.5, ignores the input)
+  type: baseline
+  provider: medbench
+  developer: medbench.kr
+  reference: true
+- slug: medbench/note-errors-conjunction-lr
+  name: Word 1-2 and header-code conjunctions, logistic regression (trained on the train pairs)
+  type: baseline
+  provider: medbench
+  developer: medbench.kr
+- slug: medbench/random-letter
+  name: Random letters A-E (ignores the input, seed 0)
+  type: baseline
+  provider: medbench
+  developer: medbench.kr
+  reference: true
 - slug: medbench/lydus-hgb-beat-features
   name: Gradient boosting on median-beat, amplitude and RR features
   type: baseline
@@ -167,6 +190,16 @@
   developer: medbench.kr
 - slug: medbench/lydus-resnet1d
   name: 1-D ResNet trained on LYDUS (Ribeiro et al. 2020 architecture)
+  type: baseline
+  provider: medbench
+  developer: medbench.kr
+- slug: medbench/lydus-ecg-image-resnet18
+  name: ResNet-18 on half-size ECG images (fine-tuned from ImageNet)
+  type: baseline
+  provider: medbench
+  developer: medbench.kr
+- slug: medbench/lydus-ecg-image-trace
+  name: Classical trace digitiser using the fixed page layout
   type: baseline
   provider: medbench
   developer: medbench.kr
@@ -197,6 +230,11 @@
   developer: medbench.kr
 - slug: medbench/bis-openibis
   name: openeeg port of openibis (Connor 2022), no training
+  type: baseline
+  provider: medbench
+  developer: medbench.kr
+- slug: medbench/syn-icu-sofa-hgb
+  name: Gradient boosting on frame summaries (no SOFA rules)
   type: baseline
   provider: medbench
   developer: medbench.kr

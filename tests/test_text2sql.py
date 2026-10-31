@@ -7,9 +7,9 @@ from pathlib import Path
 import pytest
 import yaml
 
-from medbench.llm import ChatResult
-from medbench.tasks.synthetic_snuh import connect_readonly
-from medbench.tasks.text2sql import (CATEGORIES, Question, canonical_value, check_questions,
+from benchtoward.llm import ChatResult
+from benchtoward.tasks.synthetic_snuh import connect_readonly
+from benchtoward.tasks.text2sql import (CATEGORIES, Question, canonical_value, check_questions,
                                      execute_sql, extract_sql, load_questions, render_messages, results_match,
                                      run_dry_run, schema_summary, score_predictions)
 
@@ -305,7 +305,7 @@ def test_unanswerable_items_have_no_sql_and_must_say_so(tmp_path):
 
 
 def test_the_prompt_is_chosen_by_the_draft_and_the_hard_prompt_fixes_now_and_allows_abstention(con, tmp_path):
-    from medbench.tasks.text2sql import HARD_PROMPT, P0, prompt_spec
+    from benchtoward.tasks.text2sql import HARD_PROMPT, P0, prompt_spec
     assert prompt_spec({}) is P0 and prompt_spec({"prompt": {"id": "text2sql-omop-p0"}}) is P0
     assert prompt_spec({"prompt": {"id": "text2sql-omop-hard-p0"}}) is HARD_PROMPT
     with pytest.raises(ValueError, match="prompt"):
@@ -320,7 +320,7 @@ def test_the_prompt_is_chosen_by_the_draft_and_the_hard_prompt_fixes_now_and_all
 def test_schema_can_list_the_columns_that_are_null_in_every_row(tmp_path):
     import duckdb
 
-    from medbench.tasks.text2sql import all_null_columns
+    from benchtoward.tasks.text2sql import all_null_columns
     path = tmp_path / "n.duckdb"
     db = duckdb.connect(str(path))
     db.execute("CREATE TABLE t (a INTEGER, b VARCHAR, c DATE); INSERT INTO t VALUES (1, NULL, NULL), (2, NULL, NULL);"
@@ -334,7 +334,7 @@ def test_schema_can_list_the_columns_that_are_null_in_every_row(tmp_path):
 
 
 def test_extract_answer_reads_an_abstention_only_from_the_final_answer():
-    from medbench.tasks.text2sql import ABSTAIN, extract_answer
+    from benchtoward.tasks.text2sql import ABSTAIN, extract_answer
     assert extract_answer("No table holds costs.\n```sql\nABSTAIN\n```") == ABSTAIN
     assert extract_answer("```sql\nabstain;\n```") == ABSTAIN
     assert extract_answer("I cannot answer this.\n\nABSTAIN") == ABSTAIN
@@ -345,7 +345,7 @@ def test_extract_answer_reads_an_abstention_only_from_the_final_answer():
 
 
 def test_reliability_score_follows_ehrsql_2024(con):
-    from medbench.tasks.text2sql import ABSTAIN
+    from benchtoward.tasks.text2sql import ABSTAIN
     items = [q(id="a", sql="SELECT count(*) FROM person"),
              q(id="b", sql="SELECT max(year_of_birth) FROM person", category="aggregation"),
              q(id="u", sql=None, category="unanswerable", answerable=False)]
@@ -374,7 +374,7 @@ def test_reliability_score_follows_ehrsql_2024(con):
 
 
 def test_without_abstention_an_abstain_answer_is_just_wrong(con):
-    from medbench.tasks.text2sql import ABSTAIN
+    from benchtoward.tasks.text2sql import ABSTAIN
     rows, summary = score_predictions(con, [q(id="a", sql="SELECT count(*) FROM person")], {"a-en": ABSTAIN})
     assert not rows[0]["correct"] and "reliability" not in summary and summary["scorer"] == "ex-0.1"
 
@@ -406,7 +406,7 @@ def test_both_drafts_use_no_naewon():
 
 
 def test_a_predictions_file_abstains_with_null_or_abstain_and_an_empty_answer_is_no_answer():
-    from medbench.tasks.text2sql import ABSTAIN, normalize_prediction
+    from benchtoward.tasks.text2sql import ABSTAIN, normalize_prediction
     for value in (None, "null", " NULL ", "ABSTAIN", " abstain ", "Abstain", "```sql\nABSTAIN\n```"[7:-4]):
         assert normalize_prediction(value, abstention=True) == ABSTAIN, value
     assert normalize_prediction("", abstention=True) is None and normalize_prediction("  ", abstention=True) is None
@@ -418,7 +418,7 @@ def test_a_predictions_file_abstains_with_null_or_abstain_and_an_empty_answer_is
 
 
 def test_dry_run_with_the_hard_prompt_scores_abstentions(con, tmp_path):
-    from medbench.tasks.text2sql import HARD_PROMPT
+    from benchtoward.tasks.text2sql import HARD_PROMPT
 
     class Client:
         async def chat(self, model_id, messages, *, max_tokens, temperature=0.0):

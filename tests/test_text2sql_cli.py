@@ -6,11 +6,11 @@ import yaml
 from typer.testing import CliRunner
 
 from conftest import make_omop_db
-from medbench.cli import app
-from medbench.llm import ChatResult
-from medbench.tasks import text2sql_cli
-from medbench.tasks.synthetic_snuh import db_path
-from medbench.tasks.text2sql import load_questions
+from benchtoward.cli import app
+from benchtoward.llm import ChatResult
+from benchtoward.tasks import text2sql_cli
+from benchtoward.tasks.synthetic_snuh import db_path
+from benchtoward.tasks.text2sql import load_questions
 
 QUESTIONS = [
     {"id": "t-001", "question_ko": "여성 환자는 몇 명인가?", "question_en": "How many female patients are there?",
@@ -26,8 +26,8 @@ class Env:
     def __init__(self, tmp_path: Path, monkeypatch):
         self.data_dir = tmp_path / "data"
         self.medbench_db = tmp_path / "medbench.db"
-        monkeypatch.setenv("MEDBENCH_DATA_DIR", str(self.data_dir))
-        monkeypatch.setenv("MEDBENCH_DB_URL", f"sqlite:///{self.medbench_db}")
+        monkeypatch.setenv("BENCHTOWARD_DATA_DIR", str(self.data_dir))
+        monkeypatch.setenv("BENCHTOWARD_DB_URL", f"sqlite:///{self.medbench_db}")
         make_omop_db(db_path(self.data_dir))
         self.draft = self.write_draft(tmp_path / "draft.yaml", QUESTIONS)
         self.runner = CliRunner()
@@ -120,7 +120,7 @@ def test_dry_run_with_a_model_uses_the_registry_and_resumes(env, tmp_path, monke
     registry.mkdir()
     (registry / "models.yaml").write_text("- {slug: example/sql-model, name: SQL model, type: llm, provider: example, "
                                           "provider_model_id: sql-model-7b, developer: Example}\n")
-    monkeypatch.setenv("MEDBENCH_REGISTRY_DIR", str(registry))
+    monkeypatch.setenv("BENCHTOWARD_REGISTRY_DIR", str(registry))
     out = tmp_path / "dry"
     args = ("dry-run", "--model", "example/sql-model", "--draft", str(env.draft), "--out", str(out))
     result = env.invoke(*args)
@@ -145,7 +145,7 @@ def test_dry_run_can_raise_the_output_limit_for_a_diagnostic_run(env, tmp_path, 
     registry.mkdir()
     (registry / "models.yaml").write_text("- {slug: example/sql-model, name: SQL model, type: llm, provider: example, "
                                           "provider_model_id: sql-model-7b, developer: Example}\n")
-    monkeypatch.setenv("MEDBENCH_REGISTRY_DIR", str(registry))
+    monkeypatch.setenv("BENCHTOWARD_REGISTRY_DIR", str(registry))
     result = env.invoke("dry-run", "--model", "example/sql-model", "--draft", str(env.draft), "--max-tokens", "32768",
                         "--out", str(tmp_path / "dry"))
     assert result.exit_code == 0, result.stdout
@@ -158,9 +158,9 @@ def test_dry_run_rejects_unknown_model(env):
 
 
 def test_missing_database_explains_how_to_fetch(env, tmp_path, monkeypatch):
-    monkeypatch.setenv("MEDBENCH_DATA_DIR", str(tmp_path / "empty"))
+    monkeypatch.setenv("BENCHTOWARD_DATA_DIR", str(tmp_path / "empty"))
     result = env.invoke("check", "--draft", str(env.draft))
-    assert result.exit_code == 1 and "medbench text2sql fetch" in result.stdout
+    assert result.exit_code == 1 and "benchtoward text2sql fetch" in result.stdout
 
 
 def test_dry_run_leaves_out_rejected_items(env, tmp_path):
@@ -292,7 +292,7 @@ def test_the_frontier_route_is_the_one_providers_yaml_marks(tmp_path, monkeypatc
     registry = tmp_path / "registry"
     registry.mkdir()
     (registry / "providers.yaml").write_text(yaml.safe_dump(ROUTES), encoding="utf-8")
-    monkeypatch.setenv("MEDBENCH_REGISTRY_DIR", str(registry))
+    monkeypatch.setenv("BENCHTOWARD_REGISTRY_DIR", str(registry))
     monkeypatch.setenv("EXAMPLE_KEY", "k")
     monkeypatch.setenv("LOCAL_KEY", "k")
     monkeypatch.setattr(text2sql_cli, "_catalog_prices", fake_prices)
@@ -341,9 +341,9 @@ def test_llm_fix_gives_the_note_as_the_reason_when_the_reviewers_had_approved(en
 def test_llm_fix_ignores_reviews_of_an_earlier_version_of_the_item(env, frontier, tmp_path, monkeypatch):
     """An item revised after its review and later sent back by a decision (e.g. 내원 in a fixed item): the old
     reviewers' reasons were about the earlier wording, so the reason is the review note."""
-    from medbench.tasks.synthetic_snuh import connect_readonly
-    from medbench.tasks.text2sql import schema_summary
-    from medbench.tasks.text2sql_llm_review import _sha, render_review_messages
+    from benchtoward.tasks.synthetic_snuh import connect_readonly
+    from benchtoward.tasks.text2sql import schema_summary
+    from benchtoward.tasks.text2sql_llm_review import _sha, render_review_messages
     draft = tmp_path / "fix.yaml"
     draft.write_text(FIX_DRAFT.replace("[gpt-6-astra] needs_edit: ties at the top", "Decision naewon: reword"),
                      encoding="utf-8")
@@ -631,7 +631,7 @@ def test_llm_review_asks_the_route_for_its_bill_and_counts_the_folder_spend(env,
 
 def test_llm_decide_on_the_harder_set_votes_on_its_questions_in_its_job_with_its_dry_runs(env, hard, monkeypatch,
                                                                                          tmp_path):
-    from medbench.tasks.text2sql import HARD_CONVENTIONS
+    from benchtoward.tasks.text2sql import HARD_CONVENTIONS
     _, draft = hard
     assert env.invoke("hard-generate", "--draft", str(draft), "--plan", "clinical_terms=1;unanswerable=1").exit_code == 0
     text = draft.read_text(encoding="utf-8").replace(
@@ -687,7 +687,7 @@ def test_a_draft_that_names_a_headline_gets_it_first_in_the_dry_run(env, hard, t
 
 
 def test_llm_decide_freeze_asks_once_and_records_the_vote_in_both_tiers(env, frontier, monkeypatch, tmp_path):
-    from medbench.tasks.text2sql_llm_decide import FREEZE, SOP_CHECKS
+    from benchtoward.tasks.text2sql_llm_decide import FREEZE, SOP_CHECKS
     first = {d.key: d.options[0].id for d in FREEZE.table}
     shared = [d for d in FREEZE.table if d.key != "output_format"]
 

@@ -11,8 +11,8 @@ from pathlib import Path
 
 import pytest
 
-from medbench.llm import ChatResult
-from medbench.tasks import voice_command as vc
+from benchtoward.llm import ChatResult
+from benchtoward.tasks import voice_command as vc
 
 FIX = Path(__file__).resolve().parent / "fixtures" / "voice_command"
 EXPECTED = json.loads((FIX / "expected.json").read_text(encoding="utf-8"))
@@ -174,7 +174,7 @@ class FakeKhdp:
         self.blobs, self.downloads = blobs, []
 
     def files(self, code, version):
-        from medbench.khdp import KhdpFile
+        from benchtoward.khdp import KhdpFile
 
         assert (code, version) == ("kor-surgical-robot-voice-command", "1.0.0")
         return [KhdpFile(key="benchmark/", size=0, url="")] + [KhdpFile(key=k, size=len(v), url=k)
@@ -284,8 +284,8 @@ class FakeLLM:
 def _setup(tmp_session, data_dir):
     from conftest import REGISTRY_DIR
 
-    from medbench.db import Model
-    from medbench.registry import load_registry, resolve_task
+    from benchtoward.db import Model
+    from benchtoward.registry import load_registry, resolve_task
 
     load_registry(tmp_session, REGISTRY_DIR)
     inst = vc.load_instances(data_dir)
@@ -434,13 +434,13 @@ def test_a_route_that_does_not_say_how_to_switch_thinking_off_is_refused():
 
 
 def test_settings_read_the_request_block_of_each_route(tmp_path, monkeypatch):
-    from medbench.config import get_settings
+    from benchtoward.config import get_settings
 
     (tmp_path / "providers.yaml").write_text(
         "example: {base_url: 'https://llm.example/v1', key_env: EXAMPLE_API_KEY,"
         " request: {thinking_off: {chat_template_kwargs: {enable_thinking: false}}}}\n"
         "other: {base_url: 'https://other.example/v1', key_env: OTHER_KEY}\n")
-    monkeypatch.setenv("MEDBENCH_REGISTRY_DIR", str(tmp_path))
+    monkeypatch.setenv("BENCHTOWARD_REGISTRY_DIR", str(tmp_path))
     assert get_settings().route_requests == {"example": ROUTE}
 
 

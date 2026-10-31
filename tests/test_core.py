@@ -3,9 +3,9 @@ import yaml
 from sqlalchemy.exc import IntegrityError
 
 from conftest import REGISTRY_DIR
-from medbench.db import Dataset, Model, Run, Task
-from medbench.registry import load_registry
-from medbench.runkey import run_key, spec_hash
+from benchtoward.db import Dataset, Model, Run, Task
+from benchtoward.registry import load_registry
+from benchtoward.runkey import run_key, spec_hash
 
 
 def test_spec_hash_ignores_key_order():
@@ -25,7 +25,9 @@ def test_load_registry_is_idempotent(tmp_session):
     load_registry(tmp_session, REGISTRY_DIR)
     load_registry(tmp_session, REGISTRY_DIR)
     assert tmp_session.query(Task).count() == len(list((REGISTRY_DIR / "tasks").glob("*.yaml"))) >= 6
-    assert tmp_session.query(Dataset).count() == len(yaml.safe_load((REGISTRY_DIR / "datasets.yaml").read_text()))
+    listed = {d["slug"] for d in yaml.safe_load((REGISTRY_DIR / "datasets.yaml").read_text())}
+    loaded = {d.slug for d in tmp_session.query(Dataset)}
+    assert loaded == listed and len(loaded) >= 8 and {"clinicalqa", "vitaldb", "scope", "syn-snuh"} <= loaded
     model = tmp_session.get(Model, "google/medgemma-27b")
     assert (model.type, model.developer) == ("llm", "Google")  # serving ids are deployment data
     assert model.digest == "google/medgemma-27b"
@@ -45,7 +47,7 @@ def test_run_key_is_unique(tmp_session):
 
 
 def test_resolve_task(tmp_session):
-    from medbench.registry import resolve_task
+    from benchtoward.registry import resolve_task
 
     load_registry(tmp_session, REGISTRY_DIR)
     assert resolve_task(tmp_session, "clinicalqa@0").slug == "clinicalqa"
@@ -61,7 +63,7 @@ def test_resolve_task(tmp_session):
 def test_every_spec_file_is_named_by_its_slug_and_version(tmp_path):
     import shutil
 
-    from medbench.registry import task_spec_files
+    from benchtoward.registry import task_spec_files
 
     files = task_spec_files(REGISTRY_DIR)  # raises on a misnamed file
     assert len(files) == len(list((REGISTRY_DIR / "tasks").glob("*.yaml")))
@@ -72,7 +74,7 @@ def test_every_spec_file_is_named_by_its_slug_and_version(tmp_path):
 
 
 def test_model_max_tokens(tmp_session):
-    from medbench.evaluate import DEFAULT_MAX_TOKENS, max_tokens_for
+    from benchtoward.evaluate import DEFAULT_MAX_TOKENS, max_tokens_for
 
     load_registry(tmp_session, REGISTRY_DIR)
     assert DEFAULT_MAX_TOKENS == 16384
@@ -96,7 +98,7 @@ def test_spec_hash_ignores_presentational_fields(tmp_session, tmp_path):
 def test_init_db_adds_missing_columns():
     from sqlalchemy import inspect, text
 
-    from medbench.db import init_db, make_engine
+    from benchtoward.db import init_db, make_engine
 
     engine = make_engine("sqlite://")
     with engine.begin() as conn:
@@ -109,7 +111,7 @@ def test_init_db_adds_missing_columns():
 
 
 def test_resolve_task_rejects_odd_versions(tmp_session):
-    from medbench.registry import resolve_task
+    from benchtoward.registry import resolve_task
 
     load_registry(tmp_session, REGISTRY_DIR)
     for ref in ("clinicalqa@\u00b2", "clinicalqa@99999999999999999999999", "clinicalqa@-1", "clinicalqa@ 1"):
@@ -120,10 +122,10 @@ def test_resolve_task_rejects_odd_versions(tmp_session):
 def test_eval_all_continues_after_a_model_fails(tmp_path, monkeypatch):
     from typer.testing import CliRunner
 
-    import medbench.cli as cli
+    import benchtoward.cli as cli
 
-    monkeypatch.setenv("MEDBENCH_DB_URL", f"sqlite:///{tmp_path}/m.db")
-    monkeypatch.setenv("MEDBENCH_REGISTRY_DIR", str(REGISTRY_DIR))
+    monkeypatch.setenv("BENCHTOWARD_DB_URL", f"sqlite:///{tmp_path}/m.db")
+    monkeypatch.setenv("BENCHTOWARD_REGISTRY_DIR", str(REGISTRY_DIR))
     seen = []
 
     def fake_eval_one(session, model, task_ref, force, limit):
@@ -147,8 +149,8 @@ def test_admin_hide_survives_a_registry_reload(tmp_session):
     """The container reloads the registry on every start; a task hidden on /admin must stay hidden."""
     from pathlib import Path
 
-    from medbench.db import Task
-    from medbench.registry import load_registry
+    from benchtoward.db import Task
+    from benchtoward.registry import load_registry
     registry = Path(__file__).resolve().parents[1] / "registry"
     load_registry(tmp_session, registry)
     tmp_session.query(Task).filter_by(slug="clinicalqa", version=0).one().visibility = "hidden"  # what /admin's hide does
@@ -160,7 +162,7 @@ def test_admin_hide_survives_a_registry_reload(tmp_session):
 def test_spec_can_hide_a_task_without_changing_its_results(tmp_session, tmp_path):
     import shutil
 
-    from medbench.registry import PRESENTATIONAL_FIELDS
+    from benchtoward.registry import PRESENTATIONAL_FIELDS
     registry = tmp_path / "registry"
     shutil.copytree(REGISTRY_DIR, registry)
     load_registry(tmp_session, registry)

@@ -5,11 +5,11 @@ import pandas as pd
 import pytest
 
 from conftest import REGISTRY_DIR
-from medbench.db import ItemResult, Model, Run, Task
-from medbench.evaluate import HARNESS_VERSION, run_llm_task
-from medbench.llm import ChatResult
-from medbench.registry import load_registry
-from medbench.tasks.clinicalqa import QAItem
+from benchtoward.db import ItemResult, Model, Run, Task
+from benchtoward.evaluate import HARNESS_VERSION, run_llm_task
+from benchtoward.llm import ChatResult
+from benchtoward.registry import load_registry
+from benchtoward.tasks.clinicalqa import QAItem
 
 
 class FakeClient:
@@ -122,7 +122,7 @@ def test_limit_changes_run_key(ctx):
 def test_constant_answer_baseline_recorded_once(ctx):
     from dataclasses import replace
 
-    from medbench.evaluate import constant_answer_baseline, record_baseline_run
+    from benchtoward.evaluate import constant_answer_baseline, record_baseline_run
 
     session, _, task, data_dir = ctx
     items = [replace(it, answer="B") if i < 2 else it for i, it in enumerate(ITEMS)]
@@ -169,7 +169,7 @@ def test_run_records_task_spec_hash(ctx):
 
 
 def test_rekey_restores_deduplication(ctx):
-    from medbench.evaluate import rekey_runs
+    from benchtoward.evaluate import rekey_runs
 
     session = ctx[0]
     first = run(ctx, FakeClient(answers()))
@@ -182,8 +182,8 @@ def test_rekey_restores_deduplication(ctx):
 
 
 def test_import_runs_merges_finished_runs_without_touching_other_tables(ctx, tmp_path):
-    from medbench.db import PageView, ReuseEvent, init_db, make_engine, session_factory
-    from medbench.evaluate import import_runs
+    from benchtoward.db import PageView, ReuseEvent, init_db, make_engine, session_factory
+    from benchtoward.evaluate import import_runs
 
     # source database: one finished run, one unfinished run
     src_engine = make_engine(f"sqlite:///{tmp_path}/src.db")
@@ -210,7 +210,7 @@ def test_import_runs_merges_finished_runs_without_touching_other_tables(ctx, tmp
 
 
 def test_raw_output_and_parser_version_are_stored(ctx):
-    from medbench.tasks.clinicalqa import PARSER_VERSION
+    from benchtoward.tasks.clinicalqa import PARSER_VERSION
 
     r = run(ctx, FakeClient(answers()))
     item = ctx[0].get(ItemResult, (r.id, "cqa-0"))

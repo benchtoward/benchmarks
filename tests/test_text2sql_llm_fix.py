@@ -6,7 +6,7 @@ import json
 
 import pytest
 
-from medbench.llm import ChatResult
+from benchtoward.llm import ChatResult
 
 CLAUDE, GPT, GEMINI = "anthropic/claude-opus-5.5", "openai/gpt-6-astra", "google/gemini-4-argon"
 MODELS = [CLAUDE, GPT, GEMINI]
@@ -110,8 +110,8 @@ def draft(tmp_path):
 
 
 def _run(draft, omop_db, script, out, *, cap=30.0, prices=None, ids=None):
-    from medbench.tasks.text2sql import load_questions
-    from medbench.tasks.text2sql_llm_fix import Budget, run_fix
+    from benchtoward.tasks.text2sql import load_questions
+    from benchtoward.tasks.text2sql_llm_fix import Budget, run_fix
     _, items = load_questions(draft)
     original = {"q-002": {GPT: {"verdict": "needs_edit", "reason": "ties at the top", "fix": "return all ties"},
                           GEMINI: {"verdict": "approve", "reason": "fine", "fix": ""},
@@ -123,7 +123,7 @@ def _run(draft, omop_db, script, out, *, cap=30.0, prices=None, ids=None):
 
 
 def test_parse_proposal_needs_both_questions_sql_and_a_boolean_order():
-    from medbench.tasks.text2sql_llm_fix import parse_proposal
+    from benchtoward.tasks.text2sql_llm_fix import parse_proposal
     ok = parse_proposal("Sure:\n```json\n" + _proposal("SELECT 1") + "\n```")
     assert ok["sql"] == "SELECT 1" and ok["order_matters"] is False and ok["change"] == "tie rule added"
     assert parse_proposal(json.dumps({"question_ko": "가", "question_en": "a", "sql": ""})) is None
@@ -136,9 +136,9 @@ def test_parse_proposal_needs_both_questions_sql_and_a_boolean_order():
 def test_v0_fix_prompt_is_unchanged(omop_db, tmp_path):
     from test_text2sql_review import DRAFT as REVIEW_DRAFT
 
-    from medbench.tasks.synthetic_snuh import connect_readonly
-    from medbench.tasks.text2sql import load_questions
-    from medbench.tasks.text2sql_llm_fix import _sha, render_fix_messages
+    from benchtoward.tasks.synthetic_snuh import connect_readonly
+    from benchtoward.tasks.text2sql import load_questions
+    from benchtoward.tasks.text2sql_llm_fix import _sha, render_fix_messages
     path = tmp_path / "d.yaml"
     path.write_text(REVIEW_DRAFT, encoding="utf-8")
     _, items = load_questions(path)
@@ -149,7 +149,7 @@ def test_v0_fix_prompt_is_unchanged(omop_db, tmp_path):
 
 
 def test_an_unanswerable_item_is_proposed_without_sql_and_an_answerable_one_with_sql():
-    from medbench.tasks.text2sql_llm_fix import parse_proposal
+    from benchtoward.tasks.text2sql_llm_fix import parse_proposal
     null = json.dumps({"question_ko": "가", "question_en": "a", "sql": None, "order_matters": False,
                        "why_hard": "no cost table", "change": "c"})
     assert parse_proposal(null) is None                                       # answerable items need SQL
@@ -189,8 +189,8 @@ questions:
 
 
 def test_an_unanswerable_hard_item_is_fixed_with_the_hard_prompt_and_written_back(omop_db, tmp_path):
-    from medbench.tasks.text2sql import HARD_CONVENTIONS, HARD_PROMPT, load_questions
-    from medbench.tasks.text2sql_llm_fix import Budget, apply_fixes, run_fix
+    from benchtoward.tasks.text2sql import HARD_CONVENTIONS, HARD_PROMPT, load_questions
+    from benchtoward.tasks.text2sql_llm_fix import Budget, apply_fixes, run_fix
     draft = tmp_path / "hard.yaml"
     draft.write_text(HARD_DRAFT, encoding="utf-8")
     _, items = load_questions(draft)
@@ -214,7 +214,7 @@ def test_an_unanswerable_hard_item_is_fixed_with_the_hard_prompt_and_written_bac
 
 
 def test_a_later_json_object_such_as_a_correction_supersedes_an_earlier_one():
-    from medbench.tasks.text2sql_llm_fix import parse_json_object
+    from benchtoward.tasks.text2sql_llm_fix import parse_json_object
     text = ('{"items": [1]}\n\nCorrection: the first one had a typo. The corrected answer:\n{"items": [2]}\n'
             'and {not json}')
     assert parse_json_object(text, lambda b: b.get("items")) == [2]
@@ -225,21 +225,21 @@ def test_a_later_json_object_such_as_a_correction_supersedes_an_earlier_one():
 
 
 def test_a_cached_answer_that_did_not_parse_is_parsed_again_before_asking(tmp_path):
-    from medbench.tasks.text2sql_llm_fix import Asker, Budget
+    from benchtoward.tasks.text2sql_llm_fix import Asker, Budget
     client = Retrying(0, answer='{"ok": 1} {"ok": 2}')
     asker = Asker({"m/x": client}, {"m/x": (1.0, 1.0)}, tmp_path, Budget(10.0))
     messages = [{"role": "user", "content": "q"}]
     first = asyncio.run(asker.ask("m/x", "k", "q-1", messages, lambda t: None))      # an old parser
     assert first.status == "unparsed" and client.sent == 1
     again = Asker({"m/x": client}, {"m/x": (1.0, 1.0)}, tmp_path, Budget(10.0))
-    from medbench.tasks.text2sql_llm_fix import parse_json_object
+    from benchtoward.tasks.text2sql_llm_fix import parse_json_object
     answer = asyncio.run(again.ask("m/x", "k", "q-1", messages, lambda t: parse_json_object(t, lambda b: b)))
     assert answer.status == "ok" and answer.value == {"ok": 2} and client.sent == 1     # no new request
 
 
 def test_a_hard_proposal_that_quotes_a_concept_name_goes_back_as_a_problem(omop_db, tmp_path):
-    from medbench.tasks.text2sql import HARD_PROMPT, load_questions
-    from medbench.tasks.text2sql_llm_fix import Budget, run_fix
+    from benchtoward.tasks.text2sql import HARD_PROMPT, load_questions
+    from benchtoward.tasks.text2sql_llm_fix import Budget, run_fix
     draft = tmp_path / "hard.yaml"
     draft.write_text(HARD_DRAFT.replace("review: approved", "review: needs_edit"), encoding="utf-8")
     _, items = load_questions(draft)
@@ -258,9 +258,9 @@ def test_a_hard_proposal_that_quotes_a_concept_name_goes_back_as_a_problem(omop_
 def test_reference_rules_apply_to_a_proposed_sql(omop_db):
     from dataclasses import replace
 
-    from medbench.tasks.synthetic_snuh import connect_readonly
-    from medbench.tasks.text2sql import Question
-    from medbench.tasks.text2sql_llm_fix import reference_problem
+    from benchtoward.tasks.synthetic_snuh import connect_readonly
+    from benchtoward.tasks.text2sql import Question
+    from benchtoward.tasks.text2sql_llm_fix import reference_problem
     con = connect_readonly(omop_db)
     base = Question(id="x", question_ko="가", question_en="a", sql="SELECT count(*) FROM person",
                     category="cohort_count", difficulty="easy")
@@ -277,7 +277,7 @@ def test_reference_rules_apply_to_a_proposed_sql(omop_db):
 
 
 def test_budget_is_a_hard_cap_on_spend_and_requests_in_flight(tmp_path):
-    from medbench.tasks.text2sql_llm_fix import Budget, worst_case_usd
+    from benchtoward.tasks.text2sql_llm_fix import Budget, worst_case_usd
     (tmp_path / "decide").mkdir()
     (tmp_path / "decide" / "m.jsonl").write_text(json.dumps({"cost_usd": 1.5}) + "\n" + json.dumps({"cost_usd": 0.5}))
     assert Budget.spent_in(tmp_path) == pytest.approx(2.0)
@@ -307,7 +307,7 @@ class Retrying:
 
 
 def _ask(tmp_path, client, cap, model="m/x", messages=None):
-    from medbench.tasks.text2sql_llm_fix import Asker, Budget
+    from benchtoward.tasks.text2sql_llm_fix import Asker, Budget
     budget = Budget(cap, Budget.spent_in(tmp_path))
     asker = Asker({model: client}, {model: (10.0, 50.0)}, tmp_path / "c", budget, max_tokens=1000)
     answer = asyncio.run(asker.ask(model, "k", "q-1", messages or [{"role": "user", "content": "x" * 800}],
@@ -316,7 +316,7 @@ def _ask(tmp_path, client, cap, model="m/x", messages=None):
 
 
 def test_failed_attempts_that_may_have_been_billed_are_charged_their_estimate_and_kept(tmp_path):
-    from medbench.tasks.text2sql_llm_fix import Budget, worst_case_usd
+    from benchtoward.tasks.text2sql_llm_fix import Budget, worst_case_usd
     worst = worst_case_usd([{"role": "user", "content": "x" * 800}], 1000, (10.0, 50.0))
     answer, budget = _ask(tmp_path, Retrying(2), cap=10.0)
     assert answer.status == "ok" and budget.reserved_usd == pytest.approx(0)
@@ -330,7 +330,7 @@ def test_failed_attempts_that_may_have_been_billed_are_charged_their_estimate_an
 
 
 def test_a_retry_that_does_not_fit_the_budget_is_not_sent(tmp_path):
-    from medbench.tasks.text2sql_llm_fix import worst_case_usd
+    from benchtoward.tasks.text2sql_llm_fix import worst_case_usd
     worst = worst_case_usd([{"role": "user", "content": "x" * 800}], 1000, (10.0, 50.0))
     client = Retrying(5)
     answer, budget = _ask(tmp_path, client, cap=2.5 * worst)                 # room for two attempts
@@ -339,7 +339,7 @@ def test_a_retry_that_does_not_fit_the_budget_is_not_sent(tmp_path):
 
 
 def test_anthropic_requests_mark_the_shared_prefix_for_prompt_caching(tmp_path):
-    from medbench.tasks.text2sql_llm_fix import Asker, Budget
+    from benchtoward.tasks.text2sql_llm_fix import Asker, Budget
     seen = {}
 
     class Client:
@@ -356,13 +356,13 @@ def test_anthropic_requests_mark_the_shared_prefix_for_prompt_caching(tmp_path):
     assert parts[0] == {"type": "text", "text": "Database schema: big\n\nNotes", "cache_control": {"type": "ephemeral"}}
     assert parts[1] == {"type": "text", "text": "\n\nQuestion id: q-1\nKorean: ..."}
     assert seen["openai/gpt-6-astra"] == messages and messages[1]["content"].startswith("Database schema")
-    from medbench.tasks.text2sql_llm_fix import _sha
+    from benchtoward.tasks.text2sql_llm_fix import _sha
     record = json.loads((tmp_path / "anthropic__claude-opus-5.5.jsonl").read_text())
     assert record["prompt_sha"] == _sha(messages)                            # cached by the logical prompt
 
 
 def test_an_invalid_sql_goes_back_as_feedback_and_the_next_proposer_fixes_it(draft, omop_db, tmp_path):
-    from medbench.tasks.text2sql_llm_fix import run_fix  # noqa: F401  (import check)
+    from benchtoward.tasks.text2sql_llm_fix import run_fix  # noqa: F401  (import check)
     proposals = {("q-002", 1): _proposal("SELECT visit_source_value FROM visit_occurence"),   # typo: fails
                  ("q-002", 2): _proposal(GOOD_002, ko="방문 수가 가장 많은 진료과(동률이면 모두)와 방문 수는?",
                                          en="Which department(s) have the most visits (all ties), and how many?")}
@@ -394,7 +394,7 @@ def test_three_rounds_without_approval_reject_the_item_and_proposers_rotate(draf
     assert [c[1] for c in script.calls if c[0] == "propose"] == [CLAUDE, GPT, GEMINI]
     third = [c for c in script.calls if c[0] == "propose"][2][4]
     assert "still says after" in third and "after 1952" in third              # earlier rounds and their reviews
-    from medbench.tasks.text2sql_llm_fix import fix_note
+    from benchtoward.tasks.text2sql_llm_fix import fix_note
     assert "3 rounds" in fix_note(o) and "still says after" in fix_note(o)
 
 
@@ -417,8 +417,8 @@ def test_the_budget_stops_new_requests_and_leaves_items_incomplete(draft, omop_d
 
 
 def test_re_reviews_of_a_round_can_go_several_items_per_request(draft, omop_db, tmp_path):
-    from medbench.tasks.text2sql import load_questions
-    from medbench.tasks.text2sql_llm_fix import Budget, run_fix
+    from benchtoward.tasks.text2sql import load_questions
+    from benchtoward.tasks.text2sql_llm_fix import Budget, run_fix
     proposals = {("q-002", 1): _proposal(GOOD_002, en="Which department(s) have the most visits (ties)?"),
                  ("q-003", 1): _proposal("SELECT count(*) FROM person WHERE year_of_birth >= 1961",
                                          en="How many patients were born in 1961 or later?"),
@@ -449,8 +449,8 @@ def test_re_reviews_of_a_round_can_go_several_items_per_request(draft, omop_db, 
 
 
 def test_apply_writes_only_the_fixed_items_lines(draft, omop_db, tmp_path):
-    from medbench.tasks.text2sql import load_questions
-    from medbench.tasks.text2sql_llm_fix import apply_fixes
+    from benchtoward.tasks.text2sql import load_questions
+    from benchtoward.tasks.text2sql_llm_fix import apply_fixes
     proposals = {("q-002", 1): _proposal(GOOD_002, ko='방문 수가 가장 많은 진료과는? "동률" 포함',
                                          en="Which department(s) have the most visits: all ties?",
                                          order_matters=False, change="returns all tied departments"),
@@ -478,8 +478,8 @@ def test_apply_writes_only_the_fixed_items_lines(draft, omop_db, tmp_path):
 
 
 def test_apply_sets_order_matters_when_the_revision_asks_for_an_order(draft, omop_db, tmp_path):
-    from medbench.tasks.text2sql import load_questions
-    from medbench.tasks.text2sql_llm_fix import apply_fixes
+    from benchtoward.tasks.text2sql import load_questions
+    from benchtoward.tasks.text2sql_llm_fix import apply_fixes
     sql = "SELECT visit_source_value, count(*) AS n FROM visit_occurrence GROUP BY 1 ORDER BY n DESC, 1"
     script = Script({("q-002", 1): _proposal(sql, order_matters=True)}, lambda model, user: _verdict("approve"))
     outcomes, _ = _run(draft, omop_db, script, tmp_path / "fix", ids=["q-002"])
@@ -491,11 +491,11 @@ def test_apply_sets_order_matters_when_the_revision_asks_for_an_order(draft, omo
 def test_a_concept_the_reference_filters_by_id_may_not_be_named_in_quotes_or_parentheses(omop_db):
     """Like syn-hard-041: the reference filters by concept_id only and the question glosses the clinical terms with
     the vocabulary names in parentheses. Ids compared with a *_concept_id column (= N, IN (...)) resolve to names."""
-    from medbench.tasks.synthetic_snuh import connect_readonly
-    from medbench.tasks.text2sql import Question
+    from benchtoward.tasks.synthetic_snuh import connect_readonly
+    from benchtoward.tasks.text2sql import Question
     from dataclasses import replace
 
-    from medbench.tasks.text2sql_llm_fix import quoted_concepts, quoted_problem
+    from benchtoward.tasks.text2sql_llm_fix import quoted_concepts, quoted_problem
     con = connect_readonly(omop_db)
     sql = ("SELECT c.concept_name, count(*) FROM measurement m JOIN concept c ON c.concept_id = "
            "m.measurement_concept_id\nWHERE m.measurement_concept_id IN (3004410,\n 9999999)\n"
@@ -525,7 +525,7 @@ def test_a_concept_the_reference_filters_by_id_may_not_be_named_in_quotes_or_par
 
 
 def test_the_concept_ids_of_a_reference_are_read_from_comparisons_with_concept_id_columns():
-    from medbench.tasks.text2sql_llm_fix import concept_ids
+    from benchtoward.tasks.text2sql_llm_fix import concept_ids
     sql = ("SELECT * FROM x WHERE a.condition_concept_id = 201826 AND drug_concept_id IN (1, 2,\n 3) "
            "AND visit_concept_id NOT IN (9201) AND c.concept_id = 7 AND person_id = 5 AND quantity IN (8, 9) "
            "AND measurement_concept_id IN (SELECT 4) AND gender_concept_id=8507")
@@ -547,7 +547,7 @@ class Raising:
 
 
 def test_an_attempt_that_raises_is_charged_its_estimate_and_written_to_the_cache(tmp_path):
-    from medbench.tasks.text2sql_llm_fix import Budget, worst_case_usd
+    from benchtoward.tasks.text2sql_llm_fix import Budget, worst_case_usd
     messages = [{"role": "user", "content": "x" * 800}]
     worst = worst_case_usd(messages, 1000, (10.0, 50.0))
     with pytest.raises(RuntimeError):
@@ -559,7 +559,7 @@ def test_an_attempt_that_raises_is_charged_its_estimate_and_written_to_the_cache
 
 
 def test_a_cancelled_request_is_charged_its_estimate_and_written_to_the_cache(tmp_path):
-    from medbench.tasks.text2sql_llm_fix import Asker, Budget, worst_case_usd
+    from benchtoward.tasks.text2sql_llm_fix import Asker, Budget, worst_case_usd
     messages = [{"role": "user", "content": "x" * 800}]
     worst = worst_case_usd(messages, 1000, (10.0, 50.0))
     client = Raising()
@@ -583,7 +583,7 @@ def test_a_cancelled_request_is_charged_its_estimate_and_written_to_the_cache(tm
 
 
 def test_the_fix_report_keeps_earlier_runs_and_an_item_fixed_again_keeps_its_earlier_fix(tmp_path):
-    from medbench.tasks.text2sql_llm_fix import FixOutcome, write_report
+    from benchtoward.tasks.text2sql_llm_fix import FixOutcome, write_report
     path = tmp_path / "fix-report.json"
     write_report(path, [FixOutcome("a", "approved", 2, GPT), FixOutcome("b", "approved", 1, CLAUDE)])
     write_report(path, [FixOutcome("b", "incomplete")])                     # a resumable run: not an earlier fix

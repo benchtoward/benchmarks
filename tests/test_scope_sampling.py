@@ -3,7 +3,7 @@ import random
 
 import pytest
 
-from medbench.tasks.scope_sampling import (ANCHOR_UTC, CASE_EPOCHS, EPOCH_SAMPLES, HZ, SEED, case_epochs,
+from benchtoward.tasks.scope_sampling import (ANCHOR_UTC, CASE_EPOCHS, EPOCH_SAMPLES, HZ, SEED, case_epochs,
                                            control_block, control_epochs, instance_id, label_for, stay_seeds)
 
 DAY = 24 * 3600 * HZ  # samples in 24 h at 250 Hz
@@ -78,9 +78,9 @@ def test_registry_spec_matches_the_code_and_the_published_split():
     import yaml
 
     from conftest import REGISTRY_DIR
-    from medbench.baselines.scope_arrest import PARAM_BOUNDS
-    from medbench.tasks.scope_arrest import SPLIT_SEED, TEST_SIZE
-    from medbench.tasks.scope_hrv import FEATURES, FLAT_S, QUALITY_RATIO
+    from benchtoward.baselines.scope_arrest import PARAM_BOUNDS
+    from benchtoward.tasks.scope_arrest import SPLIT_SEED, TEST_SIZE
+    from benchtoward.tasks.scope_hrv import FEATURES, FLAT_S, QUALITY_RATIO
 
     spec = yaml.safe_load((REGISTRY_DIR / "tasks" / "scope-arrest.yaml").read_text(encoding="utf-8"))
     assert spec["protocol"]["name"] == "medbench.kr definition" and spec["features"] == FEATURES

@@ -1,30 +1,30 @@
 # Files that implement each published task version; linked from the task pages and the README.
 clinicalqa@0:
-- src/medbench/tasks/clinicalqa.py
-- src/medbench/evaluate.py
-- src/medbench/scoring.py
+- src/benchtoward/tasks/clinicalqa.py
+- src/benchtoward/evaluate.py
+- src/benchtoward/scoring.py
 vitaldb-ioh@0:
-- src/medbench/tasks/vitaldb_ioh.py
-- src/medbench/tasks/vitaldb_split.py
-- src/medbench/baselines/ioh.py
+- src/benchtoward/tasks/vitaldb_ioh.py
+- src/benchtoward/tasks/vitaldb_split.py
+- src/benchtoward/baselines/ioh.py
 inspire-mortality@0:
-- src/medbench/tasks/inspire_mortality.py
-- src/medbench/baselines/inspire.py
+- src/benchtoward/tasks/inspire_mortality.py
+- src/benchtoward/baselines/inspire.py
 vitaldb-arrhythmia-abnormal@0:
-- src/medbench/tasks/vitaldb_arrhythmia_abnormal.py
-- src/medbench/tasks/vitaldb_arrhythmia.py
-- src/medbench/baselines/arrhythmia.py
+- src/benchtoward/tasks/vitaldb_arrhythmia_abnormal.py
+- src/benchtoward/tasks/vitaldb_arrhythmia.py
+- src/benchtoward/baselines/arrhythmia.py
 scope-arrest@0:
-- src/medbench/tasks/scope_arrest.py
-- src/medbench/tasks/scope_sampling.py
-- src/medbench/tasks/scope_hrv.py
-- src/medbench/baselines/scope_arrest.py
+- src/benchtoward/tasks/scope_arrest.py
+- src/benchtoward/tasks/scope_sampling.py
+- src/benchtoward/tasks/scope_hrv.py
+- src/benchtoward/baselines/scope_arrest.py
 kor-surgical-robot-voice-command@0:
-- src/medbench/tasks/voice_command.py
-- src/medbench/tasks/voice_command_cli.py
+- src/benchtoward/tasks/voice_command.py
+- src/benchtoward/tasks/voice_command_cli.py
 synthetic-snuh-text2sql@0:
-- src/medbench/tasks/text2sql_task.py
-- src/medbench/tasks/text2sql.py
-- src/medbench/tasks/text2sql_task_cli.py
-- src/medbench/tasks/synthetic_snuh.py
+- src/benchtoward/tasks/text2sql_task.py
+- src/benchtoward/tasks/text2sql.py
+- src/benchtoward/tasks/text2sql_task_cli.py
+- src/benchtoward/tasks/synthetic_snuh.py
 - third_party/ehrsql-2024/README.md

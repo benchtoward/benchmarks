@@ -6,9 +6,9 @@ import numpy as np
 import pandas as pd
 from sklearn.metrics import roc_auc_score
 
-from medbench.baselines.scope_arrest import (BASELINES, FIXED_PARAMS, PARAM_BOUNDS, feature_matrix,
+from benchtoward.baselines.scope_arrest import (BASELINES, FIXED_PARAMS, PARAM_BOUNDS, feature_matrix,
                                              fit_predict_hrv_lgbm, fit_predict_prior, impute_train_medians)
-from medbench.tasks.scope_hrv import CANDIDATES, FEATURES
+from benchtoward.tasks.scope_hrv import CANDIDATES, FEATURES
 
 FAST = {"opt_inits": 1, "opt_iters": 1, "max_rounds": 60, "patience": 10, "n_jobs": 2}
 
@@ -84,9 +84,9 @@ def test_calibration_keeps_the_ranking():
 
 def test_run_records_runs_with_a_stay_bootstrap(tmp_session, tmp_path, monkeypatch):
     from conftest import REGISTRY_DIR
-    from medbench.baselines import scope_arrest
-    from medbench.db import ItemResult
-    from medbench.registry import load_registry, resolve_task
+    from benchtoward.baselines import scope_arrest
+    from benchtoward.db import ItemResult
+    from benchtoward.registry import load_registry, resolve_task
 
     monkeypatch.setitem(scope_arrest.BASELINES, "medbench/scope-hrv-lgbm",
                         lambda train, test: fit_predict_hrv_lgbm(train, test, **FAST))
