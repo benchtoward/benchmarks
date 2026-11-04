@@ -1,0 +1,167 @@
+slug: vitaldb-arrhythmia-rhythm
+version: 0
+visibility: open  # owner, 2026-11-03: publish together with beat; no spec-hash change
+dataset: vitaldb-arrhythmia
+kind: multiclass
+primary_metric: macro_f1
+title: Rhythm class of 5-second intraoperative ECG segments (lead II, eight rhythms)
+protocol:
+  adopted: >-
+    No multi-class rhythm evaluation has been published on this database: the dataset paper's technical validation
+    is binary (normal vs abnormal, vitaldb-arrhythmia-abnormal@0) and the authors' repository holds no evaluation
+    code. The task keeps the paper's 5-second lead II segments with the binary task's segment grid, signal rules and
+    subject split, gives each segment the rhythm class the anesthesiologists annotated, and scores it the way the
+    PhysioNet/Computing in Cardiology Challenge 2017 scored single-lead rhythm classification: the F1 of each rhythm
+    class on the test set, averaged over the classes with equal weight (macro-F1), with the noise label not scored.
+  source: >-
+    Clifford GD, Liu C, Moody B, Lehman LH, Silva I, Li Q, Johnson AE, Mark RG. AF classification from a short single
+    lead ECG recording: the PhysioNet/Computing in Cardiology Challenge 2017. Comput Cardiol. 2017;44.
+    doi:10.22489/CinC.2017.065-469 (final score: the mean of the Normal, AF and Other F1 values; the Noisy F1 is not
+    part of it)
+  repository: https://physionet.org/content/challenge-2017/1.0.0/   # the Challenge data and its scoring code
+  dataset_paper: >-
+    Eun DI, Shim K, Lee H, Lim Y, Lim H, Lee H, Lee J, Lee HC. VitalDB Arrhythmia Database: an
+    anesthesiologist-validated large-scale intraoperative arrhythmia dataset with beat and rhythm labels.
+    Sci Data. 2026;13. doi:10.1038/s41597-026-07076-8 (sections Rhythm annotation, Unclassifiable, Technical
+    Validation)
+  annotations:
+    release: vitaldb-arrhythmia 1.0.0 (KHDP; PhysioNet doi:10.13026/axd6-wm13)
+    repository: https://github.com/vitaldb/arrdb
+    commit: 59b7722674e76592900cb8131d25337f2dd084b8   # no licence: read, never copied
+input:
+  track: SNUADC/ECG_II
+  hz: 500
+  duration_s: 5
+  loader: "vitaldb.load_case(caseid, ['SNUADC/ECG_II'], 1/500) with vitaldb 1.7.2 (open-dataset vital files 1.0.1)"
+  reference: [caseid, start_s, duration_s]   # samples [start_s * 500, (start_s + 5) * 500) of the case recording
+  beat_positions: not given   # the rhythm instance carries the ECG only (see one_pass)
+segments:
+  # The binary task's segmentation, unchanged: the three tasks cut the same 5-second segments.
+  grid_s: 5                       # non-overlapping; start_s is a multiple of 5 s from the start of the recording
+  max_annotation_gap_s: 10        # a longer gap between annotation rows is unannotated time: not scored
+  min_beats: 1                    # annotated beats (N, S, V, U, P) inside the segment
+  max_ecg_missing_fraction: 0.1   # missing (NaN) ECG samples in the segment
+  not_scored: [Noise]             # a segment touching a Noise row is not scored (no QRS complexes to read)
+label:
+  # A segment's rhythm labels are those of the labelled annotation rows inside [start, start + 5 s). Only a segment
+  # with no labelled row inside takes the last row before and the first row after it, the binary task's rule (time
+  # between two rows belongs to both); no test segment needs it. The segment rules (noise, gaps) are the binary
+  # task's and still look at those neighbouring rows.
+  classes:
+    N: normal sinus rhythm
+    AFIB/AFL: atrial fibrillation or flutter
+    AVB: atrioventricular block
+    Patterned Atrial Ectopy: patterned atrial ectopy (atrial bigeminy, trigeminy, quadrigeminy)
+    Patterned Ventricular Ectopy: patterned ventricular ectopy (ventricular bigeminy, trigeminy, quadrigeminy)
+    SND: sinus node dysfunction (sinus arrhythmia, sinoatrial block, junctional rhythm)
+    SVTA: supraventricular tachyarrhythmia
+    VT: ventricular tachyarrhythmia
+    WAP/MAT: wandering atrial pacemaker or multifocal atrial tachycardia
+  rule: >-
+    A segment whose labels are only N is N. A segment with exactly one label other than N (with or without N) has
+    that class, so a run of VT inside sinus rhythm is VT, as the binary task counts any other label as abnormal.
+  # A class in fewer than min_test_patients test patients is not scored: `build` computes the two lists below from
+  # the test reference (no prediction is read) and refuses a build that differs. The segments of a class not scored
+  # leave the rhythm instances in every split, so a model answers only the scored classes.
+  min_test_patients: 5
+  scored_classes: [N, AFIB/AFL, Patterned Atrial Ectopy, Patterned Ventricular Ectopy, SND, SVTA, VT, WAP/MAT]
+  classes_not_scored:   # build of 2026-10-30
+    AVB: {test_patients: 1, test_segments: 35, validation_patients: 0, validation_segments: 0, train_patients: 8,
+          train_segments: 816}
+  not_scored:
+    Unclassifiable: >-
+      The clinicians labelled a rhythm Unclassifiable when it was ambiguous to classify (owner, 2026-10-30); the paper
+      uses it for rhythmic transition zones that could not be given a single definitive label. That is ambiguous
+      ground truth, so a segment with any Unclassifiable row is not scored.
+    mixed: >-
+      A segment with two or more different labels other than N (for example Patterned Atrial Ectopy and SND) has no
+      single reference class and is not scored.
+bad_signal_quality: {exclude_from: [test]}   # flagged segments stay in train and validation (as the binary task)
+split:
+  by: subjectid
+  scope: all VitalDB subjects (dataset-level split, the same assignment as vitaldb-arrhythmia-abnormal@0)
+  seed: 20261029
+  fractions: [0.7, 0.1, 0.2]
+  file: registry/splits/vitaldb-arrhythmia-1.0.0-cases.csv   # caseid, subjectid, split for the 482 cases
+  sha256: acece098c2ac6c2f3ad88d5f5fe6f02ee9edd8a9bba29c42c310f84f4bdee61d
+counts:
+  # Scored segments per split and class (build of 2026-10-30; `build` refuses one that differs). Test: 22,560
+  # segments from 110 patients. Not scored in test: 35 AVB (class in 1 test patient), 2 Unclassifiable, 20 mixed,
+  # 1,256 bad signal quality, 558 noise, 184 annotation gap, 1 without a beat. Patients per scored test class: N 78,
+  # AFIB/AFL 30, Patterned Ventricular Ectopy 25, VT 20, Patterned Atrial Ectopy 18, SVTA 17, SND 13, WAP/MAT 8.
+  train: {N: 43922, AFIB/AFL: 14311, Patterned Atrial Ectopy: 2363, Patterned Ventricular Ectopy: 2115, SND: 2928,
+          SVTA: 391, VT: 202, WAP/MAT: 1063}
+  validation: {N: 6205, AFIB/AFL: 2715, Patterned Atrial Ectopy: 534, Patterned Ventricular Ectopy: 978, SND: 527,
+               SVTA: 265, VT: 36, WAP/MAT: 149}
+  test: {N: 12705, AFIB/AFL: 6266, Patterned Atrial Ectopy: 699, Patterned Ventricular Ectopy: 989, SND: 1174,
+         SVTA: 107, VT: 61, WAP/MAT: 559}
+limitations:
+  - >-
+    Few patients carry the rare classes: WAP/MAT is in 8 test patients (1 in validation), SND in 13, SVTA in 17, VT in
+    20; their F1 values, and so macro-F1, move with single patients, which the patient bootstrap shows as wide
+    intervals. AVB, in 1 test patient, is not scored.
+one_pass: >-
+  This task and vitaldb-arrhythmia-beat@0 share one list of 5-second segments (segments.parquet: every segment that
+  passes the shared segment and signal rules; this task scores the subset with one rhythm class of a scored class).
+  A rhythm instance carries the ECG only. A model reads each segment once and writes two answers: the rhythm class,
+  computed from the ECG without the beat positions the beat task gives, and an AAMI class for each of those
+  positions. A combined run must answer rhythm without the beat positions: they carry rhythm information of their
+  own (leakage check rhythm_beat_positions_only). Each answer set is recorded as its own run on its own task. The
+  binary task's test segments are a subset of the same list (same grid, split and signal rules), so its answer can
+  come from the same pass.
+prediction: >-
+  one class name from label.scored_classes per segment; anything else (AVB included) counts as a miss of the
+  reference class and as no false positive
+metrics:
+  primary: macro_f1               # mean over label.scored_classes of 2TP / (2TP + FP + FN)
+  secondary: [accuracy]
+  by_class: [sensitivity, ppv, f1, fpr]   # per rhythm class, with the confusion matrix
+  bootstrap: {n: 1000, by: subjectid}
+  bootstrap_classes: >-
+    every resample averages the full test reference's classes; a resample whose reference lacks one of them is
+    drawn again, and each run records how many redraws it took
+leakage_checks:
+  # Report only (`baseline vitaldb-arrhythmia-rhythm-beat --report`); none of these is an input.
+  rhythm_position_only: >-
+    gradient boosting on the segment's position in its case (start_s, seconds from the case's first segment,
+    relative position): what the instance reference would be worth without the ECG
+  rhythm_beat_positions_only: >-
+    gradient boosting on RR features of the beat task's given beat positions without the ECG (beat count, heart
+    rate, RR mean, SD, CV, minimum, maximum, range ratio, RMSSD, irregularity, pNN50, share of premature RR
+    intervals): what a combined run would gain by answering rhythm from the beat positions
+deviations:
+  - >-
+    No published multi-class evaluation on this database: macro-F1 follows the PhysioNet/CinC Challenge 2017 score,
+    applied to the eight scored rhythm classes (label.scored_classes) instead of the Challenge's Normal, AF and Other.
+  - >-
+    Segment length: 5 seconds as in the dataset paper's validation and the binary task, shorter than the Challenge 2017
+    recordings (9 to 61 s); patterned ectopy and conduction blocks may show only a few beats in a segment.
+  - >-
+    Unclassifiable is a rhythm label in the database but is not scored here (ambiguous ground truth; owner, 2026-10-30);
+    Noise is not scored (a signal-quality label, as the Challenge's noisy class is not in its score).
+  - >-
+    Segments with two or more different labels other than N are not scored; segments with N and one other label take the
+    other label.
+  - >-
+    Split: the dataset-level VitalDB subject split shared with the binary task, instead of a split of this database
+    alone.
+  - "Bad signal quality: flagged test segments are not scored, as in the binary task."
+  - >-
+    AVB, one of the nine rhythm classes the database labels, is not scored: its 35 test segments come from 1 patient
+    and validation has none, so its F1 would be one patient's result (label.min_test_patients).
+decisions:
+  # Maintainers' review of the first build (2026-10-30).
+  - >-
+    Ground truth: a segment's class comes only from the labelled rows inside [start, start + 5 s); the neighbouring rows
+    (the binary segmenter's rule) are used only when no labelled row lies inside. With the neighbours, a segment that is
+    all N inside took the class of a run that starts after it.
+  - >-
+    Classes in fewer than 5 test patients are not scored in macro-F1, computed at build time from the test reference
+    (label.min_test_patients, scored_classes, classes_not_scored); today this leaves out AVB, whose segments leave the
+    instances in every split.
+  - >-
+    Bootstrap: macro-F1 averages the full test reference's classes in every resample, and a resample lacking one is
+    drawn again (metrics.bootstrap_classes), instead of averaging whatever classes a resample holds.
+  - >-
+    One pass: the rhythm instance carries the ECG only; a combined run answers rhythm without the beat positions, and
+    the leakage report says what those positions alone are worth (leakage_checks).

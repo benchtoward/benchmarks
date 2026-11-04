@@ -1,0 +1,2195 @@
+icd10_pcs_5char,approach,nhsn_category,intraperitoneal_proxy,source,rationale
+00100,0,,0,default_zero_unmatched,unmatched_default_0
+00110,0,,0,default_zero_unmatched,unmatched_default_0
+00160,0,CRAN,0,cdc_nhsn_primary,CRAN + approach 0 -> 0
+001U0,0,,0,expert_review_override,expert_review_override_0_mixed_truncation_artifact
+00200,0,,0,default_zero_unmatched,unmatched_default_0
+0020D,D,,0,default_zero_unmatched,unmatched_default_0
+00900,0,CRAN,0,cdc_nhsn_primary,CRAN + approach 0 -> 0
+00907,7,,0,default_zero_unmatched,unmatched_default_0
+0090D,D,,0,default_zero_unmatched,unmatched_default_0
+00910,0,CRAN,0,cdc_nhsn_primary,CRAN + approach 0 -> 0
+00940,0,CRAN,0,cdc_nhsn_primary,CRAN + approach 0 -> 0
+00960,0,CRAN,0,cdc_nhsn_primary,CRAN + approach 0 -> 0
+00964,4,CRAN,0,cdc_nhsn_primary,CRAN + approach 4 -> 0
+009F0,0,,0,default_zero_unmatched,unmatched_default_0
+009T0,0,LAM,0,cdc_nhsn_primary,LAM + approach 0 -> 0
+009TX,X,,0,default_zero_unmatched,unmatched_default_0
+00B00,0,CRAN,0,cdc_nhsn_primary,CRAN + approach 0 -> 0
+00B07,7,,0,default_zero_unmatched,unmatched_default_0
+00B08,8,,0,default_zero_unmatched,unmatched_default_0
+00B0D,D,,0,default_zero_unmatched,unmatched_default_0
+00B0X,X,,0,default_zero_unmatched,unmatched_default_0
+00B10,0,CRAN,0,cdc_nhsn_primary,CRAN + approach 0 -> 0
+00B60,0,CRAN,0,cdc_nhsn_primary,CRAN + approach 0 -> 0
+00B64,4,CRAN,0,cdc_nhsn_primary,CRAN + approach 4 -> 0
+00BF0,0,,0,default_zero_unmatched,unmatched_default_0
+00BF4,4,,0,default_zero_unmatched,unmatched_default_0
+00BT0,0,LAM,0,cdc_nhsn_primary,LAM + approach 0 -> 0
+00BT4,4,LAM,0,cdc_nhsn_primary,LAM + approach 4 -> 0
+00BTX,X,,0,default_zero_unmatched,unmatched_default_0
+00D0X,X,,0,default_zero_unmatched,unmatched_default_0
+00D13,3,CRAN,0,cdc_nhsn_primary,CRAN + approach 3 -> 0
+00DF0,0,,0,default_zero_unmatched,unmatched_default_0
+00DFX,X,,0,default_zero_unmatched,unmatched_default_0
+00GT0,0,,0,default_zero_unmatched,unmatched_default_0
+00GTX,X,,0,default_zero_unmatched,unmatched_default_0
+00H0D,D,,0,default_zero_unmatched,unmatched_default_0
+00HU0,0,,0,default_zero_unmatched,unmatched_default_0
+00J00,0,CRAN,0,cdc_nhsn_primary,CRAN + approach 0 -> 0
+00J08,8,,0,default_zero_unmatched,unmatched_default_0
+00JT0,0,,0,default_zero_unmatched,unmatched_default_0
+00L00,0,,0,default_zero_unmatched,unmatched_default_0
+00NF0,0,,0,default_zero_unmatched,unmatched_default_0
+00NT0,0,LAM,0,cdc_nhsn_primary,LAM + approach 0 -> 0
+00P60,0,CRAN,0,cdc_nhsn_primary,CRAN + approach 0 -> 0
+00P64,4,CRAN,0,cdc_nhsn_primary,CRAN + approach 4 -> 0
+00PE0,0,,0,default_zero_unmatched,unmatched_default_0
+00PT0,0,,0,default_zero_unmatched,unmatched_default_0
+00Q00,0,CRAN,0,cdc_nhsn_primary,CRAN + approach 0 -> 0
+00Q10,0,CRAN,0,cdc_nhsn_primary,CRAN + approach 0 -> 0
+00Q60,0,CRAN,0,cdc_nhsn_primary,CRAN + approach 0 -> 0
+00Q6X,X,,0,default_zero_unmatched,unmatched_default_0
+00QF0,0,,0,default_zero_unmatched,unmatched_default_0
+00QFX,X,,0,default_zero_unmatched,unmatched_default_0
+00QT0,0,LAM,0,cdc_nhsn_primary,LAM + approach 0 -> 0
+00RF0,0,,0,default_zero_unmatched,unmatched_default_0
+00SF0,0,,0,default_zero_unmatched,unmatched_default_0
+00T00,0,,0,default_zero_unmatched,unmatched_default_0
+00T04,4,,0,default_zero_unmatched,unmatched_default_0
+00T20,0,,0,default_zero_unmatched,unmatched_default_0
+00T60,0,,0,default_zero_unmatched,unmatched_default_0
+00TF0,0,,0,default_zero_unmatched,unmatched_default_0
+00TT0,0,,0,default_zero_unmatched,unmatched_default_0
+00TTX,X,,0,default_zero_unmatched,unmatched_default_0
+00UF0,0,,0,default_zero_unmatched,unmatched_default_0
+00XF0,0,,0,default_zero_unmatched,unmatched_default_0
+00XFX,X,,0,default_zero_unmatched,unmatched_default_0
+01650,0,,0,default_zero_unmatched,unmatched_default_0
+01800,0,,0,default_zero_unmatched,unmatched_default_0
+01850,0,,0,default_zero_unmatched,unmatched_default_0
+018L4,4,,0,default_zero_unmatched,unmatched_default_0
+01900,0,,0,default_zero_unmatched,unmatched_default_0
+01B50,0,,0,default_zero_unmatched,unmatched_default_0
+01BG0,0,,0,default_zero_unmatched,unmatched_default_0
+01D00,0,,0,default_zero_unmatched,unmatched_default_0
+01D50,0,,0,default_zero_unmatched,unmatched_default_0
+01H50,0,,0,default_zero_unmatched,unmatched_default_0
+01N00,0,,0,default_zero_unmatched,unmatched_default_0
+01N0X,X,,0,default_zero_unmatched,unmatched_default_0
+01N50,0,,0,default_zero_unmatched,unmatched_default_0
+01NG0,0,,0,default_zero_unmatched,unmatched_default_0
+01Q30,0,,0,default_zero_unmatched,unmatched_default_0
+01Q50,0,,0,default_zero_unmatched,unmatched_default_0
+01R50,0,,0,default_zero_unmatched,unmatched_default_0
+020J3,3,,0,default_zero_unmatched,unmatched_default_0
+02100,0,CBGB,0,cdc_nhsn_primary,CBGB + approach 0 -> 0
+02110,0,CBGB,0,cdc_nhsn_primary,CBGB + approach 0 -> 0
+02114,4,CBGB,0,cdc_nhsn_primary,CBGB + approach 4 -> 0
+02150,0,,0,default_zero_unmatched,unmatched_default_0
+021F0,0,,0,default_zero_unmatched,unmatched_default_0
+021G0,0,,0,default_zero_unmatched,unmatched_default_0
+021K0,0,CARD,0,cdc_nhsn_primary,CARD + approach 0 -> 0
+021P0,0,PVBY,0,cdc_nhsn_primary,PVBY + approach 0 -> 0
+021W0,0,PVBY,0,cdc_nhsn_primary,PVBY + approach 0 -> 0
+027H0,0,CARD,0,cdc_nhsn_primary,CARD + approach 0 -> 0
+027P3,3,,0,default_zero_unmatched,unmatched_default_0
+029N0,0,,0,default_zero_unmatched,unmatched_default_0
+02B04,4,,0,default_zero_unmatched,unmatched_default_0
+02B10,0,,0,default_zero_unmatched,unmatched_default_0
+02B50,0,CARD,0,cdc_nhsn_primary,CARD + approach 0 -> 0
+02B60,0,CARD,0,cdc_nhsn_primary,CARD + approach 0 -> 0
+02B63,3,,0,default_zero_unmatched,unmatched_default_0
+02B64,4,CARD,0,cdc_nhsn_primary,CARD + approach 4 -> 0
+02B6X,X,,0,default_zero_unmatched,unmatched_default_0
+02BA0,0,,0,default_zero_unmatched,unmatched_default_0
+02BF0,0,CARD,0,cdc_nhsn_primary,CARD + approach 0 -> 0
+02BK0,0,CARD,0,cdc_nhsn_primary,CARD + approach 0 -> 0
+02BN0,0,CARD,0,cdc_nhsn_primary,CARD + approach 0 -> 0
+02BN4,4,CARD,0,cdc_nhsn_primary,CARD + approach 4 -> 0
+02BP0,0,,0,default_zero_unmatched,unmatched_default_0
+02BRX,X,,0,default_zero_unmatched,unmatched_default_0
+02BW0,0,,0,default_zero_unmatched,unmatched_default_0
+02BX0,0,,0,default_zero_unmatched,unmatched_default_0
+02C60,0,CARD,0,cdc_nhsn_primary,CARD + approach 0 -> 0
+02CN0,0,CARD,0,cdc_nhsn_primary,CARD + approach 0 -> 0
+02CN4,4,CARD,0,cdc_nhsn_primary,CARD + approach 4 -> 0
+02CP0,0,,0,default_zero_unmatched,unmatched_default_0
+02CW0,0,,0,default_zero_unmatched,unmatched_default_0
+02HA0,0,CARD,0,cdc_nhsn_primary,CARD + approach 0 -> 0
+02HP0,0,,0,default_zero_unmatched,unmatched_default_0
+02J60,0,,0,default_zero_unmatched,unmatched_default_0
+02J64,4,,0,default_zero_unmatched,unmatched_default_0
+02JA0,0,,0,default_zero_unmatched,unmatched_default_0
+02JA4,4,,0,default_zero_unmatched,unmatched_default_0
+02JF0,0,,0,default_zero_unmatched,unmatched_default_0
+02LF0,0,,0,default_zero_unmatched,unmatched_default_0
+02LP0,0,,0,default_zero_unmatched,unmatched_default_0
+02LS3,3,,0,default_zero_unmatched,unmatched_default_0
+02NA0,0,,0,default_zero_unmatched,unmatched_default_0
+02Q00,0,,0,default_zero_unmatched,unmatched_default_0
+02Q50,0,CARD,0,cdc_nhsn_primary,CARD + approach 0 -> 0
+02Q60,0,CARD,0,cdc_nhsn_primary,CARD + approach 0 -> 0
+02QA0,0,CARD,0,cdc_nhsn_primary,CARD + approach 0 -> 0
+02QF0,0,CARD,0,cdc_nhsn_primary,CARD + approach 0 -> 0
+02QG0,0,CARD,0,cdc_nhsn_primary,CARD + approach 0 -> 0
+02QJ0,0,CARD,0,cdc_nhsn_primary,CARD + approach 0 -> 0
+02QK0,0,CARD,0,cdc_nhsn_primary,CARD + approach 0 -> 0
+02QM0,0,CARD,0,cdc_nhsn_primary,CARD + approach 0 -> 0
+02QN0,0,CARD,0,cdc_nhsn_primary,CARD + approach 0 -> 0
+02QP0,0,,0,default_zero_unmatched,unmatched_default_0
+02QX0,0,,0,default_zero_unmatched,unmatched_default_0
+02R50,0,CARD,0,cdc_nhsn_primary,CARD + approach 0 -> 0
+02RA0,0,CARD,0,cdc_nhsn_primary,CARD + approach 0 -> 0
+02RF0,0,CARD,0,cdc_nhsn_primary,CARD + approach 0 -> 0
+02RG0,0,CARD,0,cdc_nhsn_primary,CARD + approach 0 -> 0
+02RJ0,0,CARD,0,cdc_nhsn_primary,CARD + approach 0 -> 0
+02RP0,0,,0,default_zero_unmatched,unmatched_default_0
+02RP4,4,,0,default_zero_unmatched,unmatched_default_0
+02RX0,0,,0,default_zero_unmatched,unmatched_default_0
+02SP0,0,CARD,0,cdc_nhsn_primary,CARD + approach 0 -> 0
+02T50,0,CARD,0,cdc_nhsn_primary,CARD + approach 0 -> 0
+02UF0,0,CARD,0,cdc_nhsn_primary,CARD + approach 0 -> 0
+02VP0,0,,0,default_zero_unmatched,unmatched_default_0
+02YA0,0,HTP,0,cdc_nhsn_primary,HTP + approach 0 -> 0
+02YF0,0,,0,default_zero_unmatched,unmatched_default_0
+030Y0,0,,0,default_zero_unmatched,unmatched_default_0
+03120,0,AVSD,0,cdc_nhsn_primary,AVSD + approach 0 -> 0
+0312X,X,,0,default_zero_unmatched,unmatched_default_0
+03130,0,AVSD,0,cdc_nhsn_primary,AVSD + approach 0 -> 0
+03140,0,AVSD,0,cdc_nhsn_primary,AVSD + approach 0 -> 0
+031H0,0,PVBY,0,cdc_nhsn_primary,PVBY + approach 0 -> 0
+031J0,0,PVBY,0,cdc_nhsn_primary,PVBY + approach 0 -> 0
+031K0,0,PVBY,0,cdc_nhsn_primary,PVBY + approach 0 -> 0
+031Y0,0,,0,default_zero_unmatched,unmatched_default_0
+03720,0,,0,default_zero_unmatched,unmatched_default_0
+037H0,0,,0,default_zero_unmatched,unmatched_default_0
+037Y3,3,,0,default_zero_unmatched,unmatched_default_0
+03920,0,,0,default_zero_unmatched,unmatched_default_0
+0392X,X,,0,default_zero_unmatched,unmatched_default_0
+03B20,0,,0,default_zero_unmatched,unmatched_default_0
+03B50,0,,0,default_zero_unmatched,unmatched_default_0
+03BJ0,0,,0,default_zero_unmatched,unmatched_default_0
+03BY0,0,,0,default_zero_unmatched,unmatched_default_0
+03BY3,3,,0,default_zero_unmatched,unmatched_default_0
+03BYX,X,,0,default_zero_unmatched,unmatched_default_0
+03C20,0,,0,default_zero_unmatched,unmatched_default_0
+03C50,0,,0,default_zero_unmatched,unmatched_default_0
+03CH0,0,CEA,0,cdc_nhsn_primary,CEA + approach 0 -> 0
+03CJ0,0,CEA,0,cdc_nhsn_primary,CEA + approach 0 -> 0
+03CY0,0,,0,default_zero_unmatched,unmatched_default_0
+03L20,0,,0,default_zero_unmatched,unmatched_default_0
+03L23,3,,0,default_zero_unmatched,unmatched_default_0
+03L24,4,,0,default_zero_unmatched,unmatched_default_0
+03LG0,0,CRAN,0,cdc_nhsn_primary,CRAN + approach 0 -> 0
+03LG3,3,CRAN,0,cdc_nhsn_primary,CRAN + approach 3 -> 0
+03LK0,0,,0,default_zero_unmatched,unmatched_default_0
+03LK3,3,,0,default_zero_unmatched,unmatched_default_0
+03LL0,0,,0,default_zero_unmatched,unmatched_default_0
+03LY0,0,,0,default_zero_unmatched,unmatched_default_0
+03LY3,3,,0,default_zero_unmatched,unmatched_default_0
+03Q20,0,,0,default_zero_unmatched,unmatched_default_0
+03QY0,0,,0,default_zero_unmatched,unmatched_default_0
+03R20,0,,0,default_zero_unmatched,unmatched_default_0
+03RY0,0,,0,default_zero_unmatched,unmatched_default_0
+03T24,4,,0,default_zero_unmatched,unmatched_default_0
+03T2X,X,,0,default_zero_unmatched,unmatched_default_0
+03TY0,0,,0,default_zero_unmatched,unmatched_default_0
+03VG3,3,CRAN,0,cdc_nhsn_primary,CRAN + approach 3 -> 0
+03VY0,0,,0,default_zero_unmatched,unmatched_default_0
+03XY0,0,,0,default_zero_unmatched,unmatched_default_0
+03Y20,0,,0,default_zero_unmatched,unmatched_default_0
+04100,0,,0,expert_review_override,expert_review_override_0_abdominal_vascular_bypass
+04150,0,,0,default_zero_unmatched,unmatched_default_0
+041L0,0,AVSD,0,cdc_nhsn_primary,AVSD + approach 0 -> 0
+041Y0,0,,0,default_zero_unmatched,unmatched_default_0
+047Y0,0,,0,default_zero_unmatched,unmatched_default_0
+047Y3,3,,0,default_zero_unmatched,unmatched_default_0
+04B00,0,AAA,0,cdc_nhsn_primary,AAA + approach 0 -> 0
+04B04,4,AAA,0,cdc_nhsn_primary,AAA + approach 4 -> 0
+04BK0,0,,0,default_zero_unmatched,unmatched_default_0
+04BL0,0,,0,default_zero_unmatched,unmatched_default_0
+04BY0,0,,0,default_zero_unmatched,unmatched_default_0
+04C00,0,,0,default_zero_unmatched,unmatched_default_0
+04C50,0,,0,expert_review_override,expert_review_override_0_mesenteric_artery_vascular
+04CK0,0,,0,default_zero_unmatched,unmatched_default_0
+04CL0,0,,0,default_zero_unmatched,unmatched_default_0
+04CY0,0,,0,default_zero_unmatched,unmatched_default_0
+04LYX,X,,0,default_zero_unmatched,unmatched_default_0
+04NY0,0,,0,default_zero_unmatched,unmatched_default_0
+04P0X,X,,0,default_zero_unmatched,unmatched_default_0
+04Q00,0,,0,default_zero_unmatched,unmatched_default_0
+04R00,0,AAA,0,cdc_nhsn_primary,AAA + approach 0 -> 0
+04RY0,0,,0,default_zero_unmatched,unmatched_default_0
+04V00,0,,0,default_zero_unmatched,unmatched_default_0
+05000,0,,0,default_zero_unmatched,unmatched_default_0
+05003,3,,0,default_zero_unmatched,unmatched_default_0
+051Y0,0,,0,default_zero_unmatched,unmatched_default_0
+05BY0,0,,0,default_zero_unmatched,unmatched_default_0
+05BYX,X,,0,default_zero_unmatched,unmatched_default_0
+05DY0,0,,0,default_zero_unmatched,unmatched_default_0
+05HY0,0,,0,default_zero_unmatched,unmatched_default_0
+05HYX,X,,0,default_zero_unmatched,unmatched_default_0
+05LY0,0,,0,default_zero_unmatched,unmatched_default_0
+05QY0,0,,0,default_zero_unmatched,unmatched_default_0
+05VY0,0,,0,default_zero_unmatched,unmatched_default_0
+06B00,0,,0,default_zero_unmatched,unmatched_default_0
+06BM0,0,,0,default_zero_unmatched,unmatched_default_0
+06BN0,0,,0,default_zero_unmatched,unmatched_default_0
+06BY0,0,,0,default_zero_unmatched,unmatched_default_0
+06DM0,0,,0,default_zero_unmatched,unmatched_default_0
+06DN0,0,,0,default_zero_unmatched,unmatched_default_0
+06LY0,0,,0,default_zero_unmatched,unmatched_default_0
+06T04,4,,0,default_zero_unmatched,unmatched_default_0
+071M0,0,,0,default_zero_unmatched,unmatched_default_0
+071P4,4,,0,default_zero_unmatched,unmatched_default_0
+072T0,0,,0,default_zero_unmatched,unmatched_default_0
+07900,0,,0,default_zero_unmatched,unmatched_default_0
+07904,4,,0,default_zero_unmatched,unmatched_default_0
+07B00,0,,0,default_zero_unmatched,unmatched_default_0
+07B04,4,,0,default_zero_unmatched,unmatched_default_0
+07B07,7,,0,default_zero_unmatched,unmatched_default_0
+07B0X,X,,0,default_zero_unmatched,unmatched_default_0
+07B10,0,,0,default_zero_unmatched,unmatched_default_0
+07B50,0,,0,default_zero_unmatched,unmatched_default_0
+07B5X,X,,0,default_zero_unmatched,unmatched_default_0
+07B94,4,,0,default_zero_unmatched,unmatched_default_0
+07BC0,0,,0,default_zero_unmatched,unmatched_default_0
+07BC4,4,,0,default_zero_unmatched,unmatched_default_0
+07BH0,0,,0,default_zero_unmatched,unmatched_default_0
+07BH4,4,,0,default_zero_unmatched,unmatched_default_0
+07BHX,X,,0,default_zero_unmatched,unmatched_default_0
+07BM0,0,,0,default_zero_unmatched,unmatched_default_0
+07BM4,4,,0,default_zero_unmatched,unmatched_default_0
+07BP0,0,SPLE,1,cdc_nhsn_primary,SPLE + approach 0 -> 1
+07BP4,4,SPLE,1,cdc_nhsn_primary,SPLE + approach 4 -> 1
+07BT0,0,,0,default_zero_unmatched,unmatched_default_0
+07CK4,4,,0,default_zero_unmatched,unmatched_default_0
+07D90,0,,0,default_zero_unmatched,unmatched_default_0
+07DT3,3,,0,default_zero_unmatched,unmatched_default_0
+07J00,0,,0,default_zero_unmatched,unmatched_default_0
+07J04,4,,0,default_zero_unmatched,unmatched_default_0
+07J08,8,,0,default_zero_unmatched,unmatched_default_0
+07LK0,0,,0,default_zero_unmatched,unmatched_default_0
+07LK4,4,,0,default_zero_unmatched,unmatched_default_0
+07Q00,0,,0,default_zero_unmatched,unmatched_default_0
+07Q04,4,,0,default_zero_unmatched,unmatched_default_0
+07Q10,0,,0,default_zero_unmatched,unmatched_default_0
+07QC4,4,,0,default_zero_unmatched,unmatched_default_0
+07QK0,0,,0,default_zero_unmatched,unmatched_default_0
+07QT0,0,,0,default_zero_unmatched,unmatched_default_0
+07RM0,0,,0,default_zero_unmatched,unmatched_default_0
+07T00,0,,0,default_zero_unmatched,unmatched_default_0
+07T04,4,,0,default_zero_unmatched,unmatched_default_0
+07T10,0,NECK,0,cdc_nhsn_primary,NECK + approach 0 -> 0
+07T90,0,,0,default_zero_unmatched,unmatched_default_0
+07TC0,0,,0,default_zero_unmatched,unmatched_default_0
+07TC4,4,,0,default_zero_unmatched,unmatched_default_0
+07TH0,0,,0,default_zero_unmatched,unmatched_default_0
+07TM0,0,,0,default_zero_unmatched,unmatched_default_0
+07TM4,4,,0,default_zero_unmatched,unmatched_default_0
+07TP0,0,SPLE,1,cdc_nhsn_primary,SPLE + approach 0 -> 1
+07TP4,4,SPLE,1,cdc_nhsn_primary,SPLE + approach 4 -> 1
+08040,0,,0,default_zero_unmatched,unmatched_default_0
+0808X,X,,0,default_zero_unmatched,unmatched_default_0
+080K0,0,,0,default_zero_unmatched,unmatched_default_0
+080N0,0,,0,default_zero_unmatched,unmatched_default_0
+080NX,X,,0,default_zero_unmatched,unmatched_default_0
+08123,3,,0,default_zero_unmatched,unmatched_default_0
+08153,3,,0,default_zero_unmatched,unmatched_default_0
+081J3,3,,0,default_zero_unmatched,unmatched_default_0
+081JX,X,,0,default_zero_unmatched,unmatched_default_0
+081X0,0,,0,default_zero_unmatched,unmatched_default_0
+081Y0,0,,0,default_zero_unmatched,unmatched_default_0
+086N0,0,,0,default_zero_unmatched,unmatched_default_0
+087K0,0,,0,default_zero_unmatched,unmatched_default_0
+087X0,0,,0,default_zero_unmatched,unmatched_default_0
+087Y0,0,,0,default_zero_unmatched,unmatched_default_0
+08923,3,,0,default_zero_unmatched,unmatched_default_0
+08940,0,,0,default_zero_unmatched,unmatched_default_0
+08B00,0,,0,default_zero_unmatched,unmatched_default_0
+08B0X,X,,0,default_zero_unmatched,unmatched_default_0
+08B10,0,,0,default_zero_unmatched,unmatched_default_0
+08B1X,X,,0,default_zero_unmatched,unmatched_default_0
+08B20,0,,0,default_zero_unmatched,unmatched_default_0
+08B40,0,,0,default_zero_unmatched,unmatched_default_0
+08B43,3,,0,default_zero_unmatched,unmatched_default_0
+08B50,0,,0,default_zero_unmatched,unmatched_default_0
+08B53,3,,0,default_zero_unmatched,unmatched_default_0
+08B8X,X,,0,default_zero_unmatched,unmatched_default_0
+08B9X,X,,0,default_zero_unmatched,unmatched_default_0
+08BJ0,0,,0,default_zero_unmatched,unmatched_default_0
+08BJ3,3,,0,default_zero_unmatched,unmatched_default_0
+08BJ7,7,,0,default_zero_unmatched,unmatched_default_0
+08BJX,X,,0,default_zero_unmatched,unmatched_default_0
+08BK0,0,,0,default_zero_unmatched,unmatched_default_0
+08BK3,3,,0,default_zero_unmatched,unmatched_default_0
+08BK7,7,,0,default_zero_unmatched,unmatched_default_0
+08BKX,X,,0,default_zero_unmatched,unmatched_default_0
+08BN0,0,,0,default_zero_unmatched,unmatched_default_0
+08BN3,3,,0,default_zero_unmatched,unmatched_default_0
+08BP0,0,,0,default_zero_unmatched,unmatched_default_0
+08BS0,0,,0,default_zero_unmatched,unmatched_default_0
+08BS3,3,,0,default_zero_unmatched,unmatched_default_0
+08BSX,X,,0,default_zero_unmatched,unmatched_default_0
+08BTX,X,,0,default_zero_unmatched,unmatched_default_0
+08BV0,0,,0,default_zero_unmatched,unmatched_default_0
+08BW0,0,,0,default_zero_unmatched,unmatched_default_0
+08D0X,X,,0,default_zero_unmatched,unmatched_default_0
+08D1X,X,,0,default_zero_unmatched,unmatched_default_0
+08D20,0,,0,default_zero_unmatched,unmatched_default_0
+08D23,3,,0,default_zero_unmatched,unmatched_default_0
+08D43,3,,0,default_zero_unmatched,unmatched_default_0
+08D63,3,,0,default_zero_unmatched,unmatched_default_0
+08D8X,X,,0,default_zero_unmatched,unmatched_default_0
+08D93,3,,0,default_zero_unmatched,unmatched_default_0
+08DJ0,0,,0,default_zero_unmatched,unmatched_default_0
+08DJ3,3,,0,default_zero_unmatched,unmatched_default_0
+08DJ7,7,,0,default_zero_unmatched,unmatched_default_0
+08DJX,X,,0,default_zero_unmatched,unmatched_default_0
+08DK3,3,,0,default_zero_unmatched,unmatched_default_0
+08DM0,0,,0,default_zero_unmatched,unmatched_default_0
+08DN0,0,,0,default_zero_unmatched,unmatched_default_0
+08DN3,3,,0,default_zero_unmatched,unmatched_default_0
+08DP0,0,,0,default_zero_unmatched,unmatched_default_0
+08DP4,4,,0,default_zero_unmatched,unmatched_default_0
+08DX3,3,,0,default_zero_unmatched,unmatched_default_0
+08G40,0,,0,default_zero_unmatched,unmatched_default_0
+08HJ3,3,,0,default_zero_unmatched,unmatched_default_0
+08HK3,3,,0,default_zero_unmatched,unmatched_default_0
+08J0X,X,,0,default_zero_unmatched,unmatched_default_0
+08NPX,X,,0,default_zero_unmatched,unmatched_default_0
+08PJ3,3,,0,default_zero_unmatched,unmatched_default_0
+08PK3,3,,0,default_zero_unmatched,unmatched_default_0
+08Q0X,X,,0,default_zero_unmatched,unmatched_default_0
+08Q1X,X,,0,default_zero_unmatched,unmatched_default_0
+08Q43,3,,0,default_zero_unmatched,unmatched_default_0
+08Q6X,X,,0,default_zero_unmatched,unmatched_default_0
+08Q7X,X,,0,default_zero_unmatched,unmatched_default_0
+08Q8X,X,,0,default_zero_unmatched,unmatched_default_0
+08Q93,3,,0,default_zero_unmatched,unmatched_default_0
+08Q9X,X,,0,default_zero_unmatched,unmatched_default_0
+08QC3,3,,0,default_zero_unmatched,unmatched_default_0
+08QD0,0,,0,default_zero_unmatched,unmatched_default_0
+08QD3,3,,0,default_zero_unmatched,unmatched_default_0
+08QE3,3,,0,default_zero_unmatched,unmatched_default_0
+08QF3,3,,0,default_zero_unmatched,unmatched_default_0
+08QJ0,0,,0,default_zero_unmatched,unmatched_default_0
+08QJ3,3,,0,default_zero_unmatched,unmatched_default_0
+08QJX,X,,0,default_zero_unmatched,unmatched_default_0
+08QK3,3,,0,default_zero_unmatched,unmatched_default_0
+08QL0,0,,0,default_zero_unmatched,unmatched_default_0
+08QM0,0,,0,default_zero_unmatched,unmatched_default_0
+08QN0,0,,0,default_zero_unmatched,unmatched_default_0
+08QNX,X,,0,default_zero_unmatched,unmatched_default_0
+08QP0,0,,0,default_zero_unmatched,unmatched_default_0
+08QSX,X,,0,default_zero_unmatched,unmatched_default_0
+08QTX,X,,0,default_zero_unmatched,unmatched_default_0
+08QY0,0,,0,default_zero_unmatched,unmatched_default_0
+08R40,0,,0,default_zero_unmatched,unmatched_default_0
+08R43,3,,0,default_zero_unmatched,unmatched_default_0
+08R53,3,,0,default_zero_unmatched,unmatched_default_0
+08R73,3,,0,default_zero_unmatched,unmatched_default_0
+08R83,3,,0,default_zero_unmatched,unmatched_default_0
+08R8X,X,,0,default_zero_unmatched,unmatched_default_0
+08R93,3,,0,default_zero_unmatched,unmatched_default_0
+08R9X,X,,0,default_zero_unmatched,unmatched_default_0
+08RJ0,0,,0,default_zero_unmatched,unmatched_default_0
+08RJ3,3,,0,default_zero_unmatched,unmatched_default_0
+08RJX,X,,0,default_zero_unmatched,unmatched_default_0
+08RK3,3,,0,default_zero_unmatched,unmatched_default_0
+08RN0,0,,0,default_zero_unmatched,unmatched_default_0
+08RNX,X,,0,default_zero_unmatched,unmatched_default_0
+08S9X,X,,0,default_zero_unmatched,unmatched_default_0
+08SJ0,0,,0,default_zero_unmatched,unmatched_default_0
+08SJ3,3,,0,default_zero_unmatched,unmatched_default_0
+08SK0,0,,0,default_zero_unmatched,unmatched_default_0
+08SK3,3,,0,default_zero_unmatched,unmatched_default_0
+08SL0,0,,0,default_zero_unmatched,unmatched_default_0
+08SM0,0,,0,default_zero_unmatched,unmatched_default_0
+08SN0,0,,0,default_zero_unmatched,unmatched_default_0
+08SN3,3,,0,default_zero_unmatched,unmatched_default_0
+08SP0,0,,0,default_zero_unmatched,unmatched_default_0
+08SP3,3,,0,default_zero_unmatched,unmatched_default_0
+08T00,0,,0,default_zero_unmatched,unmatched_default_0
+08T0X,X,,0,default_zero_unmatched,unmatched_default_0
+08T10,0,,0,default_zero_unmatched,unmatched_default_0
+08T1X,X,,0,default_zero_unmatched,unmatched_default_0
+08TJ0,0,,0,default_zero_unmatched,unmatched_default_0
+08TJX,X,,0,default_zero_unmatched,unmatched_default_0
+08TK0,0,,0,default_zero_unmatched,unmatched_default_0
+08TL0,0,,0,default_zero_unmatched,unmatched_default_0
+08TM0,0,,0,default_zero_unmatched,unmatched_default_0
+08TP4,4,,0,default_zero_unmatched,unmatched_default_0
+08U00,0,,0,default_zero_unmatched,unmatched_default_0
+08U10,0,,0,default_zero_unmatched,unmatched_default_0
+08U40,0,,0,default_zero_unmatched,unmatched_default_0
+08U43,3,,0,default_zero_unmatched,unmatched_default_0
+08XNX,X,,0,default_zero_unmatched,unmatched_default_0
+09050,0,,0,default_zero_unmatched,unmatched_default_0
+09070,0,,0,default_zero_unmatched,unmatched_default_0
+090K0,0,,0,default_zero_unmatched,unmatched_default_0
+090M0,0,,0,default_zero_unmatched,unmatched_default_0
+09170,0,,0,default_zero_unmatched,unmatched_default_0
+091C0,0,,0,default_zero_unmatched,unmatched_default_0
+09680,0,,0,default_zero_unmatched,unmatched_default_0
+09770,0,,0,default_zero_unmatched,unmatched_default_0
+097F0,0,,0,default_zero_unmatched,unmatched_default_0
+097G0,0,,0,default_zero_unmatched,unmatched_default_0
+09800,0,,0,default_zero_unmatched,unmatched_default_0
+09870,0,,0,default_zero_unmatched,unmatched_default_0
+09900,0,,0,default_zero_unmatched,unmatched_default_0
+09910,0,,0,default_zero_unmatched,unmatched_default_0
+09950,0,,0,default_zero_unmatched,unmatched_default_0
+09960,0,,0,default_zero_unmatched,unmatched_default_0
+09970,0,,0,default_zero_unmatched,unmatched_default_0
+09973,3,,0,default_zero_unmatched,unmatched_default_0
+099B0,0,,0,default_zero_unmatched,unmatched_default_0
+099C0,0,,0,default_zero_unmatched,unmatched_default_0
+09B00,0,,0,default_zero_unmatched,unmatched_default_0
+09B03,3,,0,default_zero_unmatched,unmatched_default_0
+09B04,4,,0,default_zero_unmatched,unmatched_default_0
+09B07,7,,0,default_zero_unmatched,unmatched_default_0
+09B0X,X,,0,default_zero_unmatched,unmatched_default_0
+09B10,0,,0,default_zero_unmatched,unmatched_default_0
+09B14,4,,0,default_zero_unmatched,unmatched_default_0
+09B17,7,,0,default_zero_unmatched,unmatched_default_0
+09B1X,X,,0,default_zero_unmatched,unmatched_default_0
+09B50,0,,0,default_zero_unmatched,unmatched_default_0
+09B60,0,,0,default_zero_unmatched,unmatched_default_0
+09B70,0,,0,default_zero_unmatched,unmatched_default_0
+09B74,4,,0,default_zero_unmatched,unmatched_default_0
+09B77,7,,0,default_zero_unmatched,unmatched_default_0
+09B78,8,,0,default_zero_unmatched,unmatched_default_0
+09B7X,X,,0,default_zero_unmatched,unmatched_default_0
+09B80,0,,0,default_zero_unmatched,unmatched_default_0
+09B90,0,,0,default_zero_unmatched,unmatched_default_0
+09BA0,0,,0,default_zero_unmatched,unmatched_default_0
+09BB0,0,,0,default_zero_unmatched,unmatched_default_0
+09BC0,0,,0,default_zero_unmatched,unmatched_default_0
+09BK0,0,,0,default_zero_unmatched,unmatched_default_0
+09BK8,8,,0,default_zero_unmatched,unmatched_default_0
+09BKX,X,,0,default_zero_unmatched,unmatched_default_0
+09BM0,0,,0,default_zero_unmatched,unmatched_default_0
+09BMX,X,,0,default_zero_unmatched,unmatched_default_0
+09BN0,0,,0,default_zero_unmatched,unmatched_default_0
+09BP0,0,,0,default_zero_unmatched,unmatched_default_0
+09BP3,3,,0,default_zero_unmatched,unmatched_default_0
+09BPX,X,,0,default_zero_unmatched,unmatched_default_0
+09BQ0,0,,0,default_zero_unmatched,unmatched_default_0
+09BQ7,7,,0,default_zero_unmatched,unmatched_default_0
+09BQ8,8,,0,default_zero_unmatched,unmatched_default_0
+09BR8,8,,0,default_zero_unmatched,unmatched_default_0
+09BW0,0,,0,default_zero_unmatched,unmatched_default_0
+09C0X,X,,0,default_zero_unmatched,unmatched_default_0
+09C70,0,,0,default_zero_unmatched,unmatched_default_0
+09CQ3,3,,0,default_zero_unmatched,unmatched_default_0
+09CS0,0,,0,default_zero_unmatched,unmatched_default_0
+09CT0,0,,0,default_zero_unmatched,unmatched_default_0
+09CW0,0,,0,default_zero_unmatched,unmatched_default_0
+09CX0,0,,0,default_zero_unmatched,unmatched_default_0
+09D00,0,,0,default_zero_unmatched,unmatched_default_0
+09D03,3,,0,default_zero_unmatched,unmatched_default_0
+09D04,4,,0,default_zero_unmatched,unmatched_default_0
+09D0X,X,,0,default_zero_unmatched,unmatched_default_0
+09D10,0,,0,default_zero_unmatched,unmatched_default_0
+09D70,0,,0,default_zero_unmatched,unmatched_default_0
+09D73,3,,0,default_zero_unmatched,unmatched_default_0
+09D77,7,,0,default_zero_unmatched,unmatched_default_0
+09D7X,X,,0,default_zero_unmatched,unmatched_default_0
+09G00,0,,0,default_zero_unmatched,unmatched_default_0
+09G70,0,,0,default_zero_unmatched,unmatched_default_0
+09H70,0,,0,default_zero_unmatched,unmatched_default_0
+09HD0,0,,0,default_zero_unmatched,unmatched_default_0
+09HE0,0,,0,default_zero_unmatched,unmatched_default_0
+09J00,0,,0,default_zero_unmatched,unmatched_default_0
+09J04,4,,0,default_zero_unmatched,unmatched_default_0
+09J0X,X,,0,default_zero_unmatched,unmatched_default_0
+09J70,0,,0,default_zero_unmatched,unmatched_default_0
+09JKX,X,,0,default_zero_unmatched,unmatched_default_0
+09L70,0,,0,default_zero_unmatched,unmatched_default_0
+09N00,0,,0,default_zero_unmatched,unmatched_default_0
+09N10,0,,0,default_zero_unmatched,unmatched_default_0
+09N70,0,,0,default_zero_unmatched,unmatched_default_0
+09P50,0,,0,default_zero_unmatched,unmatched_default_0
+09PD0,0,,0,default_zero_unmatched,unmatched_default_0
+09PE0,0,,0,default_zero_unmatched,unmatched_default_0
+09Q00,0,,0,default_zero_unmatched,unmatched_default_0
+09Q03,3,,0,default_zero_unmatched,unmatched_default_0
+09Q04,4,,0,default_zero_unmatched,unmatched_default_0
+09Q10,0,,0,default_zero_unmatched,unmatched_default_0
+09Q14,4,,0,default_zero_unmatched,unmatched_default_0
+09Q50,0,,0,default_zero_unmatched,unmatched_default_0
+09Q70,0,,0,default_zero_unmatched,unmatched_default_0
+09Q73,3,,0,default_zero_unmatched,unmatched_default_0
+09Q74,4,,0,default_zero_unmatched,unmatched_default_0
+09Q77,7,,0,default_zero_unmatched,unmatched_default_0
+09Q78,8,,0,default_zero_unmatched,unmatched_default_0
+09Q7X,X,,0,default_zero_unmatched,unmatched_default_0
+09Q80,0,,0,default_zero_unmatched,unmatched_default_0
+09Q90,0,,0,default_zero_unmatched,unmatched_default_0
+09QB0,0,,0,default_zero_unmatched,unmatched_default_0
+09QD0,0,,0,default_zero_unmatched,unmatched_default_0
+09QK0,0,,0,default_zero_unmatched,unmatched_default_0
+09QKX,X,,0,default_zero_unmatched,unmatched_default_0
+09QM0,0,,0,default_zero_unmatched,unmatched_default_0
+09QN0,0,,0,default_zero_unmatched,unmatched_default_0
+09QP0,0,,0,default_zero_unmatched,unmatched_default_0
+09QPX,X,,0,default_zero_unmatched,unmatched_default_0
+09QQ0,0,,0,default_zero_unmatched,unmatched_default_0
+09QQ8,8,,0,default_zero_unmatched,unmatched_default_0
+09QW0,0,,0,default_zero_unmatched,unmatched_default_0
+09R00,0,,0,default_zero_unmatched,unmatched_default_0
+09R0X,X,,0,default_zero_unmatched,unmatched_default_0
+09R10,0,,0,default_zero_unmatched,unmatched_default_0
+09R1X,X,,0,default_zero_unmatched,unmatched_default_0
+09R50,0,,0,default_zero_unmatched,unmatched_default_0
+09R70,0,,0,default_zero_unmatched,unmatched_default_0
+09S00,0,,0,default_zero_unmatched,unmatched_default_0
+09S70,0,,0,default_zero_unmatched,unmatched_default_0
+09T00,0,,0,default_zero_unmatched,unmatched_default_0
+09T04,4,,0,default_zero_unmatched,unmatched_default_0
+09T10,0,,0,default_zero_unmatched,unmatched_default_0
+09T14,4,,0,default_zero_unmatched,unmatched_default_0
+09T70,0,,0,default_zero_unmatched,unmatched_default_0
+09T7X,X,,0,default_zero_unmatched,unmatched_default_0
+09T80,0,,0,default_zero_unmatched,unmatched_default_0
+09T8X,X,,0,default_zero_unmatched,unmatched_default_0
+09TB0,0,,0,default_zero_unmatched,unmatched_default_0
+09TC0,0,,0,default_zero_unmatched,unmatched_default_0
+09X00,0,,0,default_zero_unmatched,unmatched_default_0
+09X0X,X,,0,default_zero_unmatched,unmatched_default_0
+09X1X,X,,0,default_zero_unmatched,unmatched_default_0
+09XB0,0,,0,default_zero_unmatched,unmatched_default_0
+0A0D0,0,,0,default_zero_unmatched,unmatched_default_0
+0A0D7,7,,0,default_zero_unmatched,unmatched_default_0
+0A122,2,,0,default_zero_unmatched,unmatched_default_0
+0A152,2,,0,default_zero_unmatched,unmatched_default_0
+0A7D7,7,,0,default_zero_unmatched,unmatched_default_0
+0ABD0,0,,0,default_zero_unmatched,unmatched_default_0
+0ABD7,7,,0,default_zero_unmatched,unmatched_default_0
+0AJD7,7,,0,default_zero_unmatched,unmatched_default_0
+0AQ20,0,,0,default_zero_unmatched,unmatched_default_0
+0AQD0,0,,0,default_zero_unmatched,unmatched_default_0
+0AQD7,7,,0,default_zero_unmatched,unmatched_default_0
+0B0T0,0,,0,default_zero_unmatched,unmatched_default_0
+0B110,0,,0,default_zero_unmatched,unmatched_default_0
+0B11X,X,,0,default_zero_unmatched,unmatched_default_0
+0B710,0,,0,default_zero_unmatched,unmatched_default_0
+0B717,7,,0,default_zero_unmatched,unmatched_default_0
+0B7K0,0,,0,default_zero_unmatched,unmatched_default_0
+0B8T0,0,,0,default_zero_unmatched,unmatched_default_0
+0B910,0,NECK,0,cdc_nhsn_primary,NECK + approach 0 -> 0
+0B9N0,0,THOR,0,cdc_nhsn_primary,THOR + approach 0 -> 0
+0B9N4,4,THOR,0,cdc_nhsn_primary,THOR + approach 4 -> 0
+0BB10,0,NECK,0,cdc_nhsn_primary,NECK + approach 0 -> 0
+0BB14,4,NECK,0,cdc_nhsn_primary,NECK + approach 4 -> 0
+0BB34,4,THOR,0,cdc_nhsn_primary,THOR + approach 4 -> 0
+0BBC0,0,THOR,0,cdc_nhsn_primary,THOR + approach 0 -> 0
+0BBC4,4,THOR,0,cdc_nhsn_primary,THOR + approach 4 -> 0
+0BBD0,0,THOR,0,cdc_nhsn_primary,THOR + approach 0 -> 0
+0BBD4,4,THOR,0,cdc_nhsn_primary,THOR + approach 4 -> 0
+0BBF0,0,THOR,0,cdc_nhsn_primary,THOR + approach 0 -> 0
+0BBF4,4,THOR,0,cdc_nhsn_primary,THOR + approach 4 -> 0
+0BBG4,4,THOR,0,cdc_nhsn_primary,THOR + approach 4 -> 0
+0BBJ0,0,THOR,0,cdc_nhsn_primary,THOR + approach 0 -> 0
+0BBJ4,4,THOR,0,cdc_nhsn_primary,THOR + approach 4 -> 0
+0BBK0,0,THOR,0,cdc_nhsn_primary,THOR + approach 0 -> 0
+0BBK3,3,,0,default_zero_unmatched,unmatched_default_0
+0BBK4,4,THOR,0,cdc_nhsn_primary,THOR + approach 4 -> 0
+0BBKX,X,,0,default_zero_unmatched,unmatched_default_0
+0BBL0,0,THOR,0,cdc_nhsn_primary,THOR + approach 0 -> 0
+0BBL4,4,THOR,0,cdc_nhsn_primary,THOR + approach 4 -> 0
+0BBN0,0,THOR,0,cdc_nhsn_primary,THOR + approach 0 -> 0
+0BBN4,4,THOR,0,cdc_nhsn_primary,THOR + approach 4 -> 0
+0BBT0,0,THOR,0,cdc_nhsn_primary,THOR + approach 0 -> 0
+0BC00,0,,0,default_zero_unmatched,unmatched_default_0
+0BCC4,4,THOR,0,cdc_nhsn_primary,THOR + approach 4 -> 0
+0BCT0,0,THOR,0,cdc_nhsn_primary,THOR + approach 0 -> 0
+0BDK4,4,,0,default_zero_unmatched,unmatched_default_0
+0BDN0,0,THOR,0,cdc_nhsn_primary,THOR + approach 0 -> 0
+0BDN4,4,THOR,0,cdc_nhsn_primary,THOR + approach 4 -> 0
+0BJ04,4,,0,default_zero_unmatched,unmatched_default_0
+0BJ08,8,,0,default_zero_unmatched,unmatched_default_0
+0BJ10,0,,0,default_zero_unmatched,unmatched_default_0
+0BJC4,4,,0,default_zero_unmatched,unmatched_default_0
+0BJD8,8,,0,default_zero_unmatched,unmatched_default_0
+0BJF4,4,,0,default_zero_unmatched,unmatched_default_0
+0BJG4,4,,0,default_zero_unmatched,unmatched_default_0
+0BJJ0,0,,0,default_zero_unmatched,unmatched_default_0
+0BJK4,4,,0,default_zero_unmatched,unmatched_default_0
+0BJK8,8,,0,default_zero_unmatched,unmatched_default_0
+0BNN0,0,THOR,0,cdc_nhsn_primary,THOR + approach 0 -> 0
+0BQ10,0,,0,default_zero_unmatched,unmatched_default_0
+0BQ1X,X,,0,default_zero_unmatched,unmatched_default_0
+0BQC0,0,THOR,0,cdc_nhsn_primary,THOR + approach 0 -> 0
+0BQD0,0,THOR,0,cdc_nhsn_primary,THOR + approach 0 -> 0
+0BQF0,0,THOR,0,cdc_nhsn_primary,THOR + approach 0 -> 0
+0BQF4,4,THOR,0,cdc_nhsn_primary,THOR + approach 4 -> 0
+0BQG0,0,THOR,0,cdc_nhsn_primary,THOR + approach 0 -> 0
+0BQK0,0,THOR,0,cdc_nhsn_primary,THOR + approach 0 -> 0
+0BQR4,4,,0,default_zero_unmatched,unmatched_default_0
+0BR10,0,NECK,0,cdc_nhsn_primary,NECK + approach 0 -> 0
+0BSN0,0,,0,default_zero_unmatched,unmatched_default_0
+0BT00,0,,0,default_zero_unmatched,unmatched_default_0
+0BT04,4,,0,default_zero_unmatched,unmatched_default_0
+0BT10,0,,0,default_zero_unmatched,unmatched_default_0
+0BT34,4,THOR,0,cdc_nhsn_primary,THOR + approach 4 -> 0
+0BT3X,X,,0,default_zero_unmatched,unmatched_default_0
+0BTC0,0,THOR,0,cdc_nhsn_primary,THOR + approach 0 -> 0
+0BTC4,4,THOR,0,cdc_nhsn_primary,THOR + approach 4 -> 0
+0BTD0,0,THOR,0,cdc_nhsn_primary,THOR + approach 0 -> 0
+0BTD4,4,THOR,0,cdc_nhsn_primary,THOR + approach 4 -> 0
+0BTF0,0,THOR,0,cdc_nhsn_primary,THOR + approach 0 -> 0
+0BTF4,4,THOR,0,cdc_nhsn_primary,THOR + approach 4 -> 0
+0BTG0,0,THOR,0,cdc_nhsn_primary,THOR + approach 0 -> 0
+0BTG3,3,,0,default_zero_unmatched,unmatched_default_0
+0BTG4,4,THOR,0,cdc_nhsn_primary,THOR + approach 4 -> 0
+0BTGX,X,,0,default_zero_unmatched,unmatched_default_0
+0BTJ0,0,THOR,0,cdc_nhsn_primary,THOR + approach 0 -> 0
+0BTJ4,4,THOR,0,cdc_nhsn_primary,THOR + approach 4 -> 0
+0BTK0,0,THOR,0,cdc_nhsn_primary,THOR + approach 0 -> 0
+0BTK3,3,,0,default_zero_unmatched,unmatched_default_0
+0BTK4,4,THOR,0,cdc_nhsn_primary,THOR + approach 4 -> 0
+0BTL4,4,THOR,0,cdc_nhsn_primary,THOR + approach 4 -> 0
+0BTN4,4,,0,default_zero_unmatched,unmatched_default_0
+0BW10,0,,0,default_zero_unmatched,unmatched_default_0
+0BX1X,X,,0,default_zero_unmatched,unmatched_default_0
+0BYK0,0,,0,default_zero_unmatched,unmatched_default_0
+0C000,0,,0,default_zero_unmatched,unmatched_default_0
+0C7S0,0,,0,default_zero_unmatched,unmatched_default_0
+0C7S3,3,,0,default_zero_unmatched,unmatched_default_0
+0C7S7,7,,0,default_zero_unmatched,unmatched_default_0
+0C980,0,,0,default_zero_unmatched,unmatched_default_0
+0C987,7,,0,default_zero_unmatched,unmatched_default_0
+0C990,0,,0,default_zero_unmatched,unmatched_default_0
+0C9R3,3,,0,default_zero_unmatched,unmatched_default_0
+0C9S0,0,NECK,0,cdc_nhsn_primary,NECK + approach 0 -> 0
+0C9S3,3,,0,default_zero_unmatched,unmatched_default_0
+0C9S7,7,,0,default_zero_unmatched,unmatched_default_0
+0CB00,0,,0,default_zero_unmatched,unmatched_default_0
+0CB0X,X,,0,default_zero_unmatched,unmatched_default_0
+0CB30,0,,0,default_zero_unmatched,unmatched_default_0
+0CB40,0,,0,default_zero_unmatched,unmatched_default_0
+0CB70,0,,0,default_zero_unmatched,unmatched_default_0
+0CB80,0,,0,default_zero_unmatched,unmatched_default_0
+0CB87,7,,0,default_zero_unmatched,unmatched_default_0
+0CB90,0,,0,default_zero_unmatched,unmatched_default_0
+0CB9X,X,,0,default_zero_unmatched,unmatched_default_0
+0CBP0,0,,0,default_zero_unmatched,unmatched_default_0
+0CBS0,0,NECK,0,cdc_nhsn_primary,NECK + approach 0 -> 0
+0CBS4,4,NECK,0,cdc_nhsn_primary,NECK + approach 4 -> 0
+0CBSX,X,,0,default_zero_unmatched,unmatched_default_0
+0CBT0,0,NECK,0,cdc_nhsn_primary,NECK + approach 0 -> 0
+0CD70,0,,0,default_zero_unmatched,unmatched_default_0
+0CD80,0,,0,default_zero_unmatched,unmatched_default_0
+0CJS0,0,,0,default_zero_unmatched,unmatched_default_0
+0CQ00,0,,0,default_zero_unmatched,unmatched_default_0
+0CQ20,0,,0,default_zero_unmatched,unmatched_default_0
+0CQ2X,X,,0,default_zero_unmatched,unmatched_default_0
+0CQ30,0,,0,default_zero_unmatched,unmatched_default_0
+0CQ3X,X,,0,default_zero_unmatched,unmatched_default_0
+0CQ40,0,,0,default_zero_unmatched,unmatched_default_0
+0CQ70,0,,0,default_zero_unmatched,unmatched_default_0
+0CQ80,0,,0,default_zero_unmatched,unmatched_default_0
+0CQP0,0,,0,default_zero_unmatched,unmatched_default_0
+0CQR0,0,,0,default_zero_unmatched,unmatched_default_0
+0CQS0,0,,0,default_zero_unmatched,unmatched_default_0
+0CQS3,3,,0,default_zero_unmatched,unmatched_default_0
+0CR20,0,,0,default_zero_unmatched,unmatched_default_0
+0CR40,0,,0,default_zero_unmatched,unmatched_default_0
+0CT70,0,,0,default_zero_unmatched,unmatched_default_0
+0CT80,0,,0,default_zero_unmatched,unmatched_default_0
+0CT90,0,,0,default_zero_unmatched,unmatched_default_0
+0CTP0,0,,0,default_zero_unmatched,unmatched_default_0
+0CTQ0,0,,0,default_zero_unmatched,unmatched_default_0
+0CXS0,0,,0,default_zero_unmatched,unmatched_default_0
+0D100,0,,0,default_zero_unmatched,unmatched_default_0
+0D160,0,COLO,1,cdc_nhsn_primary,COLO + approach 0 -> 1
+0D164,4,COLO,1,cdc_nhsn_primary,COLO + approach 4 -> 1
+0D194,4,COLO,1,cdc_nhsn_primary,COLO + approach 4 -> 1
+0D1B0,0,COLO,1,cdc_nhsn_primary,COLO + approach 0 -> 1
+0D1B4,4,COLO,1,cdc_nhsn_primary,COLO + approach 4 -> 1
+0D1BX,X,,0,default_zero_unmatched,unmatched_default_0
+0D1E0,0,COLO,1,cdc_nhsn_primary,COLO + approach 0 -> 1
+0D1H0,0,COLO,1,cdc_nhsn_primary,COLO + approach 0 -> 1
+0D1H4,4,COLO,1,cdc_nhsn_primary,COLO + approach 4 -> 1
+0D1HX,X,,0,default_zero_unmatched,unmatched_default_0
+0D1K0,0,COLO,1,cdc_nhsn_primary,COLO + approach 0 -> 1
+0D1N0,0,COLO,1,cdc_nhsn_primary,COLO + approach 0 -> 1
+0D1N4,4,COLO,1,cdc_nhsn_primary,COLO + approach 4 -> 1
+0D1P0,0,,0,default_zero_unmatched,unmatched_default_0
+0D1Q0,0,,0,default_zero_unmatched,unmatched_default_0
+0D1S0,0,,0,default_zero_unmatched,unmatched_default_0
+0D1S4,4,,0,default_zero_unmatched,unmatched_default_0
+0D300,0,,0,default_zero_unmatched,unmatched_default_0
+0D754,4,,0,default_zero_unmatched,unmatched_default_0
+0D8Q0,0,,0,default_zero_unmatched,unmatched_default_0
+0D944,4,GAST,1,cdc_nhsn_primary,GAST + approach 4 -> 1
+0D9E0,0,COLO,1,cdc_nhsn_primary,COLO + approach 0 -> 1
+0D9H0,0,COLO,1,cdc_nhsn_primary,COLO + approach 0 -> 1
+0D9J4,4,APPY,1,cdc_nhsn_primary,APPY + approach 4 -> 1
+0D9P0,0,REC,1,cdc_nhsn_primary,REC + approach 0 -> 1
+0D9QX,X,,0,default_zero_unmatched,unmatched_default_0
+0D9S0,0,,0,default_zero_unmatched,unmatched_default_0
+0DB00,0,,0,default_zero_unmatched,unmatched_default_0
+0DB04,4,,0,default_zero_unmatched,unmatched_default_0
+0DB10,0,,0,default_zero_unmatched,unmatched_default_0
+0DB40,0,GAST,1,cdc_nhsn_primary,GAST + approach 0 -> 1
+0DB44,4,GAST,1,cdc_nhsn_primary,GAST + approach 4 -> 1
+0DB50,0,,0,default_zero_unmatched,unmatched_default_0
+0DB54,4,,0,default_zero_unmatched,unmatched_default_0
+0DB60,0,GAST,1,cdc_nhsn_primary,GAST + approach 0 -> 1
+0DB64,4,GAST,1,cdc_nhsn_primary,GAST + approach 4 -> 1
+0DB90,0,SB,1,cdc_nhsn_primary,SB + approach 0 -> 1
+0DB94,4,SB,1,cdc_nhsn_primary,SB + approach 4 -> 1
+0DBB0,0,SB,1,cdc_nhsn_primary,SB + approach 0 -> 1
+0DBB4,4,SB,1,cdc_nhsn_primary,SB + approach 4 -> 1
+0DBBX,X,,0,default_zero_unmatched,unmatched_default_0
+0DBE0,0,COLO,1,cdc_nhsn_primary,COLO + approach 0 -> 1
+0DBE4,4,COLO,1,cdc_nhsn_primary,COLO + approach 4 -> 1
+0DBEX,X,,0,default_zero_unmatched,unmatched_default_0
+0DBF0,0,COLO,1,cdc_nhsn_primary,COLO + approach 0 -> 1
+0DBF4,4,COLO,1,cdc_nhsn_primary,COLO + approach 4 -> 1
+0DBG0,0,COLO,1,cdc_nhsn_primary,COLO + approach 0 -> 1
+0DBG4,4,COLO,1,cdc_nhsn_primary,COLO + approach 4 -> 1
+0DBH0,0,COLO,1,cdc_nhsn_primary,COLO + approach 0 -> 1
+0DBHX,X,,0,default_zero_unmatched,unmatched_default_0
+0DBJ4,4,APPY,1,cdc_nhsn_primary,APPY + approach 4 -> 1
+0DBN0,0,COLO,1,cdc_nhsn_primary,COLO + approach 0 -> 1
+0DBN4,4,COLO,1,cdc_nhsn_primary,COLO + approach 4 -> 1
+0DBP0,0,REC,1,cdc_nhsn_primary,REC + approach 0 -> 1
+0DBP3,3,,0,default_zero_unmatched,unmatched_default_0
+0DBP4,4,REC,1,cdc_nhsn_primary,REC + approach 4 -> 1
+0DBP7,7,,0,default_zero_unmatched,unmatched_default_0
+0DBQ0,0,,0,default_zero_unmatched,unmatched_default_0
+0DBQ3,3,,0,default_zero_unmatched,unmatched_default_0
+0DBQ4,4,,0,default_zero_unmatched,unmatched_default_0
+0DBQX,X,,0,default_zero_unmatched,unmatched_default_0
+0DBR0,0,,0,default_zero_unmatched,unmatched_default_0
+0DBS0,0,,0,default_zero_unmatched,unmatched_default_0
+0DBS4,4,,0,default_zero_unmatched,unmatched_default_0
+0DBSX,X,,0,default_zero_unmatched,unmatched_default_0
+0DCS0,0,,0,default_zero_unmatched,unmatched_default_0
+0DDEX,X,,0,default_zero_unmatched,unmatched_default_0
+0DGP0,0,,0,default_zero_unmatched,unmatched_default_0
+0DGQ0,0,,0,default_zero_unmatched,unmatched_default_0
+0DH63,3,,0,default_zero_unmatched,unmatched_default_0
+0DH80,0,SB,1,cdc_nhsn_primary,SB + approach 0 -> 1
+0DH84,4,SB,1,cdc_nhsn_primary,SB + approach 4 -> 1
+0DJ00,0,XLAP,1,cdc_nhsn_primary,XLAP + approach 0 -> 1
+0DJ04,4,XLAP,1,cdc_nhsn_primary,XLAP + approach 4 -> 1
+0DJ0X,X,,0,default_zero_unmatched,unmatched_default_0
+0DJ60,0,XLAP,1,cdc_nhsn_primary,XLAP + approach 0 -> 1
+0DJ64,4,XLAP,1,cdc_nhsn_primary,XLAP + approach 4 -> 1
+0DJE0,0,,0,default_zero_unmatched,unmatched_default_0
+0DJE4,4,,0,default_zero_unmatched,unmatched_default_0
+0DJF0,0,,0,default_zero_unmatched,unmatched_default_0
+0DJJ7,7,,0,default_zero_unmatched,unmatched_default_0
+0DJP0,0,,0,default_zero_unmatched,unmatched_default_0
+0DJS4,4,,0,default_zero_unmatched,unmatched_default_0
+0DLF4,4,,0,default_zero_unmatched,unmatched_default_0
+0DNE0,0,XLAP,1,cdc_nhsn_primary,XLAP + approach 0 -> 1
+0DNE4,4,XLAP,1,cdc_nhsn_primary,XLAP + approach 4 -> 1
+0DQ00,0,,0,default_zero_unmatched,unmatched_default_0
+0DQ04,4,,0,default_zero_unmatched,unmatched_default_0
+0DQ40,0,GAST,1,cdc_nhsn_primary,GAST + approach 0 -> 1
+0DQ50,0,,0,default_zero_unmatched,unmatched_default_0
+0DQ54,4,,0,default_zero_unmatched,unmatched_default_0
+0DQ60,0,GAST,1,cdc_nhsn_primary,GAST + approach 0 -> 1
+0DQ64,4,GAST,1,cdc_nhsn_primary,GAST + approach 4 -> 1
+0DQ90,0,SB,1,cdc_nhsn_primary,SB + approach 0 -> 1
+0DQ94,4,SB,1,cdc_nhsn_primary,SB + approach 4 -> 1
+0DQB0,0,SB,1,cdc_nhsn_primary,SB + approach 0 -> 1
+0DQB4,4,SB,1,cdc_nhsn_primary,SB + approach 4 -> 1
+0DQBX,X,,0,default_zero_unmatched,unmatched_default_0
+0DQE0,0,COLO,1,cdc_nhsn_primary,COLO + approach 0 -> 1
+0DQE4,4,COLO,1,cdc_nhsn_primary,COLO + approach 4 -> 1
+0DQEX,X,,0,default_zero_unmatched,unmatched_default_0
+0DQF0,0,COLO,1,cdc_nhsn_primary,COLO + approach 0 -> 1
+0DQF4,4,COLO,1,cdc_nhsn_primary,COLO + approach 4 -> 1
+0DQG0,0,COLO,1,cdc_nhsn_primary,COLO + approach 0 -> 1
+0DQG4,4,COLO,1,cdc_nhsn_primary,COLO + approach 4 -> 1
+0DQN0,0,COLO,1,cdc_nhsn_primary,COLO + approach 0 -> 1
+0DQN7,7,,0,default_zero_unmatched,unmatched_default_0
+0DQP0,0,REC,1,cdc_nhsn_primary,REC + approach 0 -> 1
+0DQP4,4,REC,1,cdc_nhsn_primary,REC + approach 4 -> 1
+0DQPF,F,,0,default_zero_unmatched,unmatched_default_0
+0DQPX,X,,0,default_zero_unmatched,unmatched_default_0
+0DQQ0,0,,0,default_zero_unmatched,unmatched_default_0
+0DQQ4,4,,0,default_zero_unmatched,unmatched_default_0
+0DQQ7,7,,0,default_zero_unmatched,unmatched_default_0
+0DQQX,X,,0,default_zero_unmatched,unmatched_default_0
+0DQR0,0,,0,default_zero_unmatched,unmatched_default_0
+0DQS4,4,,0,default_zero_unmatched,unmatched_default_0
+0DR50,0,,0,default_zero_unmatched,unmatched_default_0
+0DRE0,0,,0,default_zero_unmatched,unmatched_default_0
+0DS04,4,,0,default_zero_unmatched,unmatched_default_0
+0DSP4,4,REC,1,cdc_nhsn_primary,REC + approach 4 -> 1
+0DSP7,7,,0,default_zero_unmatched,unmatched_default_0
+0DSQ0,0,REC,1,cdc_nhsn_primary,REC + approach 0 -> 1
+0DSS4,4,,0,default_zero_unmatched,unmatched_default_0
+0DT00,0,,0,default_zero_unmatched,unmatched_default_0
+0DT40,0,GAST,1,cdc_nhsn_primary,GAST + approach 0 -> 1
+0DT50,0,,0,default_zero_unmatched,unmatched_default_0
+0DT54,4,,0,default_zero_unmatched,unmatched_default_0
+0DT60,0,GAST,1,cdc_nhsn_primary,GAST + approach 0 -> 1
+0DT64,4,GAST,1,cdc_nhsn_primary,GAST + approach 4 -> 1
+0DT90,0,SB,1,cdc_nhsn_primary,SB + approach 0 -> 1
+0DT94,4,SB,1,cdc_nhsn_primary,SB + approach 4 -> 1
+0DT9X,X,,0,default_zero_unmatched,unmatched_default_0
+0DTB0,0,SB,1,cdc_nhsn_primary,SB + approach 0 -> 1
+0DTB4,4,SB,1,cdc_nhsn_primary,SB + approach 4 -> 1
+0DTE0,0,COLO,1,cdc_nhsn_primary,COLO + approach 0 -> 1
+0DTE4,4,COLO,1,cdc_nhsn_primary,COLO + approach 4 -> 1
+0DTF0,0,COLO,1,cdc_nhsn_primary,COLO + approach 0 -> 1
+0DTF4,4,COLO,1,cdc_nhsn_primary,COLO + approach 4 -> 1
+0DTG0,0,COLO,1,cdc_nhsn_primary,COLO + approach 0 -> 1
+0DTG4,4,COLO,1,cdc_nhsn_primary,COLO + approach 4 -> 1
+0DTH0,0,COLO,1,cdc_nhsn_primary,COLO + approach 0 -> 1
+0DTH4,4,COLO,1,cdc_nhsn_primary,COLO + approach 4 -> 1
+0DTJ0,0,APPY,1,cdc_nhsn_primary,APPY + approach 0 -> 1
+0DTJ4,4,APPY,1,cdc_nhsn_primary,APPY + approach 4 -> 1
+0DTL0,0,COLO,1,cdc_nhsn_primary,COLO + approach 0 -> 1
+0DTL4,4,COLO,1,cdc_nhsn_primary,COLO + approach 4 -> 1
+0DTN0,0,COLO,1,cdc_nhsn_primary,COLO + approach 0 -> 1
+0DTN4,4,COLO,1,cdc_nhsn_primary,COLO + approach 4 -> 1
+0DTP0,0,REC,1,cdc_nhsn_primary,REC + approach 0 -> 1
+0DTP4,4,REC,1,cdc_nhsn_primary,REC + approach 4 -> 1
+0DTPX,X,,0,default_zero_unmatched,unmatched_default_0
+0DTQ0,0,REC,1,cdc_nhsn_primary,REC + approach 0 -> 1
+0DTQ4,4,REC,1,cdc_nhsn_primary,REC + approach 4 -> 1
+0DTS0,0,,0,default_zero_unmatched,unmatched_default_0
+0DV40,0,GAST,1,cdc_nhsn_primary,GAST + approach 0 -> 1
+0DV44,4,GAST,1,cdc_nhsn_primary,GAST + approach 4 -> 1
+0DW64,4,GAST,1,cdc_nhsn_primary,GAST + approach 4 -> 1
+0DY60,0,,1,expert_review_override,expert_review_override_1_open_stomach_transplant
+0E000,0,,0,default_zero_unmatched,unmatched_default_0
+0E00X,X,,0,default_zero_unmatched,unmatched_default_0
+0E0C3,3,,0,default_zero_unmatched,unmatched_default_0
+0E0F0,0,,0,default_zero_unmatched,unmatched_default_0
+0E0K0,0,,0,default_zero_unmatched,unmatched_default_0
+0E0K3,3,,0,default_zero_unmatched,unmatched_default_0
+0E0T0,0,,0,default_zero_unmatched,unmatched_default_0
+0E0T3,3,,0,default_zero_unmatched,unmatched_default_0
+0E1H0,0,,0,default_zero_unmatched,unmatched_default_0
+0E1H7,7,,0,default_zero_unmatched,unmatched_default_0
+0E9R0,0,,0,default_zero_unmatched,unmatched_default_0
+0E9RX,X,,0,default_zero_unmatched,unmatched_default_0
+0EDC3,3,,0,default_zero_unmatched,unmatched_default_0
+0EPT3,3,,0,default_zero_unmatched,unmatched_default_0
+0EQ00,0,,0,default_zero_unmatched,unmatched_default_0
+0EQC3,3,,0,default_zero_unmatched,unmatched_default_0
+0F144,4,CHOL,1,cdc_nhsn_primary,CHOL + approach 4 -> 1
+0F150,0,BILI,1,cdc_nhsn_primary,BILI + approach 0 -> 1
+0F154,4,BILI,1,cdc_nhsn_primary,BILI + approach 4 -> 1
+0F190,0,BILI,1,cdc_nhsn_primary,BILI + approach 0 -> 1
+0F194,4,BILI,1,cdc_nhsn_primary,BILI + approach 4 -> 1
+0F1D0,0,BILI,1,cdc_nhsn_primary,BILI + approach 0 -> 1
+0F7D0,0,BILI,1,cdc_nhsn_primary,BILI + approach 0 -> 1
+0F7G0,0,,0,default_zero_unmatched,unmatched_default_0
+0F904,4,BILI,1,cdc_nhsn_primary,BILI + approach 4 -> 1
+0F990,0,BILI,1,cdc_nhsn_primary,BILI + approach 0 -> 1
+0FB00,0,BILI,1,cdc_nhsn_primary,BILI + approach 0 -> 1
+0FB04,4,BILI,1,cdc_nhsn_primary,BILI + approach 4 -> 1
+0FB10,0,BILI,1,cdc_nhsn_primary,BILI + approach 0 -> 1
+0FB14,4,BILI,1,cdc_nhsn_primary,BILI + approach 4 -> 1
+0FB20,0,BILI,1,cdc_nhsn_primary,BILI + approach 0 -> 1
+0FB40,0,CHOL,1,cdc_nhsn_primary,CHOL + approach 0 -> 1
+0FB44,4,CHOL,1,cdc_nhsn_primary,CHOL + approach 4 -> 1
+0FB47,7,,0,default_zero_unmatched,unmatched_default_0
+0FB50,0,BILI,1,cdc_nhsn_primary,BILI + approach 0 -> 1
+0FB90,0,BILI,1,cdc_nhsn_primary,BILI + approach 0 -> 1
+0FB94,4,BILI,1,cdc_nhsn_primary,BILI + approach 4 -> 1
+0FBC0,0,BILI,1,cdc_nhsn_primary,BILI + approach 0 -> 1
+0FBD0,0,BILI,1,cdc_nhsn_primary,BILI + approach 0 -> 1
+0FBD4,4,BILI,1,cdc_nhsn_primary,BILI + approach 4 -> 1
+0FBG0,0,BILI,1,cdc_nhsn_primary,BILI + approach 0 -> 1
+0FBG4,4,BILI,1,cdc_nhsn_primary,BILI + approach 4 -> 1
+0FBGX,X,,0,default_zero_unmatched,unmatched_default_0
+0FC17,7,,0,default_zero_unmatched,unmatched_default_0
+0FD10,0,,0,default_zero_unmatched,unmatched_default_0
+0FHG4,4,BILI,1,cdc_nhsn_primary,BILI + approach 4 -> 1
+0FJ00,0,XLAP,1,cdc_nhsn_primary,XLAP + approach 0 -> 1
+0FJ04,4,XLAP,1,cdc_nhsn_primary,XLAP + approach 4 -> 1
+0FJ40,0,XLAP,1,cdc_nhsn_primary,XLAP + approach 0 -> 1
+0FJ50,0,,0,default_zero_unmatched,unmatched_default_0
+0FJ54,4,,0,default_zero_unmatched,unmatched_default_0
+0FJ94,4,,0,default_zero_unmatched,unmatched_default_0
+0FJG4,4,XLAP,1,cdc_nhsn_primary,XLAP + approach 4 -> 1
+0FQ10,0,BILI,1,cdc_nhsn_primary,BILI + approach 0 -> 1
+0FQ40,0,CHOL,1,cdc_nhsn_primary,CHOL + approach 0 -> 1
+0FQ44,4,CHOL,1,cdc_nhsn_primary,CHOL + approach 4 -> 1
+0FQ90,0,BILI,1,cdc_nhsn_primary,BILI + approach 0 -> 1
+0FQG0,0,BILI,1,cdc_nhsn_primary,BILI + approach 0 -> 1
+0FQG4,4,BILI,1,cdc_nhsn_primary,BILI + approach 4 -> 1
+0FT00,0,BILI,1,cdc_nhsn_primary,BILI + approach 0 -> 1
+0FT04,4,BILI,1,cdc_nhsn_primary,BILI + approach 4 -> 1
+0FT10,0,BILI,1,cdc_nhsn_primary,BILI + approach 0 -> 1
+0FT14,4,BILI,1,cdc_nhsn_primary,BILI + approach 4 -> 1
+0FT20,0,BILI,1,cdc_nhsn_primary,BILI + approach 0 -> 1
+0FT24,4,BILI,1,cdc_nhsn_primary,BILI + approach 4 -> 1
+0FT40,0,CHOL,1,cdc_nhsn_primary,CHOL + approach 0 -> 1
+0FT44,4,CHOL,1,cdc_nhsn_primary,CHOL + approach 4 -> 1
+0FT54,4,BILI,1,cdc_nhsn_primary,BILI + approach 4 -> 1
+0FT90,0,BILI,1,cdc_nhsn_primary,BILI + approach 0 -> 1
+0FT94,4,BILI,1,cdc_nhsn_primary,BILI + approach 4 -> 1
+0FT98,8,,0,default_zero_unmatched,unmatched_default_0
+0FTG0,0,BILI,1,cdc_nhsn_primary,BILI + approach 0 -> 1
+0FTG4,4,BILI,1,cdc_nhsn_primary,BILI + approach 4 -> 1
+0FY00,0,LTP,1,cdc_nhsn_primary,LTP + approach 0 -> 1
+0FY04,4,,0,default_zero_unmatched,unmatched_default_0
+0FYG0,0,,1,expert_review_override,expert_review_override_1_open_pancreas_transplant
+0G9KX,X,,0,default_zero_unmatched,unmatched_default_0
+0GB24,4,,0,default_zero_unmatched,unmatched_default_0
+0GB30,0,,0,default_zero_unmatched,unmatched_default_0
+0GB34,4,,0,default_zero_unmatched,unmatched_default_0
+0GBG0,0,THYR,0,cdc_nhsn_primary,THYR + approach 0 -> 0
+0GBJ0,0,THYR,0,cdc_nhsn_primary,THYR + approach 0 -> 0
+0GBK0,0,,0,default_zero_unmatched,unmatched_default_0
+0GBK4,4,,0,default_zero_unmatched,unmatched_default_0
+0GBR0,0,THYR,0,cdc_nhsn_primary,THYR + approach 0 -> 0
+0GQ00,0,CRAN,0,cdc_nhsn_primary,CRAN + approach 0 -> 0
+0GQ0X,X,,0,default_zero_unmatched,unmatched_default_0
+0GQG0,0,THYR,0,cdc_nhsn_primary,THYR + approach 0 -> 0
+0GQK0,0,THYR,0,cdc_nhsn_primary,THYR + approach 0 -> 0
+0GQKX,X,,0,default_zero_unmatched,unmatched_default_0
+0GT20,0,,0,default_zero_unmatched,unmatched_default_0
+0GT24,4,,0,default_zero_unmatched,unmatched_default_0
+0GT30,0,,0,default_zero_unmatched,unmatched_default_0
+0GT34,4,,0,default_zero_unmatched,unmatched_default_0
+0GTG0,0,THYR,0,cdc_nhsn_primary,THYR + approach 0 -> 0
+0GTH0,0,THYR,0,cdc_nhsn_primary,THYR + approach 0 -> 0
+0GTK0,0,THYR,0,cdc_nhsn_primary,THYR + approach 0 -> 0
+0GTK4,4,THYR,0,cdc_nhsn_primary,THYR + approach 4 -> 0
+0H000,0,,0,default_zero_unmatched,unmatched_default_0
+0H003,3,,0,default_zero_unmatched,unmatched_default_0
+0H00X,X,,0,default_zero_unmatched,unmatched_default_0
+0H0P0,0,,0,default_zero_unmatched,unmatched_default_0
+0H0T0,0,BRST,0,cdc_nhsn_primary,BRST + approach 0 -> 0
+0H0TX,X,,0,default_zero_unmatched,unmatched_default_0
+0H0U0,0,BRST,0,cdc_nhsn_primary,BRST + approach 0 -> 0
+0H0UX,X,,0,default_zero_unmatched,unmatched_default_0
+0H0V0,0,BRST,0,cdc_nhsn_primary,BRST + approach 0 -> 0
+0H0VX,X,,0,default_zero_unmatched,unmatched_default_0
+0H0W0,0,,0,default_zero_unmatched,unmatched_default_0
+0H0X0,0,,0,default_zero_unmatched,unmatched_default_0
+0H100,0,,0,default_zero_unmatched,unmatched_default_0
+0H10X,X,,0,default_zero_unmatched,unmatched_default_0
+0H1T0,0,,0,default_zero_unmatched,unmatched_default_0
+0H20X,X,,0,default_zero_unmatched,unmatched_default_0
+0H300,0,,0,default_zero_unmatched,unmatched_default_0
+0H304,4,,0,default_zero_unmatched,unmatched_default_0
+0H600,0,,0,default_zero_unmatched,unmatched_default_0
+0H60X,X,,0,default_zero_unmatched,unmatched_default_0
+0H800,0,,0,default_zero_unmatched,unmatched_default_0
+0H804,4,,0,default_zero_unmatched,unmatched_default_0
+0H80X,X,,0,default_zero_unmatched,unmatched_default_0
+0H8U0,0,,0,default_zero_unmatched,unmatched_default_0
+0H900,0,,0,default_zero_unmatched,unmatched_default_0
+0H907,7,,0,default_zero_unmatched,unmatched_default_0
+0H90X,X,,0,default_zero_unmatched,unmatched_default_0
+0H9T0,0,,0,default_zero_unmatched,unmatched_default_0
+0HB00,0,,0,default_zero_unmatched,unmatched_default_0
+0HB03,3,,0,default_zero_unmatched,unmatched_default_0
+0HB04,4,,0,default_zero_unmatched,unmatched_default_0
+0HB0X,X,,0,default_zero_unmatched,unmatched_default_0
+0HB80,0,,0,default_zero_unmatched,unmatched_default_0
+0HB84,4,,0,default_zero_unmatched,unmatched_default_0
+0HB8X,X,,0,default_zero_unmatched,unmatched_default_0
+0HB90,0,,0,default_zero_unmatched,unmatched_default_0
+0HB9X,X,,0,default_zero_unmatched,unmatched_default_0
+0HBQ0,0,,0,default_zero_unmatched,unmatched_default_0
+0HBQX,X,,0,default_zero_unmatched,unmatched_default_0
+0HBT0,0,BRST,0,cdc_nhsn_primary,BRST + approach 0 -> 0
+0HBTX,X,,0,default_zero_unmatched,unmatched_default_0
+0HBU0,0,BRST,0,cdc_nhsn_primary,BRST + approach 0 -> 0
+0HBU4,4,,0,default_zero_unmatched,unmatched_default_0
+0HBV0,0,BRST,0,cdc_nhsn_primary,BRST + approach 0 -> 0
+0HBW0,0,BRST,0,cdc_nhsn_primary,BRST + approach 0 -> 0
+0HBX0,0,BRST,0,cdc_nhsn_primary,BRST + approach 0 -> 0
+0HBY0,0,BRST,0,cdc_nhsn_primary,BRST + approach 0 -> 0
+0HC00,0,,0,default_zero_unmatched,unmatched_default_0
+0HC04,4,,0,default_zero_unmatched,unmatched_default_0
+0HC0X,X,,0,default_zero_unmatched,unmatched_default_0
+0HCU0,0,,0,default_zero_unmatched,unmatched_default_0
+0HD00,0,,0,default_zero_unmatched,unmatched_default_0
+0HD03,3,,0,default_zero_unmatched,unmatched_default_0
+0HD04,4,,0,default_zero_unmatched,unmatched_default_0
+0HD07,7,,0,default_zero_unmatched,unmatched_default_0
+0HD0X,X,,0,default_zero_unmatched,unmatched_default_0
+0HG00,0,,0,default_zero_unmatched,unmatched_default_0
+0HG07,7,,0,default_zero_unmatched,unmatched_default_0
+0HH0X,X,,0,default_zero_unmatched,unmatched_default_0
+0HHPX,X,,0,default_zero_unmatched,unmatched_default_0
+0HHT0,0,BRST,0,cdc_nhsn_primary,BRST + approach 0 -> 0
+0HHU0,0,BRST,0,cdc_nhsn_primary,BRST + approach 0 -> 0
+0HHV0,0,BRST,0,cdc_nhsn_primary,BRST + approach 0 -> 0
+0HJ04,4,,0,default_zero_unmatched,unmatched_default_0
+0HJ08,8,,0,default_zero_unmatched,unmatched_default_0
+0HN00,0,,0,default_zero_unmatched,unmatched_default_0
+0HN0X,X,,0,default_zero_unmatched,unmatched_default_0
+0HP00,0,,0,default_zero_unmatched,unmatched_default_0
+0HP0X,X,,0,default_zero_unmatched,unmatched_default_0
+0HPPX,X,,0,default_zero_unmatched,unmatched_default_0
+0HPT0,0,BRST,0,cdc_nhsn_primary,BRST + approach 0 -> 0
+0HPTX,X,,0,default_zero_unmatched,unmatched_default_0
+0HPU0,0,BRST,0,cdc_nhsn_primary,BRST + approach 0 -> 0
+0HPUX,X,,0,default_zero_unmatched,unmatched_default_0
+0HQ00,0,,0,default_zero_unmatched,unmatched_default_0
+0HQ0X,X,,0,default_zero_unmatched,unmatched_default_0
+0HQ7X,X,,0,default_zero_unmatched,unmatched_default_0
+0HQ9X,X,,0,default_zero_unmatched,unmatched_default_0
+0HQBX,X,,0,default_zero_unmatched,unmatched_default_0
+0HQT0,0,,0,default_zero_unmatched,unmatched_default_0
+0HQU0,0,,0,default_zero_unmatched,unmatched_default_0
+0HQV0,0,,0,default_zero_unmatched,unmatched_default_0
+0HQW0,0,,0,default_zero_unmatched,unmatched_default_0
+0HQX0,0,,0,default_zero_unmatched,unmatched_default_0
+0HR00,0,,0,default_zero_unmatched,unmatched_default_0
+0HR07,7,,0,default_zero_unmatched,unmatched_default_0
+0HR0X,X,,0,default_zero_unmatched,unmatched_default_0
+0HR80,0,,0,default_zero_unmatched,unmatched_default_0
+0HRT0,0,BRST,0,cdc_nhsn_primary,BRST + approach 0 -> 0
+0HRU0,0,BRST,0,cdc_nhsn_primary,BRST + approach 0 -> 0
+0HS00,0,,0,default_zero_unmatched,unmatched_default_0
+0HST0,0,BRST,0,cdc_nhsn_primary,BRST + approach 0 -> 0
+0HSU0,0,BRST,0,cdc_nhsn_primary,BRST + approach 0 -> 0
+0HSW0,0,,0,default_zero_unmatched,unmatched_default_0
+0HSWX,X,,0,default_zero_unmatched,unmatched_default_0
+0HT00,0,,0,default_zero_unmatched,unmatched_default_0
+0HT04,4,,0,default_zero_unmatched,unmatched_default_0
+0HT0X,X,,0,default_zero_unmatched,unmatched_default_0
+0HT80,0,,0,default_zero_unmatched,unmatched_default_0
+0HTT0,0,BRST,0,cdc_nhsn_primary,BRST + approach 0 -> 0
+0HTU0,0,BRST,0,cdc_nhsn_primary,BRST + approach 0 -> 0
+0HTV0,0,BRST,0,cdc_nhsn_primary,BRST + approach 0 -> 0
+0HTV4,4,,0,default_zero_unmatched,unmatched_default_0
+0HW0X,X,,0,default_zero_unmatched,unmatched_default_0
+0HWT0,0,BRST,0,cdc_nhsn_primary,BRST + approach 0 -> 0
+0HWU0,0,BRST,0,cdc_nhsn_primary,BRST + approach 0 -> 0
+0HX00,0,,0,default_zero_unmatched,unmatched_default_0
+0HX0X,X,,0,default_zero_unmatched,unmatched_default_0
+0HXGX,X,,0,default_zero_unmatched,unmatched_default_0
+0HXT0,0,,0,default_zero_unmatched,unmatched_default_0
+0HXU0,0,,0,default_zero_unmatched,unmatched_default_0
+0HXVX,X,,0,default_zero_unmatched,unmatched_default_0
+0J000,0,,0,default_zero_unmatched,unmatched_default_0
+0J010,0,,0,default_zero_unmatched,unmatched_default_0
+0J040,0,,0,default_zero_unmatched,unmatched_default_0
+0J047,7,,0,default_zero_unmatched,unmatched_default_0
+0J0C7,7,,0,default_zero_unmatched,unmatched_default_0
+0J100,0,,0,default_zero_unmatched,unmatched_default_0
+0J1T0,0,,0,default_zero_unmatched,unmatched_default_0
+0J760,0,,0,default_zero_unmatched,unmatched_default_0
+0J800,0,,0,default_zero_unmatched,unmatched_default_0
+0J810,0,,0,default_zero_unmatched,unmatched_default_0
+0J8J0,0,,0,default_zero_unmatched,unmatched_default_0
+0J8K0,0,,0,default_zero_unmatched,unmatched_default_0
+0JB00,0,,0,default_zero_unmatched,unmatched_default_0
+0JB0X,X,,0,default_zero_unmatched,unmatched_default_0
+0JB10,0,,0,default_zero_unmatched,unmatched_default_0
+0JB40,0,,0,default_zero_unmatched,unmatched_default_0
+0JB60,0,,0,default_zero_unmatched,unmatched_default_0
+0JBC0,0,,0,default_zero_unmatched,unmatched_default_0
+0JBJ0,0,,0,default_zero_unmatched,unmatched_default_0
+0JBK0,0,,0,default_zero_unmatched,unmatched_default_0
+0JBT0,0,,0,default_zero_unmatched,unmatched_default_0
+0JC00,0,,0,default_zero_unmatched,unmatched_default_0
+0JH00,0,,0,default_zero_unmatched,unmatched_default_0
+0JH0X,X,,0,default_zero_unmatched,unmatched_default_0
+0JH60,0,PACE,0,cdc_nhsn_primary,PACE + approach 0 -> 0
+0JL00,0,,0,default_zero_unmatched,unmatched_default_0
+0JLC0,0,,0,default_zero_unmatched,unmatched_default_0
+0JMC0,0,,0,default_zero_unmatched,unmatched_default_0
+0JN00,0,,0,default_zero_unmatched,unmatched_default_0
+0JN1X,X,,0,default_zero_unmatched,unmatched_default_0
+0JNJ0,0,,0,default_zero_unmatched,unmatched_default_0
+0JNK0,0,,0,default_zero_unmatched,unmatched_default_0
+0JPT0,0,PACE,0,cdc_nhsn_primary,PACE + approach 0 -> 0
+0JQ10,0,,0,default_zero_unmatched,unmatched_default_0
+0JQC0,0,,0,default_zero_unmatched,unmatched_default_0
+0JQC4,4,,0,default_zero_unmatched,unmatched_default_0
+0JQCX,X,,0,default_zero_unmatched,unmatched_default_0
+0JQJ0,0,,0,default_zero_unmatched,unmatched_default_0
+0JQK0,0,,0,default_zero_unmatched,unmatched_default_0
+0JQR0,0,,0,default_zero_unmatched,unmatched_default_0
+0JR00,0,,0,default_zero_unmatched,unmatched_default_0
+0JR10,0,,0,default_zero_unmatched,unmatched_default_0
+0JS10,0,,0,default_zero_unmatched,unmatched_default_0
+0JSC0,0,,0,default_zero_unmatched,unmatched_default_0
+0JSC4,4,,0,default_zero_unmatched,unmatched_default_0
+0JT10,0,,0,default_zero_unmatched,unmatched_default_0
+0JTC0,0,,0,default_zero_unmatched,unmatched_default_0
+0JX00,0,,0,default_zero_unmatched,unmatched_default_0
+0JX0X,X,,0,default_zero_unmatched,unmatched_default_0
+0JX10,0,,0,default_zero_unmatched,unmatched_default_0
+0JXQ0,0,,0,default_zero_unmatched,unmatched_default_0
+0K100,0,,0,default_zero_unmatched,unmatched_default_0
+0K140,0,,0,default_zero_unmatched,unmatched_default_0
+0K800,0,,0,default_zero_unmatched,unmatched_default_0
+0K80X,X,,0,default_zero_unmatched,unmatched_default_0
+0K900,0,,0,default_zero_unmatched,unmatched_default_0
+0KB00,0,,0,default_zero_unmatched,unmatched_default_0
+0KB04,4,,0,default_zero_unmatched,unmatched_default_0
+0KB20,0,,0,default_zero_unmatched,unmatched_default_0
+0KD03,3,,0,default_zero_unmatched,unmatched_default_0
+0KGT0,0,,0,default_zero_unmatched,unmatched_default_0
+0KHJX,X,,0,default_zero_unmatched,unmatched_default_0
+0KN00,0,,0,default_zero_unmatched,unmatched_default_0
+0KN20,0,,0,default_zero_unmatched,unmatched_default_0
+0KNC0,0,,0,default_zero_unmatched,unmatched_default_0
+0KND0,0,,0,default_zero_unmatched,unmatched_default_0
+0KQ00,0,,0,default_zero_unmatched,unmatched_default_0
+0KRH0,0,,0,default_zero_unmatched,unmatched_default_0
+0KRJ0,0,,0,default_zero_unmatched,unmatched_default_0
+0KS10,0,,0,default_zero_unmatched,unmatched_default_0
+0KX00,0,,0,default_zero_unmatched,unmatched_default_0
+0L800,0,,0,default_zero_unmatched,unmatched_default_0
+0L870,0,,0,default_zero_unmatched,unmatched_default_0
+0L87X,X,,0,default_zero_unmatched,unmatched_default_0
+0L880,0,,0,default_zero_unmatched,unmatched_default_0
+0L8N0,0,,0,default_zero_unmatched,unmatched_default_0
+0L900,0,,0,default_zero_unmatched,unmatched_default_0
+0LB00,0,,0,default_zero_unmatched,unmatched_default_0
+0LB04,4,,0,default_zero_unmatched,unmatched_default_0
+0LB80,0,,0,default_zero_unmatched,unmatched_default_0
+0LD00,0,,0,default_zero_unmatched,unmatched_default_0
+0LM00,0,,0,default_zero_unmatched,unmatched_default_0
+0LM70,0,,0,default_zero_unmatched,unmatched_default_0
+0LN00,0,,0,default_zero_unmatched,unmatched_default_0
+0LN70,0,,0,default_zero_unmatched,unmatched_default_0
+0LQ00,0,,0,default_zero_unmatched,unmatched_default_0
+0LQ04,4,,0,default_zero_unmatched,unmatched_default_0
+0LQ10,0,,0,default_zero_unmatched,unmatched_default_0
+0LQ14,4,,0,default_zero_unmatched,unmatched_default_0
+0LQ20,0,,0,default_zero_unmatched,unmatched_default_0
+0LQ24,4,,0,default_zero_unmatched,unmatched_default_0
+0LQ70,0,,0,default_zero_unmatched,unmatched_default_0
+0LQ80,0,,0,default_zero_unmatched,unmatched_default_0
+0LQQ0,0,,0,default_zero_unmatched,unmatched_default_0
+0LS00,0,,0,default_zero_unmatched,unmatched_default_0
+0LX00,0,,0,default_zero_unmatched,unmatched_default_0
+0LX70,0,,0,default_zero_unmatched,unmatched_default_0
+0LX80,0,,0,default_zero_unmatched,unmatched_default_0
+0M6L0,0,,0,default_zero_unmatched,unmatched_default_0
+0M87X,X,,0,default_zero_unmatched,unmatched_default_0
+0M8L0,0,,0,default_zero_unmatched,unmatched_default_0
+0M8N0,0,,0,default_zero_unmatched,unmatched_default_0
+0M8R0,0,,0,default_zero_unmatched,unmatched_default_0
+0M910,0,,0,default_zero_unmatched,unmatched_default_0
+0M924,4,,0,default_zero_unmatched,unmatched_default_0
+0M930,0,,0,default_zero_unmatched,unmatched_default_0
+0M970,0,,0,default_zero_unmatched,unmatched_default_0
+0M9L0,0,,0,default_zero_unmatched,unmatched_default_0
+0M9MX,X,,0,default_zero_unmatched,unmatched_default_0
+0M9N0,0,,0,default_zero_unmatched,unmatched_default_0
+0M9N4,4,,0,default_zero_unmatched,unmatched_default_0
+0M9P0,0,,0,default_zero_unmatched,unmatched_default_0
+0M9P4,4,,0,default_zero_unmatched,unmatched_default_0
+0M9Q0,0,,0,default_zero_unmatched,unmatched_default_0
+0M9R0,0,,0,default_zero_unmatched,unmatched_default_0
+0MB00,0,,0,default_zero_unmatched,unmatched_default_0
+0MB14,4,,0,default_zero_unmatched,unmatched_default_0
+0MB20,0,,0,default_zero_unmatched,unmatched_default_0
+0MB24,4,,0,default_zero_unmatched,unmatched_default_0
+0MB70,0,,0,default_zero_unmatched,unmatched_default_0
+0MBL0,0,,0,default_zero_unmatched,unmatched_default_0
+0MBN0,0,,0,default_zero_unmatched,unmatched_default_0
+0MBN4,4,,0,default_zero_unmatched,unmatched_default_0
+0MBNX,X,,0,default_zero_unmatched,unmatched_default_0
+0MBP0,0,,0,default_zero_unmatched,unmatched_default_0
+0MBP4,4,,0,default_zero_unmatched,unmatched_default_0
+0MBPX,X,,0,default_zero_unmatched,unmatched_default_0
+0MBQ4,4,,0,default_zero_unmatched,unmatched_default_0
+0MBR4,4,,0,default_zero_unmatched,unmatched_default_0
+0MBRX,X,,0,default_zero_unmatched,unmatched_default_0
+0MBS0,0,,0,default_zero_unmatched,unmatched_default_0
+0MBS4,4,,0,default_zero_unmatched,unmatched_default_0
+0MBT0,0,,0,default_zero_unmatched,unmatched_default_0
+0MBT4,4,,0,default_zero_unmatched,unmatched_default_0
+0MD00,0,,0,default_zero_unmatched,unmatched_default_0
+0MDL0,0,,0,default_zero_unmatched,unmatched_default_0
+0MDN0,0,,0,default_zero_unmatched,unmatched_default_0
+0MDNX,X,,0,default_zero_unmatched,unmatched_default_0
+0MDPX,X,,0,default_zero_unmatched,unmatched_default_0
+0MHN0,0,,0,default_zero_unmatched,unmatched_default_0
+0MJN0,0,,0,default_zero_unmatched,unmatched_default_0
+0MJP4,4,,0,default_zero_unmatched,unmatched_default_0
+0MN00,0,,0,default_zero_unmatched,unmatched_default_0
+0MN14,4,,0,default_zero_unmatched,unmatched_default_0
+0MN24,4,,0,default_zero_unmatched,unmatched_default_0
+0MN80,0,,0,default_zero_unmatched,unmatched_default_0
+0MNN4,4,,0,default_zero_unmatched,unmatched_default_0
+0MNP0,0,,0,default_zero_unmatched,unmatched_default_0
+0MQ50,0,,0,default_zero_unmatched,unmatched_default_0
+0MQN0,0,,0,default_zero_unmatched,unmatched_default_0
+0MQN4,4,,0,default_zero_unmatched,unmatched_default_0
+0MQP0,0,,0,default_zero_unmatched,unmatched_default_0
+0MQP4,4,,0,default_zero_unmatched,unmatched_default_0
+0MR8X,X,,0,default_zero_unmatched,unmatched_default_0
+0MRS0,0,,0,default_zero_unmatched,unmatched_default_0
+0MWN0,0,,0,default_zero_unmatched,unmatched_default_0
+0MX20,0,,0,default_zero_unmatched,unmatched_default_0
+0N000,0,,0,default_zero_unmatched,unmatched_default_0
+0N0B0,0,,0,default_zero_unmatched,unmatched_default_0
+0N0C0,0,,0,default_zero_unmatched,unmatched_default_0
+0N0R0,0,,0,default_zero_unmatched,unmatched_default_0
+0N0RX,X,,0,default_zero_unmatched,unmatched_default_0
+0N2Q0,0,,0,default_zero_unmatched,unmatched_default_0
+0N6T0,0,,0,default_zero_unmatched,unmatched_default_0
+0N8R0,0,,0,default_zero_unmatched,unmatched_default_0
+0N8T0,0,,0,default_zero_unmatched,unmatched_default_0
+0N900,0,,0,default_zero_unmatched,unmatched_default_0
+0N9T0,0,,0,default_zero_unmatched,unmatched_default_0
+0NB00,0,,0,default_zero_unmatched,unmatched_default_0
+0NBC0,0,,0,default_zero_unmatched,unmatched_default_0
+0NBP0,0,,0,default_zero_unmatched,unmatched_default_0
+0NBQ0,0,,0,default_zero_unmatched,unmatched_default_0
+0NBR0,0,,0,default_zero_unmatched,unmatched_default_0
+0NBT0,0,,0,default_zero_unmatched,unmatched_default_0
+0NBV0,0,,0,default_zero_unmatched,unmatched_default_0
+0NDQ0,0,,0,default_zero_unmatched,unmatched_default_0
+0NDTX,X,,0,default_zero_unmatched,unmatched_default_0
+0NGT0,0,,0,default_zero_unmatched,unmatched_default_0
+0NH00,0,,0,default_zero_unmatched,unmatched_default_0
+0NHC0,0,,0,default_zero_unmatched,unmatched_default_0
+0NHC3,3,,0,default_zero_unmatched,unmatched_default_0
+0NHM0,0,,0,default_zero_unmatched,unmatched_default_0
+0NHN0,0,,0,default_zero_unmatched,unmatched_default_0
+0NHP0,0,,0,default_zero_unmatched,unmatched_default_0
+0NHQ0,0,,0,default_zero_unmatched,unmatched_default_0
+0NHQ3,3,,0,default_zero_unmatched,unmatched_default_0
+0NHR0,0,,0,default_zero_unmatched,unmatched_default_0
+0NHT0,0,,0,default_zero_unmatched,unmatched_default_0
+0NHV0,0,,0,default_zero_unmatched,unmatched_default_0
+0NNR0,0,,0,default_zero_unmatched,unmatched_default_0
+0NNT0,0,,0,default_zero_unmatched,unmatched_default_0
+0NP00,0,,0,default_zero_unmatched,unmatched_default_0
+0NQ00,0,,0,default_zero_unmatched,unmatched_default_0
+0NQBX,X,,0,default_zero_unmatched,unmatched_default_0
+0NQC0,0,,0,default_zero_unmatched,unmatched_default_0
+0NQCX,X,,0,default_zero_unmatched,unmatched_default_0
+0NQMX,X,,0,default_zero_unmatched,unmatched_default_0
+0NQQ0,0,,0,default_zero_unmatched,unmatched_default_0
+0NQR0,0,,0,default_zero_unmatched,unmatched_default_0
+0NQRX,X,,0,default_zero_unmatched,unmatched_default_0
+0NQT0,0,,0,default_zero_unmatched,unmatched_default_0
+0NQTX,X,,0,default_zero_unmatched,unmatched_default_0
+0NRC0,0,,0,default_zero_unmatched,unmatched_default_0
+0NRR0,0,,0,default_zero_unmatched,unmatched_default_0
+0NS00,0,,0,default_zero_unmatched,unmatched_default_0
+0NSB0,0,,0,default_zero_unmatched,unmatched_default_0
+0NSB3,3,,0,default_zero_unmatched,unmatched_default_0
+0NSBX,X,,0,default_zero_unmatched,unmatched_default_0
+0NSC0,0,,0,default_zero_unmatched,unmatched_default_0
+0NSCX,X,,0,default_zero_unmatched,unmatched_default_0
+0NSM3,3,,0,default_zero_unmatched,unmatched_default_0
+0NSN0,0,,0,default_zero_unmatched,unmatched_default_0
+0NSN3,3,,0,default_zero_unmatched,unmatched_default_0
+0NST0,0,,0,default_zero_unmatched,unmatched_default_0
+0NST3,3,,0,default_zero_unmatched,unmatched_default_0
+0NTC0,0,,0,default_zero_unmatched,unmatched_default_0
+0NTQ0,0,,0,default_zero_unmatched,unmatched_default_0
+0NTR0,0,,0,default_zero_unmatched,unmatched_default_0
+0NX00,0,,0,default_zero_unmatched,unmatched_default_0
+0P000,0,,0,default_zero_unmatched,unmatched_default_0
+0P003,3,,0,default_zero_unmatched,unmatched_default_0
+0P00X,X,,0,default_zero_unmatched,unmatched_default_0
+0P0S0,0,,0,default_zero_unmatched,unmatched_default_0
+0P100,0,,0,default_zero_unmatched,unmatched_default_0
+0P1S0,0,,0,default_zero_unmatched,unmatched_default_0
+0P200,0,,0,default_zero_unmatched,unmatched_default_0
+0P300,0,,0,default_zero_unmatched,unmatched_default_0
+0P400,0,,0,default_zero_unmatched,unmatched_default_0
+0P600,0,,0,default_zero_unmatched,unmatched_default_0
+0P800,0,,0,default_zero_unmatched,unmatched_default_0
+0P80X,X,,0,default_zero_unmatched,unmatched_default_0
+0P830,0,,0,default_zero_unmatched,unmatched_default_0
+0P8C0,0,,0,default_zero_unmatched,unmatched_default_0
+0P8CX,X,,0,default_zero_unmatched,unmatched_default_0
+0P8D0,0,,0,default_zero_unmatched,unmatched_default_0
+0P8H0,0,,0,default_zero_unmatched,unmatched_default_0
+0P8J0,0,,0,default_zero_unmatched,unmatched_default_0
+0P8N0,0,,0,default_zero_unmatched,unmatched_default_0
+0P8T0,0,,0,default_zero_unmatched,unmatched_default_0
+0P900,0,,0,default_zero_unmatched,unmatched_default_0
+0P904,4,,0,default_zero_unmatched,unmatched_default_0
+0P930,0,,0,default_zero_unmatched,unmatched_default_0
+0P9C0,0,,0,default_zero_unmatched,unmatched_default_0
+0PB00,0,,0,default_zero_unmatched,unmatched_default_0
+0PB03,3,,0,default_zero_unmatched,unmatched_default_0
+0PB04,4,,0,default_zero_unmatched,unmatched_default_0
+0PB0X,X,,0,default_zero_unmatched,unmatched_default_0
+0PB30,0,,0,default_zero_unmatched,unmatched_default_0
+0PB3X,X,,0,default_zero_unmatched,unmatched_default_0
+0PBC0,0,,0,default_zero_unmatched,unmatched_default_0
+0PBD0,0,,0,default_zero_unmatched,unmatched_default_0
+0PBH0,0,,0,default_zero_unmatched,unmatched_default_0
+0PBHX,X,,0,default_zero_unmatched,unmatched_default_0
+0PBJ0,0,,0,default_zero_unmatched,unmatched_default_0
+0PBM0,0,,0,default_zero_unmatched,unmatched_default_0
+0PBN0,0,,0,default_zero_unmatched,unmatched_default_0
+0PBR0,0,,0,default_zero_unmatched,unmatched_default_0
+0PBS0,0,,0,default_zero_unmatched,unmatched_default_0
+0PBV0,0,,0,default_zero_unmatched,unmatched_default_0
+0PC00,0,,0,default_zero_unmatched,unmatched_default_0
+0PC0X,X,,0,default_zero_unmatched,unmatched_default_0
+0PD00,0,THOR,0,cdc_nhsn_primary,THOR + approach 0 -> 0
+0PD03,3,,0,default_zero_unmatched,unmatched_default_0
+0PD0X,X,,0,default_zero_unmatched,unmatched_default_0
+0PD3X,X,,0,default_zero_unmatched,unmatched_default_0
+0PG00,0,,0,default_zero_unmatched,unmatched_default_0
+0PG30,0,,0,default_zero_unmatched,unmatched_default_0
+0PGR0,0,,0,default_zero_unmatched,unmatched_default_0
+0PGS0,0,,0,default_zero_unmatched,unmatched_default_0
+0PH00,0,,0,default_zero_unmatched,unmatched_default_0
+0PH03,3,,0,default_zero_unmatched,unmatched_default_0
+0PH04,4,,0,default_zero_unmatched,unmatched_default_0
+0PH0X,X,,0,default_zero_unmatched,unmatched_default_0
+0PH30,0,,0,default_zero_unmatched,unmatched_default_0
+0PH90,0,,0,default_zero_unmatched,unmatched_default_0
+0PHB0,0,,0,default_zero_unmatched,unmatched_default_0
+0PHC0,0,,0,default_zero_unmatched,unmatched_default_0
+0PHC3,3,,0,default_zero_unmatched,unmatched_default_0
+0PHCX,X,,0,default_zero_unmatched,unmatched_default_0
+0PHD0,0,,0,default_zero_unmatched,unmatched_default_0
+0PHD3,3,,0,default_zero_unmatched,unmatched_default_0
+0PHDX,X,,0,default_zero_unmatched,unmatched_default_0
+0PHF0,0,,0,default_zero_unmatched,unmatched_default_0
+0PHH0,0,,0,default_zero_unmatched,unmatched_default_0
+0PHH3,3,,0,default_zero_unmatched,unmatched_default_0
+0PHJ0,0,,0,default_zero_unmatched,unmatched_default_0
+0PHJ3,3,,0,default_zero_unmatched,unmatched_default_0
+0PHK0,0,,0,default_zero_unmatched,unmatched_default_0
+0PHL0,0,,0,default_zero_unmatched,unmatched_default_0
+0PHM0,0,,0,default_zero_unmatched,unmatched_default_0
+0PHM3,3,,0,default_zero_unmatched,unmatched_default_0
+0PHN0,0,,0,default_zero_unmatched,unmatched_default_0
+0PHN3,3,,0,default_zero_unmatched,unmatched_default_0
+0PHP0,0,,0,default_zero_unmatched,unmatched_default_0
+0PHP3,3,,0,default_zero_unmatched,unmatched_default_0
+0PHPX,X,,0,default_zero_unmatched,unmatched_default_0
+0PHQ0,0,,0,default_zero_unmatched,unmatched_default_0
+0PHQ3,3,,0,default_zero_unmatched,unmatched_default_0
+0PHR0,0,,0,default_zero_unmatched,unmatched_default_0
+0PHS0,0,,0,default_zero_unmatched,unmatched_default_0
+0PHT0,0,,0,default_zero_unmatched,unmatched_default_0
+0PHT3,3,,0,default_zero_unmatched,unmatched_default_0
+0PHV0,0,,0,default_zero_unmatched,unmatched_default_0
+0PHV3,3,,0,default_zero_unmatched,unmatched_default_0
+0PJ00,0,,0,default_zero_unmatched,unmatched_default_0
+0PJ04,4,,0,default_zero_unmatched,unmatched_default_0
+0PJ30,0,,0,default_zero_unmatched,unmatched_default_0
+0PJF4,4,,0,default_zero_unmatched,unmatched_default_0
+0PMV0,0,,0,default_zero_unmatched,unmatched_default_0
+0PN00,0,,0,default_zero_unmatched,unmatched_default_0
+0PNR0,0,,0,default_zero_unmatched,unmatched_default_0
+0PNS0,0,,0,default_zero_unmatched,unmatched_default_0
+0PP00,0,,0,default_zero_unmatched,unmatched_default_0
+0PP0X,X,,0,default_zero_unmatched,unmatched_default_0
+0PPC0,0,,0,default_zero_unmatched,unmatched_default_0
+0PPD0,0,,0,default_zero_unmatched,unmatched_default_0
+0PPH0,0,,0,default_zero_unmatched,unmatched_default_0
+0PPK0,0,,0,default_zero_unmatched,unmatched_default_0
+0PPP0,0,,0,default_zero_unmatched,unmatched_default_0
+0PQ00,0,,0,default_zero_unmatched,unmatched_default_0
+0PQ03,3,,0,default_zero_unmatched,unmatched_default_0
+0PQ04,4,,0,default_zero_unmatched,unmatched_default_0
+0PQ07,7,,0,default_zero_unmatched,unmatched_default_0
+0PQ0X,X,,0,default_zero_unmatched,unmatched_default_0
+0PQC0,0,,0,default_zero_unmatched,unmatched_default_0
+0PQD0,0,,0,default_zero_unmatched,unmatched_default_0
+0PQR0,0,,0,default_zero_unmatched,unmatched_default_0
+0PQR4,4,,0,default_zero_unmatched,unmatched_default_0
+0PQS0,0,,0,default_zero_unmatched,unmatched_default_0
+0PQT0,0,,0,default_zero_unmatched,unmatched_default_0
+0PR00,0,,0,default_zero_unmatched,unmatched_default_0
+0PR0X,X,,0,default_zero_unmatched,unmatched_default_0
+0PRC0,0,,0,default_zero_unmatched,unmatched_default_0
+0PRD0,0,,0,default_zero_unmatched,unmatched_default_0
+0PRR0,0,,0,default_zero_unmatched,unmatched_default_0
+0PRS0,0,,0,default_zero_unmatched,unmatched_default_0
+0PS00,0,,0,default_zero_unmatched,unmatched_default_0
+0PS03,3,,0,default_zero_unmatched,unmatched_default_0
+0PS04,4,,0,default_zero_unmatched,unmatched_default_0
+0PS0X,X,,0,default_zero_unmatched,unmatched_default_0
+0PS30,0,,0,default_zero_unmatched,unmatched_default_0
+0PSC0,0,FX,0,cdc_nhsn_primary,FX + approach 0 -> 0
+0PSD0,0,FX,0,cdc_nhsn_primary,FX + approach 0 -> 0
+0PSD3,3,,0,default_zero_unmatched,unmatched_default_0
+0PSH0,0,FX,0,cdc_nhsn_primary,FX + approach 0 -> 0
+0PSJ3,3,,0,default_zero_unmatched,unmatched_default_0
+0PSJX,X,,0,default_zero_unmatched,unmatched_default_0
+0PSM0,0,,0,default_zero_unmatched,unmatched_default_0
+0PSM3,3,,0,default_zero_unmatched,unmatched_default_0
+0PSN3,3,,0,default_zero_unmatched,unmatched_default_0
+0PST3,3,,0,default_zero_unmatched,unmatched_default_0
+0PSV0,0,,0,default_zero_unmatched,unmatched_default_0
+0PSVX,X,,0,default_zero_unmatched,unmatched_default_0
+0PT00,0,,0,default_zero_unmatched,unmatched_default_0
+0PT03,3,,0,default_zero_unmatched,unmatched_default_0
+0PT04,4,,0,default_zero_unmatched,unmatched_default_0
+0PU00,0,,0,default_zero_unmatched,unmatched_default_0
+0PW00,0,,0,default_zero_unmatched,unmatched_default_0
+0PW04,4,,0,default_zero_unmatched,unmatched_default_0
+0PX00,0,,0,default_zero_unmatched,unmatched_default_0
+0PX0X,X,,0,default_zero_unmatched,unmatched_default_0
+0PXR0,0,,0,default_zero_unmatched,unmatched_default_0
+0PXS0,0,,0,default_zero_unmatched,unmatched_default_0
+0PXT0,0,,0,default_zero_unmatched,unmatched_default_0
+0PXV0,0,,0,default_zero_unmatched,unmatched_default_0
+0PXV4,4,,0,default_zero_unmatched,unmatched_default_0
+0Q860,0,,0,default_zero_unmatched,unmatched_default_0
+0Q870,0,,0,default_zero_unmatched,unmatched_default_0
+0Q8F0,0,,0,default_zero_unmatched,unmatched_default_0
+0Q8G0,0,,0,default_zero_unmatched,unmatched_default_0
+0Q8H0,0,,0,default_zero_unmatched,unmatched_default_0
+0Q8H4,4,,0,default_zero_unmatched,unmatched_default_0
+0Q8L0,0,,0,default_zero_unmatched,unmatched_default_0
+0Q8M0,0,,0,default_zero_unmatched,unmatched_default_0
+0Q8N0,0,,0,default_zero_unmatched,unmatched_default_0
+0Q970,0,,0,default_zero_unmatched,unmatched_default_0
+0Q9C0,0,,0,default_zero_unmatched,unmatched_default_0
+0Q9G0,0,,0,default_zero_unmatched,unmatched_default_0
+0Q9H0,0,,0,default_zero_unmatched,unmatched_default_0
+0QB60,0,,0,default_zero_unmatched,unmatched_default_0
+0QB64,4,,0,default_zero_unmatched,unmatched_default_0
+0QB70,0,,0,default_zero_unmatched,unmatched_default_0
+0QB77,7,,0,default_zero_unmatched,unmatched_default_0
+0QB7X,X,,0,default_zero_unmatched,unmatched_default_0
+0QB90,0,,0,default_zero_unmatched,unmatched_default_0
+0QBD0,0,,0,default_zero_unmatched,unmatched_default_0
+0QBF0,0,,0,default_zero_unmatched,unmatched_default_0
+0QBG0,0,,0,default_zero_unmatched,unmatched_default_0
+0QBH0,0,,0,default_zero_unmatched,unmatched_default_0
+0QBL0,0,,0,default_zero_unmatched,unmatched_default_0
+0QBM0,0,,0,default_zero_unmatched,unmatched_default_0
+0QD60,0,,0,default_zero_unmatched,unmatched_default_0
+0QD70,0,,0,default_zero_unmatched,unmatched_default_0
+0QG00,0,,0,default_zero_unmatched,unmatched_default_0
+0QGG0,0,,0,default_zero_unmatched,unmatched_default_0
+0QH20,0,,0,default_zero_unmatched,unmatched_default_0
+0QH60,0,,0,default_zero_unmatched,unmatched_default_0
+0QH63,3,,0,default_zero_unmatched,unmatched_default_0
+0QH6X,X,,0,default_zero_unmatched,unmatched_default_0
+0QH70,0,,0,default_zero_unmatched,unmatched_default_0
+0QH73,3,,0,default_zero_unmatched,unmatched_default_0
+0QH80,0,,0,default_zero_unmatched,unmatched_default_0
+0QH83,3,,0,default_zero_unmatched,unmatched_default_0
+0QH90,0,,0,default_zero_unmatched,unmatched_default_0
+0QH93,3,,0,default_zero_unmatched,unmatched_default_0
+0QHB0,0,,0,default_zero_unmatched,unmatched_default_0
+0QHC0,0,,0,default_zero_unmatched,unmatched_default_0
+0QHD0,0,,0,default_zero_unmatched,unmatched_default_0
+0QHD3,3,,0,default_zero_unmatched,unmatched_default_0
+0QHF0,0,,0,default_zero_unmatched,unmatched_default_0
+0QHG0,0,,0,default_zero_unmatched,unmatched_default_0
+0QHG3,3,,0,default_zero_unmatched,unmatched_default_0
+0QHG4,4,,0,default_zero_unmatched,unmatched_default_0
+0QHH0,0,,0,default_zero_unmatched,unmatched_default_0
+0QHH3,3,,0,default_zero_unmatched,unmatched_default_0
+0QHHX,X,,0,default_zero_unmatched,unmatched_default_0
+0QHL0,0,,0,default_zero_unmatched,unmatched_default_0
+0QHL3,3,,0,default_zero_unmatched,unmatched_default_0
+0QHM0,0,,0,default_zero_unmatched,unmatched_default_0
+0QHM3,3,,0,default_zero_unmatched,unmatched_default_0
+0QHN0,0,,0,default_zero_unmatched,unmatched_default_0
+0QHP0,0,,0,default_zero_unmatched,unmatched_default_0
+0QHR0,0,,0,default_zero_unmatched,unmatched_default_0
+0QHR3,3,,0,default_zero_unmatched,unmatched_default_0
+0QJ70,0,,0,default_zero_unmatched,unmatched_default_0
+0QJH4,4,,0,default_zero_unmatched,unmatched_default_0
+0QN60,0,,0,default_zero_unmatched,unmatched_default_0
+0QN70,0,,0,default_zero_unmatched,unmatched_default_0
+0QNH0,0,,0,default_zero_unmatched,unmatched_default_0
+0QP60,0,,0,default_zero_unmatched,unmatched_default_0
+0QP70,0,,0,default_zero_unmatched,unmatched_default_0
+0QP80,0,,0,default_zero_unmatched,unmatched_default_0
+0QPD0,0,,0,default_zero_unmatched,unmatched_default_0
+0QPF0,0,,0,default_zero_unmatched,unmatched_default_0
+0QPG0,0,,0,default_zero_unmatched,unmatched_default_0
+0QPH0,0,,0,default_zero_unmatched,unmatched_default_0
+0QPL0,0,,0,default_zero_unmatched,unmatched_default_0
+0QQ60,0,,0,default_zero_unmatched,unmatched_default_0
+0QQ70,0,,0,default_zero_unmatched,unmatched_default_0
+0QQG0,0,,0,default_zero_unmatched,unmatched_default_0
+0QR70,0,,0,default_zero_unmatched,unmatched_default_0
+0QRH0,0,,0,default_zero_unmatched,unmatched_default_0
+0QS60,0,FX,0,cdc_nhsn_primary,FX + approach 0 -> 0
+0QS63,3,,0,default_zero_unmatched,unmatched_default_0
+0QS70,0,FX,0,cdc_nhsn_primary,FX + approach 0 -> 0
+0QS73,3,,0,default_zero_unmatched,unmatched_default_0
+0QSD0,0,,0,default_zero_unmatched,unmatched_default_0
+0QSDX,X,,0,default_zero_unmatched,unmatched_default_0
+0QSF0,0,,0,default_zero_unmatched,unmatched_default_0
+0QSF3,3,,0,default_zero_unmatched,unmatched_default_0
+0QSG0,0,FX,0,cdc_nhsn_primary,FX + approach 0 -> 0
+0QSG3,3,,0,default_zero_unmatched,unmatched_default_0
+0QSH0,0,FX,0,cdc_nhsn_primary,FX + approach 0 -> 0
+0QSL0,0,,0,default_zero_unmatched,unmatched_default_0
+0QSM0,0,,0,default_zero_unmatched,unmatched_default_0
+0QSR0,0,,0,default_zero_unmatched,unmatched_default_0
+0QT70,0,,0,default_zero_unmatched,unmatched_default_0
+0QTL0,0,,0,default_zero_unmatched,unmatched_default_0
+0QTM0,0,,0,default_zero_unmatched,unmatched_default_0
+0QW60,0,,0,default_zero_unmatched,unmatched_default_0
+0QXG0,0,,0,default_zero_unmatched,unmatched_default_0
+0R1M0,0,,0,default_zero_unmatched,unmatched_default_0
+0R300,0,,0,default_zero_unmatched,unmatched_default_0
+0R800,0,,0,default_zero_unmatched,unmatched_default_0
+0R8P0,0,,0,default_zero_unmatched,unmatched_default_0
+0R900,0,,0,default_zero_unmatched,unmatched_default_0
+0R930,0,,0,default_zero_unmatched,unmatched_default_0
+0RB00,0,,0,default_zero_unmatched,unmatched_default_0
+0RB04,4,,0,default_zero_unmatched,unmatched_default_0
+0RB0X,X,,0,default_zero_unmatched,unmatched_default_0
+0RB30,0,,0,default_zero_unmatched,unmatched_default_0
+0RB60,0,,0,default_zero_unmatched,unmatched_default_0
+0RBE0,0,,0,default_zero_unmatched,unmatched_default_0
+0RBF0,0,,0,default_zero_unmatched,unmatched_default_0
+0RBF4,4,,0,default_zero_unmatched,unmatched_default_0
+0RBJ4,4,,0,default_zero_unmatched,unmatched_default_0
+0RBK4,4,,0,default_zero_unmatched,unmatched_default_0
+0RBL0,0,,0,default_zero_unmatched,unmatched_default_0
+0RBM0,0,,0,default_zero_unmatched,unmatched_default_0
+0RBN0,0,,0,default_zero_unmatched,unmatched_default_0
+0RBP0,0,,0,default_zero_unmatched,unmatched_default_0
+0RBR0,0,,0,default_zero_unmatched,unmatched_default_0
+0RBW0,0,,0,default_zero_unmatched,unmatched_default_0
+0RBX0,0,,0,default_zero_unmatched,unmatched_default_0
+0RD03,3,,0,default_zero_unmatched,unmatched_default_0
+0RDXX,X,,0,default_zero_unmatched,unmatched_default_0
+0RG00,0,FUSN,0,cdc_nhsn_primary,FUSN + approach 0 -> 0
+0RG10,0,FUSN,0,cdc_nhsn_primary,FUSN + approach 0 -> 0
+0RG30,0,,0,default_zero_unmatched,unmatched_default_0
+0RG60,0,FUSN,0,cdc_nhsn_primary,FUSN + approach 0 -> 0
+0RGB0,0,,0,default_zero_unmatched,unmatched_default_0
+0RGL0,0,,0,default_zero_unmatched,unmatched_default_0
+0RGM0,0,,0,default_zero_unmatched,unmatched_default_0
+0RGN0,0,,0,default_zero_unmatched,unmatched_default_0
+0RGQ0,0,,0,default_zero_unmatched,unmatched_default_0
+0RGU0,0,,0,default_zero_unmatched,unmatched_default_0
+0RGV0,0,,0,default_zero_unmatched,unmatched_default_0
+0RGW0,0,,0,default_zero_unmatched,unmatched_default_0
+0RGX0,0,,0,default_zero_unmatched,unmatched_default_0
+0RH00,0,,0,default_zero_unmatched,unmatched_default_0
+0RHE0,0,,0,default_zero_unmatched,unmatched_default_0
+0RHEX,X,,0,default_zero_unmatched,unmatched_default_0
+0RHK4,4,,0,default_zero_unmatched,unmatched_default_0
+0RHL0,0,,0,default_zero_unmatched,unmatched_default_0
+0RHM0,0,,0,default_zero_unmatched,unmatched_default_0
+0RHN0,0,,0,default_zero_unmatched,unmatched_default_0
+0RHP0,0,,0,default_zero_unmatched,unmatched_default_0
+0RHW0,0,,0,default_zero_unmatched,unmatched_default_0
+0RHX0,0,,0,default_zero_unmatched,unmatched_default_0
+0RJ04,4,,0,default_zero_unmatched,unmatched_default_0
+0RJJ4,4,,0,default_zero_unmatched,unmatched_default_0
+0RJK4,4,,0,default_zero_unmatched,unmatched_default_0
+0RN0X,X,,0,default_zero_unmatched,unmatched_default_0
+0RNX0,0,,0,default_zero_unmatched,unmatched_default_0
+0RNXX,X,,0,default_zero_unmatched,unmatched_default_0
+0RP00,0,,0,default_zero_unmatched,unmatched_default_0
+0RPW0,0,,0,default_zero_unmatched,unmatched_default_0
+0RPX0,0,,0,default_zero_unmatched,unmatched_default_0
+0RQ00,0,,0,default_zero_unmatched,unmatched_default_0
+0RQ0X,X,,0,default_zero_unmatched,unmatched_default_0
+0RQ30,0,,0,default_zero_unmatched,unmatched_default_0
+0RQE4,4,,0,default_zero_unmatched,unmatched_default_0
+0RQF4,4,,0,default_zero_unmatched,unmatched_default_0
+0RQJ4,4,,0,default_zero_unmatched,unmatched_default_0
+0RQK4,4,,0,default_zero_unmatched,unmatched_default_0
+0RQN0,0,,0,default_zero_unmatched,unmatched_default_0
+0RQP0,0,,0,default_zero_unmatched,unmatched_default_0
+0RQQ0,0,,0,default_zero_unmatched,unmatched_default_0
+0RQR0,0,,0,default_zero_unmatched,unmatched_default_0
+0RQW0,0,,0,default_zero_unmatched,unmatched_default_0
+0RQX0,0,,0,default_zero_unmatched,unmatched_default_0
+0RR00,0,,0,default_zero_unmatched,unmatched_default_0
+0RRJ0,0,,0,default_zero_unmatched,unmatched_default_0
+0RRK0,0,,0,default_zero_unmatched,unmatched_default_0
+0RS00,0,,0,default_zero_unmatched,unmatched_default_0
+0RSE0,0,,0,default_zero_unmatched,unmatched_default_0
+0RSE4,4,,0,default_zero_unmatched,unmatched_default_0
+0RSF0,0,,0,default_zero_unmatched,unmatched_default_0
+0RSF4,4,,0,default_zero_unmatched,unmatched_default_0
+0RSJ0,0,,0,default_zero_unmatched,unmatched_default_0
+0RSJ3,3,,0,default_zero_unmatched,unmatched_default_0
+0RSL0,0,,0,default_zero_unmatched,unmatched_default_0
+0RSW3,3,,0,default_zero_unmatched,unmatched_default_0
+0RSX0,0,,0,default_zero_unmatched,unmatched_default_0
+0RWG0,0,,0,default_zero_unmatched,unmatched_default_0
+0RWM0,0,,0,default_zero_unmatched,unmatched_default_0
+0RY00,0,,0,default_zero_unmatched,unmatched_default_0
+0S1D0,0,,0,default_zero_unmatched,unmatched_default_0
+0S6C0,0,,0,default_zero_unmatched,unmatched_default_0
+0S8C0,0,,0,default_zero_unmatched,unmatched_default_0
+0S8C4,4,,0,default_zero_unmatched,unmatched_default_0
+0S8D0,0,,0,default_zero_unmatched,unmatched_default_0
+0S8D4,4,,0,default_zero_unmatched,unmatched_default_0
+0S8H0,0,,0,default_zero_unmatched,unmatched_default_0
+0S8J0,0,,0,default_zero_unmatched,unmatched_default_0
+0S8N0,0,,0,default_zero_unmatched,unmatched_default_0
+0S8Q0,0,,0,default_zero_unmatched,unmatched_default_0
+0S9C0,0,,0,default_zero_unmatched,unmatched_default_0
+0S9D0,0,,0,default_zero_unmatched,unmatched_default_0
+0S9D4,4,,0,default_zero_unmatched,unmatched_default_0
+0S9F0,0,,0,default_zero_unmatched,unmatched_default_0
+0S9J0,0,,0,default_zero_unmatched,unmatched_default_0
+0SB00,0,,0,default_zero_unmatched,unmatched_default_0
+0SB90,0,,0,default_zero_unmatched,unmatched_default_0
+0SB94,4,,0,default_zero_unmatched,unmatched_default_0
+0SB9X,X,,0,default_zero_unmatched,unmatched_default_0
+0SBA0,0,,0,default_zero_unmatched,unmatched_default_0
+0SBB0,0,,0,default_zero_unmatched,unmatched_default_0
+0SBB4,4,,0,default_zero_unmatched,unmatched_default_0
+0SBC0,0,,0,default_zero_unmatched,unmatched_default_0
+0SBC4,4,,0,default_zero_unmatched,unmatched_default_0
+0SBCX,X,,0,default_zero_unmatched,unmatched_default_0
+0SBD0,0,,0,default_zero_unmatched,unmatched_default_0
+0SBD4,4,,0,default_zero_unmatched,unmatched_default_0
+0SBF0,0,,0,default_zero_unmatched,unmatched_default_0
+0SBF4,4,,0,default_zero_unmatched,unmatched_default_0
+0SBG0,0,,0,default_zero_unmatched,unmatched_default_0
+0SBG4,4,,0,default_zero_unmatched,unmatched_default_0
+0SBH0,0,,0,default_zero_unmatched,unmatched_default_0
+0SBJ0,0,,0,default_zero_unmatched,unmatched_default_0
+0SBM0,0,,0,default_zero_unmatched,unmatched_default_0
+0SBN0,0,,0,default_zero_unmatched,unmatched_default_0
+0SCC0,0,,0,default_zero_unmatched,unmatched_default_0
+0SD90,0,,0,default_zero_unmatched,unmatched_default_0
+0SDC0,0,,0,default_zero_unmatched,unmatched_default_0
+0SDCX,X,,0,default_zero_unmatched,unmatched_default_0
+0SDD0,0,,0,default_zero_unmatched,unmatched_default_0
+0SDDX,X,,0,default_zero_unmatched,unmatched_default_0
+0SDG0,0,,0,default_zero_unmatched,unmatched_default_0
+0SG00,0,FUSN,0,cdc_nhsn_primary,FUSN + approach 0 -> 0
+0SG50,0,,0,default_zero_unmatched,unmatched_default_0
+0SGA0,0,,0,default_zero_unmatched,unmatched_default_0
+0SGC0,0,,0,default_zero_unmatched,unmatched_default_0
+0SGD0,0,,0,default_zero_unmatched,unmatched_default_0
+0SGF0,0,,0,default_zero_unmatched,unmatched_default_0
+0SGG0,0,,0,default_zero_unmatched,unmatched_default_0
+0SGH0,0,,0,default_zero_unmatched,unmatched_default_0
+0SGJ0,0,,0,default_zero_unmatched,unmatched_default_0
+0SGJ4,4,,0,default_zero_unmatched,unmatched_default_0
+0SGK0,0,,0,default_zero_unmatched,unmatched_default_0
+0SGL0,0,,0,default_zero_unmatched,unmatched_default_0
+0SGM0,0,,0,default_zero_unmatched,unmatched_default_0
+0SGN0,0,,0,default_zero_unmatched,unmatched_default_0
+0SHA0,0,,0,default_zero_unmatched,unmatched_default_0
+0SHC0,0,,0,default_zero_unmatched,unmatched_default_0
+0SHD0,0,,0,default_zero_unmatched,unmatched_default_0
+0SHF0,0,,0,default_zero_unmatched,unmatched_default_0
+0SHG0,0,,0,default_zero_unmatched,unmatched_default_0
+0SHG3,3,,0,default_zero_unmatched,unmatched_default_0
+0SHG4,4,,0,default_zero_unmatched,unmatched_default_0
+0SHH0,0,,0,default_zero_unmatched,unmatched_default_0
+0SHJ0,0,,0,default_zero_unmatched,unmatched_default_0
+0SHM0,0,,0,default_zero_unmatched,unmatched_default_0
+0SHP0,0,,0,default_zero_unmatched,unmatched_default_0
+0SJ94,4,,0,default_zero_unmatched,unmatched_default_0
+0SJA4,4,,0,default_zero_unmatched,unmatched_default_0
+0SJB4,4,,0,default_zero_unmatched,unmatched_default_0
+0SJC0,0,,0,default_zero_unmatched,unmatched_default_0
+0SJC4,4,,0,default_zero_unmatched,unmatched_default_0
+0SJCX,X,,0,default_zero_unmatched,unmatched_default_0
+0SJD0,0,,0,default_zero_unmatched,unmatched_default_0
+0SJD4,4,,0,default_zero_unmatched,unmatched_default_0
+0SJF4,4,,0,default_zero_unmatched,unmatched_default_0
+0SJG4,4,,0,default_zero_unmatched,unmatched_default_0
+0SJH4,4,,0,default_zero_unmatched,unmatched_default_0
+0SMF0,0,,0,default_zero_unmatched,unmatched_default_0
+0SNC0,0,,0,default_zero_unmatched,unmatched_default_0
+0SND0,0,,0,default_zero_unmatched,unmatched_default_0
+0SNH0,0,,0,default_zero_unmatched,unmatched_default_0
+0SNN0,0,,0,default_zero_unmatched,unmatched_default_0
+0SP00,0,,0,default_zero_unmatched,unmatched_default_0
+0SP90,0,HPRO,0,cdc_nhsn_primary,HPRO + approach 0 -> 0
+0SPC0,0,KPRO,0,cdc_nhsn_primary,KPRO + approach 0 -> 0
+0SPD0,0,KPRO,0,cdc_nhsn_primary,KPRO + approach 0 -> 0
+0SPF0,0,,0,default_zero_unmatched,unmatched_default_0
+0SPG0,0,,0,default_zero_unmatched,unmatched_default_0
+0SPJ0,0,,0,default_zero_unmatched,unmatched_default_0
+0SQ90,0,,0,default_zero_unmatched,unmatched_default_0
+0SQA0,0,,0,default_zero_unmatched,unmatched_default_0
+0SQC0,0,,0,default_zero_unmatched,unmatched_default_0
+0SQC4,4,,0,default_zero_unmatched,unmatched_default_0
+0SQD0,0,,0,default_zero_unmatched,unmatched_default_0
+0SQD4,4,,0,default_zero_unmatched,unmatched_default_0
+0SQF0,0,,0,default_zero_unmatched,unmatched_default_0
+0SQF4,4,,0,default_zero_unmatched,unmatched_default_0
+0SQG0,0,,0,default_zero_unmatched,unmatched_default_0
+0SQG4,4,,0,default_zero_unmatched,unmatched_default_0
+0SQH4,4,,0,default_zero_unmatched,unmatched_default_0
+0SQJ4,4,,0,default_zero_unmatched,unmatched_default_0
+0SQN0,0,,0,default_zero_unmatched,unmatched_default_0
+0SR90,0,HPRO,0,cdc_nhsn_primary,HPRO + approach 0 -> 0
+0SRA0,0,HPRO,0,cdc_nhsn_primary,HPRO + approach 0 -> 0
+0SRB0,0,HPRO,0,cdc_nhsn_primary,HPRO + approach 0 -> 0
+0SRC0,0,KPRO,0,cdc_nhsn_primary,KPRO + approach 0 -> 0
+0SRC3,3,,0,default_zero_unmatched,unmatched_default_0
+0SRD0,0,KPRO,0,cdc_nhsn_primary,KPRO + approach 0 -> 0
+0SRF0,0,,0,default_zero_unmatched,unmatched_default_0
+0SRG0,0,,0,default_zero_unmatched,unmatched_default_0
+0SRH0,0,,0,default_zero_unmatched,unmatched_default_0
+0SRJ0,0,,0,default_zero_unmatched,unmatched_default_0
+0SRP0,0,,0,default_zero_unmatched,unmatched_default_0
+0SRQ0,0,,0,default_zero_unmatched,unmatched_default_0
+0SS90,0,,0,default_zero_unmatched,unmatched_default_0
+0SSF0,0,,0,default_zero_unmatched,unmatched_default_0
+0SSG0,0,,0,default_zero_unmatched,unmatched_default_0
+0ST90,0,,0,default_zero_unmatched,unmatched_default_0
+0SW90,0,HPRO,0,cdc_nhsn_primary,HPRO + approach 0 -> 0
+0SW9X,X,,0,default_zero_unmatched,unmatched_default_0
+0SWA0,0,HPRO,0,cdc_nhsn_primary,HPRO + approach 0 -> 0
+0SWB0,0,HPRO,0,cdc_nhsn_primary,HPRO + approach 0 -> 0
+0SWBX,X,,0,default_zero_unmatched,unmatched_default_0
+0SWC0,0,KPRO,0,cdc_nhsn_primary,KPRO + approach 0 -> 0
+0SWD0,0,KPRO,0,cdc_nhsn_primary,KPRO + approach 0 -> 0
+0SWF0,0,,0,default_zero_unmatched,unmatched_default_0
+0SWG0,0,,0,default_zero_unmatched,unmatched_default_0
+0SY00,0,,0,default_zero_unmatched,unmatched_default_0
+0SYC0,0,,0,default_zero_unmatched,unmatched_default_0
+0SYD0,0,,0,default_zero_unmatched,unmatched_default_0
+0SYD4,4,,0,default_zero_unmatched,unmatched_default_0
+0T0B0,0,,0,default_zero_unmatched,unmatched_default_0
+0T0D7,7,,0,default_zero_unmatched,unmatched_default_0
+0T100,0,,0,default_zero_unmatched,unmatched_default_0
+0T13X,X,,0,default_zero_unmatched,unmatched_default_0
+0T140,0,NEPH,0,cdc_nhsn_primary,NEPH + approach 0 -> 0
+0T160,0,,0,expert_review_override,expert_review_override_0_ureter_to_bladder_diversion
+0T164,4,,0,expert_review_override,expert_review_override_0_ureter_to_bladder_diversion
+0T167,7,,0,default_zero_unmatched,unmatched_default_0
+0T170,0,,0,expert_review_override,expert_review_override_0_ureter_to_bladder_diversion
+0T174,4,,0,expert_review_override,expert_review_override_0_ureter_to_bladder_diversion
+0T190,0,,0,default_zero_unmatched,unmatched_default_0
+0T1B0,0,,0,expert_review_override,expert_review_override_0_bladder_diversion
+0T1B4,4,,0,expert_review_override,expert_review_override_0_bladder_diversion
+0T1BD,D,,0,default_zero_unmatched,unmatched_default_0
+0T710,0,,0,default_zero_unmatched,unmatched_default_0
+0T760,0,,0,default_zero_unmatched,unmatched_default_0
+0T767,7,,0,default_zero_unmatched,unmatched_default_0
+0T770,0,,0,default_zero_unmatched,unmatched_default_0
+0T7B7,7,,0,default_zero_unmatched,unmatched_default_0
+0T7B8,8,,0,default_zero_unmatched,unmatched_default_0
+0T7CX,X,,0,default_zero_unmatched,unmatched_default_0
+0T7D0,0,,0,default_zero_unmatched,unmatched_default_0
+0T7D7,7,,0,default_zero_unmatched,unmatched_default_0
+0T904,4,NEPH,0,cdc_nhsn_primary,NEPH + approach 4 -> 0
+0T907,7,,0,default_zero_unmatched,unmatched_default_0
+0T930,0,NEPH,0,cdc_nhsn_primary,NEPH + approach 0 -> 0
+0T960,0,,0,default_zero_unmatched,unmatched_default_0
+0T967,7,,0,default_zero_unmatched,unmatched_default_0
+0T968,8,,0,default_zero_unmatched,unmatched_default_0
+0T970,0,,0,default_zero_unmatched,unmatched_default_0
+0T977,7,,0,default_zero_unmatched,unmatched_default_0
+0T978,8,,0,default_zero_unmatched,unmatched_default_0
+0T9B0,0,,0,default_zero_unmatched,unmatched_default_0
+0T9B3,3,,0,default_zero_unmatched,unmatched_default_0
+0T9B7,7,,0,default_zero_unmatched,unmatched_default_0
+0TB00,0,NEPH,0,cdc_nhsn_primary,NEPH + approach 0 -> 0
+0TB04,4,NEPH,0,cdc_nhsn_primary,NEPH + approach 4 -> 0
+0TB10,0,NEPH,0,cdc_nhsn_primary,NEPH + approach 0 -> 0
+0TB14,4,NEPH,0,cdc_nhsn_primary,NEPH + approach 4 -> 0
+0TB60,0,,0,default_zero_unmatched,unmatched_default_0
+0TB64,4,,0,default_zero_unmatched,unmatched_default_0
+0TB67,7,,0,default_zero_unmatched,unmatched_default_0
+0TB6X,X,,0,default_zero_unmatched,unmatched_default_0
+0TB70,0,,0,default_zero_unmatched,unmatched_default_0
+0TB77,7,,0,default_zero_unmatched,unmatched_default_0
+0TB90,0,,0,default_zero_unmatched,unmatched_default_0
+0TB94,4,,0,default_zero_unmatched,unmatched_default_0
+0TBB0,0,,0,default_zero_unmatched,unmatched_default_0
+0TBB3,3,,0,default_zero_unmatched,unmatched_default_0
+0TBB4,4,,0,default_zero_unmatched,unmatched_default_0
+0TBB7,7,,0,default_zero_unmatched,unmatched_default_0
+0TBB8,8,,0,default_zero_unmatched,unmatched_default_0
+0TBD0,0,,0,default_zero_unmatched,unmatched_default_0
+0TBD7,7,,0,default_zero_unmatched,unmatched_default_0
+0TBD8,8,,0,default_zero_unmatched,unmatched_default_0
+0TC00,0,NEPH,0,cdc_nhsn_primary,NEPH + approach 0 -> 0
+0TC08,8,,0,default_zero_unmatched,unmatched_default_0
+0TC10,0,NEPH,0,cdc_nhsn_primary,NEPH + approach 0 -> 0
+0TC14,4,NEPH,0,cdc_nhsn_primary,NEPH + approach 4 -> 0
+0TC38,8,,0,default_zero_unmatched,unmatched_default_0
+0TC48,8,,0,default_zero_unmatched,unmatched_default_0
+0TC60,0,,0,default_zero_unmatched,unmatched_default_0
+0TC64,4,,0,default_zero_unmatched,unmatched_default_0
+0TC70,0,,0,default_zero_unmatched,unmatched_default_0
+0TCB0,0,,0,default_zero_unmatched,unmatched_default_0
+0TCB4,4,,0,default_zero_unmatched,unmatched_default_0
+0TCB7,7,,0,default_zero_unmatched,unmatched_default_0
+0TCB8,8,,0,default_zero_unmatched,unmatched_default_0
+0TCBD,D,,0,default_zero_unmatched,unmatched_default_0
+0TD00,0,NEPH,0,cdc_nhsn_primary,NEPH + approach 0 -> 0
+0TDB0,0,,0,default_zero_unmatched,unmatched_default_0
+0TDB3,3,,0,default_zero_unmatched,unmatched_default_0
+0TDB7,7,,0,default_zero_unmatched,unmatched_default_0
+0TG00,0,,0,default_zero_unmatched,unmatched_default_0
+0TGD0,0,,0,default_zero_unmatched,unmatched_default_0
+0TH10,0,,0,default_zero_unmatched,unmatched_default_0
+0THB0,0,XLAP,1,cdc_nhsn_primary,XLAP + approach 0 -> 1
+0THD0,0,XLAP,1,cdc_nhsn_primary,XLAP + approach 0 -> 1
+0TJ90,0,,0,default_zero_unmatched,unmatched_default_0
+0TJ94,4,,0,default_zero_unmatched,unmatched_default_0
+0TJ97,7,,0,default_zero_unmatched,unmatched_default_0
+0TJB0,0,,0,default_zero_unmatched,unmatched_default_0
+0TJB4,4,,0,default_zero_unmatched,unmatched_default_0
+0TJB7,7,,0,default_zero_unmatched,unmatched_default_0
+0TJB8,8,,0,default_zero_unmatched,unmatched_default_0
+0TJD0,0,,0,default_zero_unmatched,unmatched_default_0
+0TL60,0,,0,default_zero_unmatched,unmatched_default_0
+0TMD0,0,,0,default_zero_unmatched,unmatched_default_0
+0TND0,0,,0,default_zero_unmatched,unmatched_default_0
+0TP60,0,,0,default_zero_unmatched,unmatched_default_0
+0TQ00,0,,0,default_zero_unmatched,unmatched_default_0
+0TQ13,3,,0,default_zero_unmatched,unmatched_default_0
+0TQ30,0,,0,default_zero_unmatched,unmatched_default_0
+0TQ34,4,,0,default_zero_unmatched,unmatched_default_0
+0TQ40,0,,0,default_zero_unmatched,unmatched_default_0
+0TQ44,4,,0,default_zero_unmatched,unmatched_default_0
+0TQ67,7,,0,default_zero_unmatched,unmatched_default_0
+0TQ74,4,,0,default_zero_unmatched,unmatched_default_0
+0TQ78,8,,0,default_zero_unmatched,unmatched_default_0
+0TQB0,0,,0,default_zero_unmatched,unmatched_default_0
+0TQB3,3,,0,default_zero_unmatched,unmatched_default_0
+0TQB4,4,,0,default_zero_unmatched,unmatched_default_0
+0TQB7,7,,0,default_zero_unmatched,unmatched_default_0
+0TQB8,8,,0,default_zero_unmatched,unmatched_default_0
+0TQD0,0,,0,default_zero_unmatched,unmatched_default_0
+0TQD4,4,,0,default_zero_unmatched,unmatched_default_0
+0TQD7,7,,0,default_zero_unmatched,unmatched_default_0
+0TQDX,X,,0,default_zero_unmatched,unmatched_default_0
+0TRB0,0,,0,default_zero_unmatched,unmatched_default_0
+0TRB7,7,,0,default_zero_unmatched,unmatched_default_0
+0TSB0,0,,0,default_zero_unmatched,unmatched_default_0
+0TSC0,0,,0,default_zero_unmatched,unmatched_default_0
+0TSD0,0,,0,default_zero_unmatched,unmatched_default_0
+0TT00,0,NEPH,0,cdc_nhsn_primary,NEPH + approach 0 -> 0
+0TT04,4,NEPH,0,cdc_nhsn_primary,NEPH + approach 4 -> 0
+0TT10,0,NEPH,0,cdc_nhsn_primary,NEPH + approach 0 -> 0
+0TT14,4,NEPH,0,cdc_nhsn_primary,NEPH + approach 4 -> 0
+0TT20,0,NEPH,0,cdc_nhsn_primary,NEPH + approach 0 -> 0
+0TT60,0,,0,default_zero_unmatched,unmatched_default_0
+0TT94,4,,0,default_zero_unmatched,unmatched_default_0
+0TTB0,0,,0,default_zero_unmatched,unmatched_default_0
+0TTB4,4,,0,default_zero_unmatched,unmatched_default_0
+0TTB7,7,,0,default_zero_unmatched,unmatched_default_0
+0TTB8,8,,0,default_zero_unmatched,unmatched_default_0
+0TVB0,0,,0,default_zero_unmatched,unmatched_default_0
+0U0G7,7,,0,default_zero_unmatched,unmatched_default_0
+0U190,0,,0,default_zero_unmatched,unmatched_default_0
+0U490,0,,0,default_zero_unmatched,unmatched_default_0
+0U494,4,,0,default_zero_unmatched,unmatched_default_0
+0U900,0,OVRY,1,cdc_nhsn_primary,OVRY + approach 0 -> 1
+0U990,0,,1,expert_review_override,expert_review_override_1_open_uterine_drainage
+0U9C0,0,,0,default_zero_unmatched,unmatched_default_0
+0U9GX,X,,0,default_zero_unmatched,unmatched_default_0
+0U9J0,0,,0,default_zero_unmatched,unmatched_default_0
+0U9L0,0,,0,default_zero_unmatched,unmatched_default_0
+0UB00,0,OVRY,1,cdc_nhsn_primary,OVRY + approach 0 -> 1
+0UB04,4,OVRY,1,cdc_nhsn_primary,OVRY + approach 4 -> 1
+0UB10,0,OVRY,1,cdc_nhsn_primary,OVRY + approach 0 -> 1
+0UB14,4,OVRY,1,cdc_nhsn_primary,OVRY + approach 4 -> 1
+0UB60,0,,0,default_zero_unmatched,unmatched_default_0
+0UB64,4,,0,default_zero_unmatched,unmatched_default_0
+0UB90,0,,1,expert_review_override,expert_review_override_1_open_uterine_excision
+0UB93,3,,0,default_zero_unmatched,unmatched_default_0
+0UB94,4,,1,expert_review_override,expert_review_override_1_laparoscopic_uterine_excision
+0UB9F,F,,0,default_zero_unmatched,unmatched_default_0
+0UBB7,7,,0,default_zero_unmatched,unmatched_default_0
+0UBC0,0,,0,default_zero_unmatched,unmatched_default_0
+0UBD0,0,,0,default_zero_unmatched,unmatched_default_0
+0UBD4,4,,0,default_zero_unmatched,unmatched_default_0
+0UBD7,7,,0,default_zero_unmatched,unmatched_default_0
+0UBD8,8,,0,default_zero_unmatched,unmatched_default_0
+0UBDF,F,,0,default_zero_unmatched,unmatched_default_0
+0UBG0,0,,0,default_zero_unmatched,unmatched_default_0
+0UBGF,F,,0,default_zero_unmatched,unmatched_default_0
+0UBJ0,0,,0,default_zero_unmatched,unmatched_default_0
+0UBL0,0,,0,default_zero_unmatched,unmatched_default_0
+0UBM0,0,,0,default_zero_unmatched,unmatched_default_0
+0UBM7,7,,0,default_zero_unmatched,unmatched_default_0
+0UBMX,X,,0,default_zero_unmatched,unmatched_default_0
+0UD94,4,,0,default_zero_unmatched,unmatched_default_0
+0UDB7,7,,0,default_zero_unmatched,unmatched_default_0
+0UDC7,7,,0,default_zero_unmatched,unmatched_default_0
+0UH97,7,,0,default_zero_unmatched,unmatched_default_0
+0UJ00,0,,0,default_zero_unmatched,unmatched_default_0
+0UJ04,4,,0,default_zero_unmatched,unmatched_default_0
+0UJ14,4,,0,default_zero_unmatched,unmatched_default_0
+0UJ90,0,,0,default_zero_unmatched,unmatched_default_0
+0UJ94,4,,0,default_zero_unmatched,unmatched_default_0
+0UJ98,8,,0,default_zero_unmatched,unmatched_default_0
+0UJD0,0,,1,expert_review_override,expert_review_override_1_open_uterus_cervix_inspection
+0UJD4,4,,1,expert_review_override,expert_review_override_1_laparoscopic_uterus_cervix_inspection
+0UJD7,7,,0,default_zero_unmatched,unmatched_default_0
+0UJD8,8,,0,default_zero_unmatched,unmatched_default_0
+0ULB7,7,,0,default_zero_unmatched,unmatched_default_0
+0ULG7,7,,0,default_zero_unmatched,unmatched_default_0
+0UN04,4,OVRY,1,cdc_nhsn_primary,OVRY + approach 4 -> 1
+0UND0,0,,0,default_zero_unmatched,unmatched_default_0
+0UPD7,7,,0,default_zero_unmatched,unmatched_default_0
+0UPDX,X,,0,default_zero_unmatched,unmatched_default_0
+0UQ00,0,OVRY,1,cdc_nhsn_primary,OVRY + approach 0 -> 1
+0UQ04,4,OVRY,1,cdc_nhsn_primary,OVRY + approach 4 -> 1
+0UQ14,4,OVRY,1,cdc_nhsn_primary,OVRY + approach 4 -> 1
+0UQ90,0,,1,expert_review_override,expert_review_override_1_open_uterine_repair
+0UQ94,4,,1,expert_review_override,expert_review_override_1_laparoscopic_uterine_repair
+0UQB0,0,,0,default_zero_unmatched,unmatched_default_0
+0UQD0,0,,0,default_zero_unmatched,unmatched_default_0
+0UQG0,0,,0,default_zero_unmatched,unmatched_default_0
+0UQG7,7,,0,default_zero_unmatched,unmatched_default_0
+0UQM0,0,,0,default_zero_unmatched,unmatched_default_0
+0UR90,0,,0,default_zero_unmatched,unmatched_default_0
+0US94,4,,1,expert_review_override,expert_review_override_1_laparoscopic_uterine_reposition
+0USG0,0,,0,default_zero_unmatched,unmatched_default_0
+0USG4,4,,0,default_zero_unmatched,unmatched_default_0
+0UT00,0,OVRY,1,cdc_nhsn_primary,OVRY + approach 0 -> 1
+0UT04,4,OVRY,1,cdc_nhsn_primary,OVRY + approach 4 -> 1
+0UT10,0,OVRY,1,cdc_nhsn_primary,OVRY + approach 0 -> 1
+0UT14,4,OVRY,1,cdc_nhsn_primary,OVRY + approach 4 -> 1
+0UT50,0,,0,default_zero_unmatched,unmatched_default_0
+0UT54,4,,0,default_zero_unmatched,unmatched_default_0
+0UT64,4,,0,default_zero_unmatched,unmatched_default_0
+0UT90,0,HYST,1,cdc_nhsn_primary,HYST + approach 0 -> 1
+0UT94,4,HYST,1,cdc_nhsn_primary,HYST + approach 4 -> 1
+0UT9F,F,HYST,1,cdc_nhsn_primary,HYST + approach F -> 1
+0UT9X,X,,0,default_zero_unmatched,unmatched_default_0
+0UTC0,0,,0,default_zero_unmatched,unmatched_default_0
+0UTC4,4,,0,default_zero_unmatched,unmatched_default_0
+0UTD0,0,,0,default_zero_unmatched,unmatched_default_0
+0UTG0,0,,0,default_zero_unmatched,unmatched_default_0
+0UTG4,4,,0,default_zero_unmatched,unmatched_default_0
+0UTGF,F,,0,default_zero_unmatched,unmatched_default_0
+0UVC0,0,,0,default_zero_unmatched,unmatched_default_0
+0UVC3,3,,0,default_zero_unmatched,unmatched_default_0
+0UY04,4,,0,default_zero_unmatched,unmatched_default_0
+0V150,0,,0,default_zero_unmatched,unmatched_default_0
+0V1N0,0,,0,default_zero_unmatched,unmatched_default_0
+0V1S0,0,,0,default_zero_unmatched,unmatched_default_0
+0V900,0,PRST,0,cdc_nhsn_primary,PRST + approach 0 -> 0
+0V907,7,,0,default_zero_unmatched,unmatched_default_0
+0V90X,X,,0,default_zero_unmatched,unmatched_default_0
+0V950,0,,0,default_zero_unmatched,unmatched_default_0
+0V993,3,,0,default_zero_unmatched,unmatched_default_0
+0V9S0,0,,0,default_zero_unmatched,unmatched_default_0
+0VB00,0,PRST,0,cdc_nhsn_primary,PRST + approach 0 -> 0
+0VB03,3,,0,default_zero_unmatched,unmatched_default_0
+0VB04,4,PRST,0,cdc_nhsn_primary,PRST + approach 4 -> 0
+0VB07,7,,0,default_zero_unmatched,unmatched_default_0
+0VB08,8,,0,default_zero_unmatched,unmatched_default_0
+0VB50,0,,0,default_zero_unmatched,unmatched_default_0
+0VB60,0,,0,default_zero_unmatched,unmatched_default_0
+0VB70,0,,0,default_zero_unmatched,unmatched_default_0
+0VB94,4,,0,default_zero_unmatched,unmatched_default_0
+0VBF0,0,,0,default_zero_unmatched,unmatched_default_0
+0VBG0,0,,0,default_zero_unmatched,unmatched_default_0
+0VBG4,4,,0,default_zero_unmatched,unmatched_default_0
+0VBJ0,0,,0,default_zero_unmatched,unmatched_default_0
+0VBS0,0,,0,default_zero_unmatched,unmatched_default_0
+0VC00,0,,0,default_zero_unmatched,unmatched_default_0
+0VC08,8,,0,default_zero_unmatched,unmatched_default_0
+0VHS0,0,,0,default_zero_unmatched,unmatched_default_0
+0VN00,0,,0,default_zero_unmatched,unmatched_default_0
+0VNS0,0,,0,default_zero_unmatched,unmatched_default_0
+0VQN0,0,,0,default_zero_unmatched,unmatched_default_0
+0VQS0,0,,0,default_zero_unmatched,unmatched_default_0
+0VQS4,4,,0,default_zero_unmatched,unmatched_default_0
+0VR00,0,,0,default_zero_unmatched,unmatched_default_0
+0VR90,0,,0,default_zero_unmatched,unmatched_default_0
+0VR9X,X,,0,default_zero_unmatched,unmatched_default_0
+0VS50,0,,0,default_zero_unmatched,unmatched_default_0
+0VS90,0,,0,default_zero_unmatched,unmatched_default_0
+0VS94,4,,0,default_zero_unmatched,unmatched_default_0
+0VS97,7,,0,default_zero_unmatched,unmatched_default_0
+0VSB0,0,,0,default_zero_unmatched,unmatched_default_0
+0VSS0,0,,0,default_zero_unmatched,unmatched_default_0
+0VT00,0,PRST,0,cdc_nhsn_primary,PRST + approach 0 -> 0
+0VT04,4,PRST,0,cdc_nhsn_primary,PRST + approach 4 -> 0
+0VT08,8,,0,default_zero_unmatched,unmatched_default_0
+0VT90,0,,0,default_zero_unmatched,unmatched_default_0
+0VTB0,0,,0,default_zero_unmatched,unmatched_default_0
+0VTG0,0,,0,default_zero_unmatched,unmatched_default_0
+0VTK0,0,,0,default_zero_unmatched,unmatched_default_0
+0VTS0,0,,0,default_zero_unmatched,unmatched_default_0
+0VX50,0,,0,default_zero_unmatched,unmatched_default_0
+0W040,0,,0,default_zero_unmatched,unmatched_default_0
+0W0G3,3,,0,default_zero_unmatched,unmatched_default_0
+0W1F0,0,,0,default_zero_unmatched,unmatched_default_0
+0W1F4,4,,0,default_zero_unmatched,unmatched_default_0
+0W1FX,X,,0,default_zero_unmatched,unmatched_default_0
+0W1G0,0,XLAP,1,cdc_nhsn_primary,XLAP + approach 0 -> 1
+0W1G4,4,XLAP,1,cdc_nhsn_primary,XLAP + approach 4 -> 1
+0W20X,X,,0,default_zero_unmatched,unmatched_default_0
+0W300,0,,0,default_zero_unmatched,unmatched_default_0
+0W304,4,,0,default_zero_unmatched,unmatched_default_0
+0W30X,X,,0,default_zero_unmatched,unmatched_default_0
+0W390,0,THOR,0,cdc_nhsn_primary,THOR + approach 0 -> 0
+0W394,4,THOR,0,cdc_nhsn_primary,THOR + approach 4 -> 0
+0W3D0,0,THOR,0,cdc_nhsn_primary,THOR + approach 0 -> 0
+0W3G0,0,XLAP,1,cdc_nhsn_primary,XLAP + approach 0 -> 1
+0W3G4,4,XLAP,1,cdc_nhsn_primary,XLAP + approach 4 -> 1
+0W3GX,X,,0,default_zero_unmatched,unmatched_default_0
+0W980,0,THOR,0,cdc_nhsn_primary,THOR + approach 0 -> 0
+0W984,4,THOR,0,cdc_nhsn_primary,THOR + approach 4 -> 0
+0W98X,X,,0,default_zero_unmatched,unmatched_default_0
+0W9F0,0,,0,default_zero_unmatched,unmatched_default_0
+0W9F4,4,,0,default_zero_unmatched,unmatched_default_0
+0W9G0,0,XLAP,1,cdc_nhsn_primary,XLAP + approach 0 -> 1
+0W9J0,0,XLAP,1,cdc_nhsn_primary,XLAP + approach 0 -> 1
+0W9J4,4,XLAP,1,cdc_nhsn_primary,XLAP + approach 4 -> 1
+0WB00,0,,0,default_zero_unmatched,unmatched_default_0
+0WB0X,X,,0,default_zero_unmatched,unmatched_default_0
+0WB40,0,,0,default_zero_unmatched,unmatched_default_0
+0WB80,0,THOR,0,cdc_nhsn_primary,THOR + approach 0 -> 0
+0WB83,3,,0,default_zero_unmatched,unmatched_default_0
+0WB84,4,THOR,0,cdc_nhsn_primary,THOR + approach 4 -> 0
+0WB8X,X,,0,default_zero_unmatched,unmatched_default_0
+0WBC0,0,THOR,0,cdc_nhsn_primary,THOR + approach 0 -> 0
+0WBC4,4,THOR,0,cdc_nhsn_primary,THOR + approach 4 -> 0
+0WBF0,0,XLAP,1,cdc_nhsn_primary,XLAP + approach 0 -> 1
+0WBF4,4,XLAP,1,cdc_nhsn_primary,XLAP + approach 4 -> 1
+0WBF7,7,,0,default_zero_unmatched,unmatched_default_0
+0WBFX,X,,0,default_zero_unmatched,unmatched_default_0
+0WBG0,0,,0,default_zero_unmatched,unmatched_default_0
+0WBG4,4,,0,default_zero_unmatched,unmatched_default_0
+0WBJ0,0,,0,default_zero_unmatched,unmatched_default_0
+0WBJ4,4,,0,default_zero_unmatched,unmatched_default_0
+0WBN0,0,,0,default_zero_unmatched,unmatched_default_0
+0WBN3,3,,0,default_zero_unmatched,unmatched_default_0
+0WBN4,4,,0,default_zero_unmatched,unmatched_default_0
+0WD0X,X,,0,default_zero_unmatched,unmatched_default_0
+0WD80,0,,0,default_zero_unmatched,unmatched_default_0
+0WDCX,X,,0,default_zero_unmatched,unmatched_default_0
+0WDFX,X,,0,default_zero_unmatched,unmatched_default_0
+0WDG4,4,,0,default_zero_unmatched,unmatched_default_0
+0WH80,0,THOR,0,cdc_nhsn_primary,THOR + approach 0 -> 0
+0WJ00,0,,0,default_zero_unmatched,unmatched_default_0
+0WJ07,7,,0,default_zero_unmatched,unmatched_default_0
+0WJ80,0,,0,default_zero_unmatched,unmatched_default_0
+0WJ84,4,,0,default_zero_unmatched,unmatched_default_0
+0WJC4,4,THOR,0,cdc_nhsn_primary,THOR + approach 4 -> 0
+0WJC7,7,,0,default_zero_unmatched,unmatched_default_0
+0WJD0,0,,0,default_zero_unmatched,unmatched_default_0
+0WJF0,0,XLAP,1,cdc_nhsn_primary,XLAP + approach 0 -> 1
+0WJF4,4,XLAP,1,cdc_nhsn_primary,XLAP + approach 4 -> 1
+0WJG0,0,XLAP,1,cdc_nhsn_primary,XLAP + approach 0 -> 1
+0WJG4,4,XLAP,1,cdc_nhsn_primary,XLAP + approach 4 -> 1
+0WJG7,7,,0,default_zero_unmatched,unmatched_default_0
+0WJJX,X,,0,default_zero_unmatched,unmatched_default_0
+0WJN0,0,,0,default_zero_unmatched,unmatched_default_0
+0WJN4,4,,0,default_zero_unmatched,unmatched_default_0
+0WJN8,8,,0,default_zero_unmatched,unmatched_default_0
+0WL84,4,,0,default_zero_unmatched,unmatched_default_0
+0WNF0,0,,0,default_zero_unmatched,unmatched_default_0
+0WP80,0,THOR,0,cdc_nhsn_primary,THOR + approach 0 -> 0
+0WP8X,X,,0,default_zero_unmatched,unmatched_default_0
+0WQ00,0,,0,default_zero_unmatched,unmatched_default_0
+0WQ0X,X,,0,default_zero_unmatched,unmatched_default_0
+0WQ80,0,THOR,0,cdc_nhsn_primary,THOR + approach 0 -> 0
+0WQF0,0,HER,0,cdc_nhsn_primary,HER + approach 0 -> 0
+0WQF4,4,HER,0,cdc_nhsn_primary,HER + approach 4 -> 0
+0WQFX,X,,0,default_zero_unmatched,unmatched_default_0
+0WQJ0,0,,0,default_zero_unmatched,unmatched_default_0
+0WQN0,0,,0,default_zero_unmatched,unmatched_default_0
+0WQN4,4,,0,default_zero_unmatched,unmatched_default_0
+0WR00,0,,0,default_zero_unmatched,unmatched_default_0
+0WRFX,X,,0,default_zero_unmatched,unmatched_default_0
+0WSN4,4,,0,default_zero_unmatched,unmatched_default_0
+0WT00,0,,0,default_zero_unmatched,unmatched_default_0
+0WT80,0,,0,default_zero_unmatched,unmatched_default_0
+0WT84,4,,0,default_zero_unmatched,unmatched_default_0
+0WTC0,0,,0,default_zero_unmatched,unmatched_default_0
+0WTC4,4,,0,default_zero_unmatched,unmatched_default_0
+0WTF0,0,,0,default_zero_unmatched,unmatched_default_0
+0WTF4,4,,0,default_zero_unmatched,unmatched_default_0
+0WTG0,0,,0,default_zero_unmatched,unmatched_default_0
+0WTG4,4,,0,default_zero_unmatched,unmatched_default_0
+0WTJ0,0,,0,default_zero_unmatched,unmatched_default_0
+0WTJ4,4,,0,default_zero_unmatched,unmatched_default_0
+0WTJX,X,,0,default_zero_unmatched,unmatched_default_0
+0WTN0,0,,0,default_zero_unmatched,unmatched_default_0
+0WTN4,4,,0,default_zero_unmatched,unmatched_default_0
+0WU80,0,,0,default_zero_unmatched,unmatched_default_0
+0WU84,4,,0,default_zero_unmatched,unmatched_default_0
+0WU8X,X,,0,default_zero_unmatched,unmatched_default_0
+0WUF0,0,HER,0,cdc_nhsn_primary,HER + approach 0 -> 0
+0WUF4,4,HER,0,cdc_nhsn_primary,HER + approach 4 -> 0
+0WYG0,0,,0,default_zero_unmatched,unmatched_default_0
+0X620,0,AMP,0,cdc_nhsn_primary,AMP + approach 0 -> 0
+0X680,0,AMP,0,cdc_nhsn_primary,AMP + approach 0 -> 0
+0X690,0,AMP,0,cdc_nhsn_primary,AMP + approach 0 -> 0
+0X6L0,0,AMP,0,cdc_nhsn_primary,AMP + approach 0 -> 0
+0X6M0,0,AMP,0,cdc_nhsn_primary,AMP + approach 0 -> 0
+0X6N0,0,AMP,0,cdc_nhsn_primary,AMP + approach 0 -> 0
+0X6S0,0,AMP,0,cdc_nhsn_primary,AMP + approach 0 -> 0
+0X6T0,0,AMP,0,cdc_nhsn_primary,AMP + approach 0 -> 0
+0X8LX,X,,0,default_zero_unmatched,unmatched_default_0
+0XB30,0,,0,default_zero_unmatched,unmatched_default_0
+0XB80,0,,0,default_zero_unmatched,unmatched_default_0
+0XB84,4,,0,default_zero_unmatched,unmatched_default_0
+0XB90,0,,0,default_zero_unmatched,unmatched_default_0
+0XBM0,0,,0,default_zero_unmatched,unmatched_default_0
+0XBN0,0,,0,default_zero_unmatched,unmatched_default_0
+0XC60,0,,0,default_zero_unmatched,unmatched_default_0
+0XC6X,X,,0,default_zero_unmatched,unmatched_default_0
+0XH80,0,,0,default_zero_unmatched,unmatched_default_0
+0XH84,4,,0,default_zero_unmatched,unmatched_default_0
+0XH90,0,,0,default_zero_unmatched,unmatched_default_0
+0XH94,4,,0,default_zero_unmatched,unmatched_default_0
+0XNN0,0,,0,default_zero_unmatched,unmatched_default_0
+0XP60,0,,0,default_zero_unmatched,unmatched_default_0
+0XP6X,X,,0,default_zero_unmatched,unmatched_default_0
+0XP7X,X,,0,default_zero_unmatched,unmatched_default_0
+0XQ20,0,,0,default_zero_unmatched,unmatched_default_0
+0XQ30,0,,0,default_zero_unmatched,unmatched_default_0
+0XQ80,0,,0,default_zero_unmatched,unmatched_default_0
+0XQ84,4,,0,default_zero_unmatched,unmatched_default_0
+0XQ90,0,,0,default_zero_unmatched,unmatched_default_0
+0XQ94,4,,0,default_zero_unmatched,unmatched_default_0
+0XQN0,0,,0,default_zero_unmatched,unmatched_default_0
+0XR80,0,,0,default_zero_unmatched,unmatched_default_0
+0XR90,0,,0,default_zero_unmatched,unmatched_default_0
+0XSN0,0,,0,default_zero_unmatched,unmatched_default_0
+0XTN0,0,,0,default_zero_unmatched,unmatched_default_0
+0XW80,0,,0,default_zero_unmatched,unmatched_default_0
+0XXN0,0,,0,default_zero_unmatched,unmatched_default_0
+0Y150,0,,0,default_zero_unmatched,unmatched_default_0
+0Y620,0,AMP,0,cdc_nhsn_primary,AMP + approach 0 -> 0
+0Y630,0,AMP,0,cdc_nhsn_primary,AMP + approach 0 -> 0
+0Y6C0,0,AMP,0,cdc_nhsn_primary,AMP + approach 0 -> 0
+0Y6CX,X,,0,default_zero_unmatched,unmatched_default_0
+0Y6D0,0,AMP,0,cdc_nhsn_primary,AMP + approach 0 -> 0
+0Y6H0,0,AMP,0,cdc_nhsn_primary,AMP + approach 0 -> 0
+0Y6J0,0,AMP,0,cdc_nhsn_primary,AMP + approach 0 -> 0
+0Y6M0,0,AMP,0,cdc_nhsn_primary,AMP + approach 0 -> 0
+0Y6N0,0,AMP,0,cdc_nhsn_primary,AMP + approach 0 -> 0
+0Y6P0,0,AMP,0,cdc_nhsn_primary,AMP + approach 0 -> 0
+0Y6Q0,0,AMP,0,cdc_nhsn_primary,AMP + approach 0 -> 0
+0Y6R0,0,AMP,0,cdc_nhsn_primary,AMP + approach 0 -> 0
+0Y6S0,0,AMP,0,cdc_nhsn_primary,AMP + approach 0 -> 0
+0Y6U0,0,AMP,0,cdc_nhsn_primary,AMP + approach 0 -> 0
+0Y6X0,0,AMP,0,cdc_nhsn_primary,AMP + approach 0 -> 0
+0Y6Y0,0,AMP,0,cdc_nhsn_primary,AMP + approach 0 -> 0
+0YB50,0,,0,default_zero_unmatched,unmatched_default_0
+0YB54,4,,0,default_zero_unmatched,unmatched_default_0
+0YB60,0,,0,default_zero_unmatched,unmatched_default_0
+0YBC0,0,,0,default_zero_unmatched,unmatched_default_0
+0YBD0,0,,0,default_zero_unmatched,unmatched_default_0
+0YD53,3,,0,default_zero_unmatched,unmatched_default_0
+0YH50,0,,0,default_zero_unmatched,unmatched_default_0
+0YJ20,0,,0,default_zero_unmatched,unmatched_default_0
+0YQ50,0,HER,0,cdc_nhsn_primary,HER + approach 0 -> 0
+0YQ54,4,HER,0,cdc_nhsn_primary,HER + approach 4 -> 0
+0YQ5X,X,,0,default_zero_unmatched,unmatched_default_0
+0YQ60,0,HER,0,cdc_nhsn_primary,HER + approach 0 -> 0
+0YQ64,4,HER,0,cdc_nhsn_primary,HER + approach 4 -> 0
+0YQA0,0,HER,0,cdc_nhsn_primary,HER + approach 0 -> 0
+0YQA4,4,HER,0,cdc_nhsn_primary,HER + approach 4 -> 0
+0YQDX,X,,0,default_zero_unmatched,unmatched_default_0
+0YR5X,X,,0,default_zero_unmatched,unmatched_default_0
+0YT50,0,,0,default_zero_unmatched,unmatched_default_0
+0YU50,0,HER,0,cdc_nhsn_primary,HER + approach 0 -> 0
+0YX50,0,,0,default_zero_unmatched,unmatched_default_0

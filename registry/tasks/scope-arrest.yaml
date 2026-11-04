@@ -1,11 +1,15 @@
 slug: scope-arrest
 version: 0
-preview: true
 visibility: open  # published by the maintainers (2026-10-30)
 dataset: scope
 kind: binary
 primary_metric: auroc
 title: ICU cardiac arrest within 0.5-24 h from a 5-min ECG epoch
+code_public:
+  url: https://github.com/HyeonhoonLee/hrvarrest-scope
+  note: >-
+    Public code: https://github.com/HyeonhoonLee/hrvarrest-scope (Apache-2.0): ECG HRV extraction,
+    LightGBM training and evaluation used for this benchmark. The method follows https://github.com/HyeonhoonLee/hrvarrest.
 protocol:
   name: BenchToward definition
   adopted: >-

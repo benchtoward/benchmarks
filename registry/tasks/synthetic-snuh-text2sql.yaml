@@ -1,6 +1,5 @@
 slug: synthetic-snuh-text2sql
 version: 0
-preview: true
 visibility: open  # published by the maintainers (2026-10-31); items on KHDP pending (synthetic-snuh-text2sql 1.0.0)
 dataset: synthetic-snuh
 kind: text2sql
@@ -230,7 +229,7 @@ items_release:  # presentational (registry.PRESENTATIONAL_FIELDS): editing it, t
   package: >-
     `benchtoward text2sql khdp-package` builds it into data/khdp/synthetic-snuh-text2sql-1.0.0 (item hashes as pinned
     in tiers); the KHDP form text and the submission steps are in docs/khdp/synthetic-snuh-text2sql.md
-  status: prepared, not submitted
+  status: submitted 2026-10-31, under review at KHDP (admin_review); DOI requested
   doi: null  # KHDP assigns it on publication; record it here (and in docs/khdp/synthetic-snuh-text2sql.md)
 decisions: >-
   The decisions behind this spec, with every model's vote and reason, are in the two question files' `decisions`

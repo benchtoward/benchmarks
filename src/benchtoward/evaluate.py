@@ -453,30 +453,84 @@ def import_bundle(session: Session, source_db_url: str, *, registry_dir: Path | 
                 counts["needs"] += 1
         session.flush()
 
-        for run in source.query(Run).filter(Run.status.in_(("done", "held"))):
-            same_id = session.get(Run, run.id)
-            if same_id is not None and same_id.run_key != run.run_key:
-                session.rollback()
-                raise SyncConflict(f"run {run.id} has key {same_id.run_key[:12]} here and {run.run_key[:12]} in the "
-                                   f"bundle; both databases must apply the same rename plans")
-            existing = session.query(Run).filter_by(run_key=run.run_key).one_or_none()
-            if existing is not None and (existing.status in ("done", "unpublished") or existing.id in pending["runs"]
-                                         or (existing.status == "held" and run.status == "held")):
-                continue
-            if existing is not None:
-                session.query(ItemResult).filter_by(run_id=existing.id).delete()
-                session.delete(existing)
-                session.flush()
-            values = _copy(run, Run)
-            values["task_id"] = task_ids.get(run.task_id, run.task_id)
-            session.add(Run(**values))
-            for item in source.query(ItemResult).filter_by(run_id=run.id):
-                session.add(ItemResult(**_copy(item, ItemResult)))
-            counts["runs"] += 1
+        counts["runs"] = _merge_runs(session, source, task_ids, pending)[0]
         session.commit()
     return counts
 
 
-def import_runs(session: Session, source_db_url: str) -> int:
-    """Backward-compatible name used by `benchtoward import-runs`: same merge, returns the number of runs."""
-    return import_bundle(session, source_db_url)["runs"]
+def _merge_runs(session: Session, source: Session, task_ids: dict[int, int], pending: dict[str, set[str]],
+                skip: frozenset[str] = frozenset()) -> tuple[int, int]:
+    """Runs with status done or held, matched by run key, with their item results; returns (runs, items) written.
+    A run already done or unpublished here, or with a maintainer action pending, is kept; a held one is replaced
+    only by the bundle's done run. Source task ids are remapped through `task_ids`; runs whose id is in `skip`
+    are left out."""
+    written = items = 0
+    for run in source.query(Run).filter(Run.status.in_(("done", "held"))):
+        if run.task_id not in task_ids or run.id in skip:
+            continue
+        same_id = session.get(Run, run.id)
+        if same_id is not None and same_id.run_key != run.run_key:
+            session.rollback()
+            raise SyncConflict(f"run {run.id} has key {same_id.run_key[:12]} here and {run.run_key[:12]} in the "
+                               f"bundle; both databases must apply the same rename plans")
+        existing = session.query(Run).filter_by(run_key=run.run_key).one_or_none()
+        if existing is not None and (existing.status in ("done", "unpublished") or existing.id in pending["runs"]
+                                     or (existing.status == "held" and run.status == "held")):
+            continue
+        if existing is not None:
+            session.query(ItemResult).filter_by(run_id=existing.id).delete()
+            session.delete(existing)
+            session.flush()
+        values = _copy(run, Run)
+        values["task_id"] = task_ids[run.task_id]
+        session.add(Run(**values))
+        for item in source.query(ItemResult).filter_by(run_id=run.id):
+            session.add(ItemResult(**_copy(item, ItemResult)))
+            items += 1
+        written += 1
+    return written, items
+
+
+def import_runs(session: Session, source_db_url: str, *, registry_dir: Path | None = None) -> dict:
+    """The `import-runs` command: finished runs only, from another database (a review's scratch DB, or the
+    Mac's snapshot that `SYNC_RESULTS=1 deploy/deploy.sh` sends). Runs match by run key and follow import-bundle's
+    rules (done or held; never over a done, unpublished or maintainer-changed run); their item results come along,
+    and a model this database lacks is added (one it has is never changed). Tasks match by (slug, version); a run
+    whose task is not here is skipped and listed, since a task is not copied; so is a run whose model is in neither
+    database (SQLite does not enforce the foreign key, and its result page would have no model). Papers, attempts,
+    proposals, data needs, datasets and tasks are never written, so a scratch DB cannot restore old wiki paths or
+    requeue a paper (audit 5.9). Returns {"runs", "items", "models": rows written, "skipped": one line per skipped run}."""
+    from benchtoward.db import Model, make_engine, session_factory
+
+    counts: dict = {"runs": 0, "items": 0, "models": 0, "skipped": []}
+    pending = _pending_targets(session)
+    with session_factory(make_engine(source_db_url))() as source:
+        _rename_guard(session, source, registry_dir)
+        task_ids: dict[int, int] = {}
+        needed = {r.task_id for r in source.query(Run).filter(Run.status.in_(("done", "held")))}
+        for task in source.query(Task).filter(Task.id.in_(needed)) if needed else ():
+            target = session.query(Task).filter_by(slug=task.slug, version=task.version).one_or_none()
+            if target is not None:
+                task_ids[task.id] = target.id
+        for run in source.query(Run).filter(Run.status.in_(("done", "held"))).order_by(Run.id):
+            if run.task_id not in task_ids:
+                task = source.get(Task, run.task_id)
+                name = f"{task.slug}@{task.version}" if task is not None else f"id {run.task_id}"
+                counts["skipped"].append(f"{run.id} (task {name} is not in this database)")
+        orphans: set[str] = set()
+        for run in source.query(Run).filter(Run.status.in_(("done", "held"))).order_by(Run.id):
+            if run.task_id not in task_ids:
+                continue
+            model = source.get(Model, run.model_slug)
+            if session.get(Model, run.model_slug) is not None:
+                continue
+            if model is None:
+                orphans.add(run.id)
+                counts["skipped"].append(f"{run.id} (model {run.model_slug} is in neither database)")
+            else:
+                session.add(Model(**_copy(model, Model)))
+                session.flush()
+                counts["models"] += 1
+        counts["runs"], counts["items"] = _merge_runs(session, source, task_ids, pending, frozenset(orphans))
+        session.commit()
+    return counts

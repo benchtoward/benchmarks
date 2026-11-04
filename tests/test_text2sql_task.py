@@ -31,7 +31,7 @@ needs_spec = pytest.mark.skipif(not SPEC_FILE.exists(),
 # What these tests use of the spec, for the public repository, where the spec is not (yet) exported; the private
 # repository checks that it agrees with the registered spec (test_the_stand_in_spec_agrees_with_the_registered_one).
 STAND_IN_SPEC = {
-    "slug": "synthetic-snuh-text2sql", "version": 0, "preview": True, "visibility": "open",
+    "slug": "synthetic-snuh-text2sql", "version": 0, "visibility": "open",
     "dataset": "synthetic-snuh", "kind": "text2sql", "primary_metric": "rs0",
     "title": "Synthetic-SNUH Text-to-SQL (OMOP CDM, Korean and English)",
     "tiers": {"hard": {"abstention": True}, "easy": {"abstention": False}},
@@ -132,7 +132,7 @@ def test_the_stand_in_spec_agrees_with_the_registered_one():
 @needs_spec
 def test_spec_is_one_hidden_preview_task_with_two_tiers():
     spec = yaml.safe_load(SPEC_FILE.read_text(encoding="utf-8"))
-    assert (spec["slug"], spec["version"], spec["preview"]) == ("synthetic-snuh-text2sql", 0, True)
+    assert (spec["slug"], spec["version"], "preview" in spec) == ("synthetic-snuh-text2sql", 0, False)
     assert (spec["kind"], spec["primary_metric"], spec["dataset"]) == ("text2sql", "rs0", "synthetic-snuh")
     assert list(spec["tiers"]) == ["hard", "easy"]  # decision easy_tier_publication: one task, two tiers
     assert spec["request"]["max_tokens"] == 16384 and spec["request"]["temperature"] == 0  # decision output_format
@@ -601,3 +601,4 @@ def test_eval_refuses_an_unknown_tier_in_reuse(tmp_path, monkeypatch, fx):
     env.invoke("init")
     out = env.invoke("eval-text2sql", "--model", "openai/gpt-oss-20b", "--reuse", f"medium={tmp_path}")
     assert out.exit_code != 0 and "medium" in plain(out.output)
+

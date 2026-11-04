@@ -322,7 +322,7 @@ def test_registry_has_the_inspire_dataset_task_and_baselines(tmp_session):
     assert "10.13026/46m4-f655" in dataset.citation and dataset.license == "CC BY 4.0"
     task = resolve_task(tmp_session, "inspire-mortality")
     assert (task.version, task.dataset_slug, task.kind, task.primary_metric, task.preview) == (0, "inspire", "binary",
-                                                                                               "auroc", True)
+                                                                                               "auroc", False)
     for slug in ("benchtoward/inspire-asa", "benchtoward/inspire-logreg", "benchtoward/inspire-xgb"):
         model = tmp_session.get(Model, slug)
         assert (model.type, model.provider, model.developer) == ("baseline", "benchtoward", "BenchToward")

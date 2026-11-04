@@ -1,0 +1,164 @@
+slug: vitaldb-arrhythmia-beat
+version: 0
+visibility: open  # owner, 2026-11-03: publish together with rhythm; no spec-hash change
+dataset: vitaldb-arrhythmia
+kind: multiclass
+primary_metric: macro_f1
+title: Beat class (AAMI N, S, V) at given beat positions in 5-second intraoperative ECG segments (lead II)
+protocol:
+  adopted: >-
+    No beat-level evaluation has been published on this database: the dataset paper's technical validation is a
+    binary rhythm task and the authors' repository holds no evaluation code. The task follows the standard for beat
+    classification: the beat classes of ANSI/AAMI EC57, mapped as in de Chazal et al. 2004, with the inter-patient
+    paradigm (training and test beats come from different patients) and the beat positions taken from the reference
+    annotations, as de Chazal et al. classified beats at the database's annotated locations. The database's beat
+    scheme was itself adapted from EC57 (paper, Beat annotation). EC57's statistics (sensitivity, positive
+    predictivity and false positive rate for ventricular and supraventricular ectopic beats) are reported; the
+    leaderboard ranks by macro-F1 over the scored classes, each class's F1 being the harmonic mean of its
+    sensitivity and positive predictivity.
+  name: AAMI EC57 beat classes, inter-patient (de Chazal et al. 2004)
+  source: >-
+    de Chazal P, O'Dwyer M, Reilly RB. Automatic classification of heartbeats using ECG morphology and heartbeat
+    interval features. IEEE Trans Biomed Eng. 2004;51(7):1196-1206. doi:10.1109/TBME.2004.827359
+  standard: >-
+    ANSI/AAMI EC57:2012 (R2020), Testing and reporting performance results of cardiac rhythm and ST segment
+    measurement algorithms; reference comparison as in the WFDB program bxb
+  repository: https://github.com/bemoody/wfdb   # WFDB; app/bxb.c is EC57's beat-by-beat comparison (GPL: read only)
+  commit: de6b1d3981d69060e6a4d1b4e86375fb0d3ed2d1
+  dataset_paper: >-
+    Eun DI, Shim K, Lee H, Lim Y, Lim H, Lee H, Lee J, Lee HC. VitalDB Arrhythmia Database: an
+    anesthesiologist-validated large-scale intraoperative arrhythmia dataset with beat and rhythm labels.
+    Sci Data. 2026;13. doi:10.1038/s41597-026-07076-8 (section Beat annotation)
+  annotations:
+    release: vitaldb-arrhythmia 1.0.0 (KHDP; PhysioNet doi:10.13026/axd6-wm13)
+    repository: https://github.com/vitaldb/arrdb
+    commit: 59b7722674e76592900cb8131d25337f2dd084b8   # no licence: read, never copied
+input:
+  track: SNUADC/ECG_II
+  hz: 500
+  duration_s: 5
+  loader: "vitaldb.load_case(caseid, ['SNUADC/ECG_II'], 1/500) with vitaldb 1.7.2 (open-dataset vital files 1.0.1)"
+  reference: [caseid, start_s, duration_s]   # samples [start_s * 500, (start_s + 5) * 500) of the case recording
+  beat_positions: >-
+    sample offsets (500 Hz, from start_s) of every annotated beat in the segment (beat types N, S, V, U and P), in
+    time order; a model labels each of them. A beat's context is its segment. The release lists 24 beats twice at
+    the same time; each is one position. It also has 14 pairs of distinct beat annotations under 100 ms apart (too
+    close for two heartbeats; 3 train, 1 test pair among scored beats), kept as given.
+segments:
+  # The binary task's segmentation, unchanged: the three tasks cut the same 5-second segments.
+  grid_s: 5
+  max_annotation_gap_s: 10
+  min_beats: 1
+  max_ecg_missing_fraction: 0.1
+  not_scored: [Noise]             # beats in a segment touching a Noise row are not scored
+label:
+  # AAMI EC57 classes as de Chazal et al. 2004 map MIT-BIH codes: N (N, L, R, e, j), S (A, a, J, S), V (V, E),
+  # F (F), Q (/, f, Q). The database annotates four beat types with its own codes.
+  mapping: {N: N, S: S, V: V, U: Q}
+  classes:
+    N: normal beat (sinus node origin)
+    S: supraventricular ectopic beat; in this database also every beat during atrial fibrillation
+    V: ventricular ectopic beat
+  absent: {F: the database has no fusion beat label}
+  not_scored:
+    Q: >-
+      Beats the annotators marked unclassifiable (U, AAMI class Q) are given as positions but not scored: in EC57's
+      reference comparison (bxb) a reference Q beat counts toward neither the sensitivity nor the positive
+      predictivity of ventricular or supraventricular ectopic beats, and an ambiguous label is not scored in the
+      rhythm task either (owner, 2026-10-30).
+    P: >-
+      Seven beats in the release carry the code P, which the database documentation does not define: given as
+      positions, not scored.
+    conflicting: >-
+      A beat listed twice with two different types (two in the release, both in train) has an ambiguous reference:
+      given as a position, not scored.
+bad_signal_quality: {exclude_from: [test]}   # beats in flagged test segments are not scored
+alignment:
+  # The ECG cache's QC sidecars (ecg/<caseid>.json, qc.median_offset_ms: the median lag from up to 300 annotated
+  # R-peaks to the band-passed ECG maximum within 200 ms). A case whose annotations are offset from the ECG by more
+  # than max_median_offset_ms is left out of beat scoring and of baseline training: its beat positions do not point
+  # at its QRS complexes. A case whose sidecar has no offset is not verified and is left out the same way, listed
+  # apart (build summary `offset_unknown`; none of the 482 today). Its segments stay in the rhythm task. `build`
+  # checks both lists.
+  max_median_offset_ms: 100
+  close_pair_ms: 100   # distinct beat annotations closer than this are counted (input.beat_positions)
+  left_out:
+    746: {split: test, median_offset_ms: -168.0, scored_beats_left_out: 1314}
+    1165: {split: train, median_offset_ms: -200.0, scored_beats_left_out: 1018}
+split:
+  by: subjectid
+  scope: all VitalDB subjects (dataset-level split, the same assignment as vitaldb-arrhythmia-abnormal@0)
+  seed: 20261029
+  fractions: [0.7, 0.1, 0.2]
+  file: registry/splits/vitaldb-arrhythmia-1.0.0-cases.csv   # caseid, subjectid, split for the 482 cases
+  sha256: acece098c2ac6c2f3ad88d5f5fe6f02ee9edd8a9bba29c42c310f84f4bdee61d
+counts:
+  # Scored beats per split and class (build of 2026-10-30; `build` refuses one that differs). Test: 136,649 beats from
+  # 109 patients. Not scored in test: 800 Q (U) beats; left out with their segments: 7,703 beats with bad signal
+  # quality, 1,482 next to noise, 94 next to annotation gaps; 1,316 beat positions of case 746 (alignment); 699 beats
+  # lie outside the 5-second grid. Of the 41,855 test S beats, 38,324 (91.6%) lie in segments labelled AFIB/AFL.
+  train: {N: 291404, S: 112649, V: 8138}
+  validation: {N: 48404, S: 23600, V: 3079}
+  test: {N: 90147, S: 41855, V: 4647}
+one_pass: >-
+  This task and vitaldb-arrhythmia-rhythm@0 share one list of 5-second segments (segments.parquet; this task scores
+  the beats of the segments marked beats_scored). A model reads each segment once and writes two answers: an AAMI
+  class for each given beat position, and the rhythm class, which the rhythm task requires to come from the ECG
+  without these positions (a rhythm instance carries the ECG only). Each answer set is recorded as its own run on
+  its own task.
+prediction: >-
+  one AAMI class (N, S, V, F or Q) per beat position; F, Q or no answer counts as a miss of the reference class and
+  as no false positive, as bxb counts test F and Q labels
+metrics:
+  primary: macro_f1               # mean of the N, S and V F1 values, 2TP / (2TP + FP + FN)
+  secondary: [accuracy, veb_sensitivity, veb_ppv, veb_fpr, sveb_sensitivity, sveb_ppv, sveb_fpr,   # EC57 statistics
+              sveb_sensitivity_outside_af, sveb_ppv_outside_af]   # on the beats of segments without AFIB/AFL
+  by_class: [sensitivity, ppv, f1, fpr]
+  bootstrap: {n: 1000, by: subjectid}
+  bootstrap_classes: >-
+    every resample averages the full test reference's classes; a resample whose reference lacks one of them is
+    drawn again, and each run records how many redraws it took
+leakage_checks:
+  # Report only (`baseline vitaldb-arrhythmia-rhythm-beat --report`).
+  beat_position_only: >-
+    gradient boosting on the segment's position in its case and the beat's sample offset in the segment
+  beat_positions_rr_only: >-
+    gradient boosting on the RR features of the given positions without the waveform: the positions are an intended
+    input and carry much of the task
+deviations:
+  - >-
+    Beats during atrial fibrillation are S in this database (its annotation rule), where MIT-BIH labels normally
+    conducted beats in atrial fibrillation N; the database's labels are kept, so supraventricular statistics include
+    atrial fibrillation beats: 38,324 of the 41,855 test S beats (91.6%) lie in segments labelled AFIB/AFL. SVEB
+    sensitivity and positive predictivity are also reported on the beats outside those segments
+    (sveb_sensitivity_outside_af, sveb_ppv_outside_af), closer to EC57's SVEB.
+  - >-
+    No published beat-level evaluation on this database; the leaderboard metric is macro-F1 over N, S and V, a summary
+    of EC57's per-class sensitivity and positive predictivity, which are reported too.
+  - >-
+    Context: a beat's input is its 5-second segment (the unit shared with the rhythm task), where de Chazal et al. also
+    used RR averages over several minutes of the record; a beat near the segment edge has one RR interval.
+  - >-
+    Beat positions are the annotated R-peak times; QRS detection is not evaluated (EC57's QRS statistics are not
+    reported).
+  - >-
+    Reference unclassifiable (U, AAMI Q) beats, the seven undefined P beats and the two beats listed twice with
+    different types are not scored; the database has no fusion (F) beats.
+  - >-
+    Split: the dataset-level VitalDB subject split shared with the binary task (inter-patient: no subject in two
+    splits), instead of de Chazal's DS1/DS2 records of MIT-BIH.
+  - "Bad signal quality: beats in flagged test segments are not scored, as the binary task leaves those segments out."
+  - >-
+    Alignment: the beats of cases whose annotations are offset from the ECG by more than 100 ms in median (case 746 in
+    test, 1,314 beats; case 1165 in train, 1,018 beats) are not scored and not used for baseline training (alignment).
+decisions:
+  # Maintainers' review of the first build (2026-10-30).
+  - >-
+    S class: the database's labels are kept (beats in atrial fibrillation segments are S), with the AF share stated in
+    the deviations and SVEB statistics outside AF segments as secondary metrics.
+  - >-
+    Bootstrap: macro-F1 averages the full test reference's classes in every resample, and a resample lacking one is
+    drawn again (metrics.bootstrap_classes).
+  - >-
+    Alignment: cases with a median annotation offset above 100 ms in the ECG cache's QC are left out of beat scoring and
+    baseline training (alignment.left_out); the 14 close pairs of distinct beat annotations are noted, not removed.

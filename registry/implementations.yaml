@@ -22,6 +22,20 @@ scope-arrest@0:
 kor-surgical-robot-voice-command@0:
 - src/benchtoward/tasks/voice_command.py
 - src/benchtoward/tasks/voice_command_cli.py
+vitaldb-arrhythmia-rhythm@0:
+- src/benchtoward/tasks/vitaldb_arrhythmia_rhythm_beat.py
+- src/benchtoward/tasks/vitaldb_arrhythmia_abnormal.py
+- src/benchtoward/baselines/arrhythmia_rhythm_beat.py
+- src/benchtoward/scoring.py
+vitaldb-arrhythmia-beat@0:
+- src/benchtoward/tasks/vitaldb_arrhythmia_rhythm_beat.py
+- src/benchtoward/tasks/vitaldb_arrhythmia_abnormal.py
+- src/benchtoward/baselines/arrhythmia_rhythm_beat.py
+- src/benchtoward/scoring.py
+inspire-aki@0:
+- src/benchtoward/tasks/inspire_aki.py
+- src/benchtoward/baselines/inspire_aki.py
+- src/benchtoward/tasks/inspire_aki_cli.py
 synthetic-snuh-text2sql@0:
 - src/benchtoward/tasks/text2sql_task.py
 - src/benchtoward/tasks/text2sql.py

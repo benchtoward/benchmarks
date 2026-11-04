@@ -163,11 +163,42 @@ def import_bundle_cmd(source: str = typer.Argument(..., help="path to another Be
 
 @app.command("import-runs")
 def import_runs_cmd(source: str = typer.Argument(..., help="path to another BenchToward SQLite database")) -> None:
-    """Merge finished runs from another database by run key, keeping this database's other data."""
+    """Import finished runs (with their item results and missing models) from another database by run key. Papers,
+    attempts, proposals, data needs and tasks are never written: a review's scratch DB cannot undo the main one."""
     with open_session() as session:
         load_registry(session, registry_dir())
-        typer.echo(f"{import_runs(session, f'sqlite:///{source}')} run(s) imported")
+        counts = import_runs(session, f"sqlite:///{source}", registry_dir=registry_dir())
+        typer.echo(f"{counts['runs']} run(s) imported ({counts['items']} item results, {counts['models']} new models)")
+        if counts["skipped"]:
+            typer.echo(f"skipped {len(counts['skipped'])}: " + "; ".join(counts["skipped"]))
 
+
+
+@app.command("public-artifacts")
+def public_artifacts_cmd(db: str = typer.Option(None, "--db", help="SQLite file to read (default: the configured "
+                                                                  "database); sync passes its snapshot"),
+                         artifacts: str = typer.Option(None, "--artifacts", help="folder to list (default: "
+                                                       "DATA_DIR/artifacts); the scripts pass the one rsync copies")
+                         ) -> None:
+    """Print the artifact folders (run ids under DATA_DIR/artifacts, or --artifacts) whose run has a public result
+    page, one per line: the list deploy/sync.sh and deploy/deploy.sh give `rsync --files-from`, so hidden tasks'
+    files never reach the site. Those scripts pass `--artifacts data/artifacts`, the folder they copy from, so the
+    list and the copy read the same folder whatever BENCHTOWARD_DATA_DIR says. Only reads the database."""
+    from pathlib import Path
+
+    from benchtoward.web.data import public_artifact_dirs
+
+    if db is not None and not Path(db).is_file():
+        typer.echo(f"public-artifacts: no database at {db}", err=True)
+        raise typer.Exit(2)
+    folder = Path(artifacts) if artifacts is not None else get_settings().data_dir / "artifacts"
+    if artifacts is not None and not folder.is_dir():
+        typer.echo(f"public-artifacts: no folder at {artifacts}", err=True)
+        raise typer.Exit(2)
+    engine = make_engine(f"sqlite:///{db}" if db is not None else get_settings().db_url)
+    with session_factory(engine)() as session:
+        for name in public_artifact_dirs(session, folder):
+            typer.echo(name)
 
 @fetch_app.command("clinicalqa")
 def fetch_clinicalqa_cmd() -> None:

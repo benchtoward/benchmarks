@@ -1,4 +1,4 @@
-"""vitaldb-arrhythmia-abnormal, version 0 (preview): normal vs abnormal rhythm in 5-second ECG lead II segments.
+"""vitaldb-arrhythmia-abnormal, version 0: normal vs abnormal rhythm in 5-second ECG lead II segments.
 
 Follows the evaluation in the dataset paper's Technical Validation (Eun et al., Sci Data 2026,
 doi:10.1038/s41597-026-07076-8); the reading of each rule and the deviations are in

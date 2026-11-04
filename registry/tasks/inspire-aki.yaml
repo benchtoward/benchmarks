@@ -1,0 +1,396 @@
+slug: inspire-aki
+version: 0
+visibility: open  # publication approved by the owner, 2026-11-03; presentational, no spec-hash change
+dataset: inspire
+kind: binary
+primary_metric: auroc
+title: Postoperative AKI (KDIGO stage 2-3) after noncardiac surgery from pre-operative data
+publication_note: >-
+  Formal A1 protocol transfer approved by the owner on 2026-11-03 with the authors' baseline scores.
+  The evaluation follows the authors' INSPIRE 1.3 code and the deviations below. AUPRC remains average precision;
+  trapezoidal precision-recall area is reported only in the appendix. This publication decision does not change
+  the recorded protocol, cohort, split or scoring.
+protocol:
+  adopted: >-
+    The pre-operative task of Do et al., JAMIA Open 2026, as the authors' public code computes it (owner decision
+    2026-10-30: the task follows the paper): their cohort, AKI label, pre-operative inputs, clinical scores,
+    patient-grouped split, models and hyperparameter search, which they ran on INSPIRE 1.3. Their cohort, label and
+    GS-AKI code ran unchanged on KHDP inspire 1.3 (scripts/inspire_aki_reference.py) and gave the paper's cohort:
+    57,055 operations of 46,204 patients, 1,617 with stage 2-3 AKI. BenchToward's port reproduces it operation by
+    operation: the same operations and labels; inputs differ only where two values share a chart time (deviations).
+    The paper's Table 2 gives each model as the mean over its five outer folds with a t-based 95% interval
+    (reporting/tables.py, calibrated scores); BenchToward scores one of them, the authors' fold 0 (deviations), and runs
+    all five once for the report (paper_table_2 below; report.five_fold).
+  source: "Do J, Shah KH, Xu MC, Kim AH, Suresh V, Guggilla N, Li M, Kothari R. Integration of intraoperative data in interpretable machine learning models to predict postoperative AKI in noncardiac surgery patients. JAMIA Open. 2026. doi:10.1093/jamiaopen/ooag092"
+  repository: https://github.com/StealthX051/Inspire-AKI-prediction
+  tag: v1.0.0-jamia-open
+  commit: 4dc799c47b839664276b6fcd7890c55f9ac9cd00
+  config: "configs/aki/default.yaml (cohort strict_noncardiac_adult_procedure_audit, outcome aki, grouped_nested_cv)"
+  license: >-
+    MIT, Copyright (c) 2026 Justin Do, Karan H. Shah, Melissa Chen Xu, Andrew H. Kim, Vivaswat Suresh, Nidhir
+    Guggilla, Michael Li, and Rishi Kothari. Ported in src/benchtoward/tasks/inspire_aki.py and
+    src/benchtoward/baselines/inspire_aki.py; the GS-AKI intraperitoneal proxy map is copied byte for byte; licence and
+    notes in third_party/inspire_aki_prediction/.
+  dataset: "INSPIRE (KHDP inspire 1.3), doi:10.13026/46m4-f655, CC BY 4.0"
+  paper_table_2:  # pre-operative models and scores: mean over the five outer folds (95% CI); AUPRC trapezoidal
+    benchtoward/inspire-aki-asa: {auroc: [0.723, 0.700, 0.746], auprc: [0.126, 0.092, 0.160]}  # "ASA Rule"
+    benchtoward/inspire-aki-gs-aki: {auroc: [0.719, 0.700, 0.739], auprc: [0.098, 0.085, 0.112]}
+    benchtoward/inspire-aki-logreg: {auroc: [0.876, 0.854, 0.898], auprc: [0.301, 0.251, 0.350]}
+    benchtoward/inspire-aki-xgb: {auroc: [0.891, 0.871, 0.910], auprc: [0.373, 0.313, 0.432]}  # "GBT"
+data:
+  khdp_code: inspire
+  version: "1.3"
+  files: [operations.csv, labs.csv, ward_vitals.csv, diagnosis.csv, vitals.csv]
+  vitals_use: "only which op_ids have a row (the authors' cohort keeps operations with intraoperative features)"
+  external: >-
+    The authors' procedure audit reads the CMS ICD-10-PCS order file of 1 April 2026 (cms.gov
+    files/zip/april-1-2026-icd-10-pcs-order-file-long-abbreviated-titles.zip, sha256
+    9bb4a892c34b82d525182a6db6ef42ccba2c7b331ac5d24d459664a1129d776d).
+    Builds do not need it: registry/inspire-aki/procedure-audit-inspire-1.3.csv holds the decisions the authors' code
+    made with it.
+unit: one operation; a patient can have several (bootstrap and split by subject_id)
+cohort:
+  rules:
+    max_asa_exclusive: 6
+    min_age: 18
+    exclude_antype: [Regional]
+    exclude_department: [PED]
+    exclude_icd10_pcs_prefixes: ["10", "0TY", "B50", "B51", "02"]
+    cardiovascular_prefix: I
+    max_preop_creatinine_exclusive: 4.5
+  steps: >-
+    In the order of build_preop_features and derive_aki_labels: ASA < 6 (missing ASA dropped); age >= 18; operation
+    start and end times present; op_len = opend_time - opstart_time > 0; height and weight present and not 0; antype
+    not Regional and department not PED; ICD-10-PCS code not starting with 10, 0TY, B50, B51 or 02 (the paper names
+    obstetric, kidney donor and recipient, arteriovenous fistula and cardiac operations); the procedure audit keeps
+    the operation (registry/inspire-aki/procedure-audit-inspire-1.3.csv, keyed by the 5-character code, department CTS
+    or not, and whether CPB times are recorded: the authors' rules exclude cardiac title families and CTS gray-zone
+    cases); the operation has a row in vitals.csv; a pre-operative creatinine exists and is < 4.5 mg/dl (the paper's
+    exclusion of pre-existing end-stage renal disease, as labels.py writes it: the latest value only); then the label
+    rule's cohort condition (label.cohort). No other exclusion: operations of patients whose kidneys had already
+    failed stay in (subgroups.preexisting_kidney_failure, limitations).
+  counts_inspire_1_3:
+    raw_operations: 130960
+    after_procedure_audit: 119366
+    with_intraoperative_record: 119339
+    preop_creatinine_lt_4_5: 116648
+    cohort: {operations: 57055, patients: 46204, positives: 1617}
+    report_crrt_7d_cohort: {operations: 56926, patients: 46162, positives: 955}
+label:
+  name: postoperative AKI, KDIGO stage 2 or 3
+  rules:
+    baseline: "preop_creatinine (inputs): the latest creatinine within 90 days up to the operation start"
+    postop_creatinine_2_days: "highest creatinine charted after opend_time and at most 2 days (2,880 min) after it"
+    postop_creatinine_7_days: "the same over 7 days (10,080 min)"
+    stage2: "2 <= postop_creatinine_7_days / preop_creatinine < 3"
+    stage3: "ratio >= 3, or postop_creatinine_7_days > 4 mg/dl, or CRRT (below)"
+    stage3_creatinine_above: 4
+    crrt: >-
+      the patient has a ward_vitals row with item_name crrt, charted at any time before or after the operation
+      (labels.py keeps the patient's first crrt row and tests value > 0; every crrt value in INSPIRE 1.3 is 1). The
+      paper says "patients who received postoperative dialysis"; the code has no time window, and the code is followed.
+    positive: "stage 2 or stage 3; stage 1 and no AKI are 0"
+  cohort: "a post-operative creatinine within 7 days, or a crrt row of the patient at any time (labels.py)"
+  crrt_counts: >-
+    On INSPIRE 1.3 the CRRT rule marks 1,008 of the 57,055 operations as stage 3 (185 of the 11,503 in test). The 1,617
+    positives: 365 by the stage-2 ratio, 205 by a ratio >= 3, 205 by a post-operative creatinine > 4 mg/dl alone and
+    842 through CRRT alone (test: 63, 47, 37 and 153 of 300). 129 of those 842 have no post-operative creatinine and
+    enter the cohort through the rule; 180 have CRRT in the 7 days after the operation. The crrt row labels.py keeps
+    (the patient's first in file order) lies a median 3.6 days after the operation end for the 1,008 operations,
+    ranging from 8.6 years before it to 8.8 years after.
+  prevalence: "1,617 / 57,055 (2.83%); test 300 / 11,503 (2.61%)"
+  report_label_crrt_7d: >-
+    The earlier BenchToward rule, report only (label_crrt_7d, cohort in_crrt_7d_cohort): CRRT counts as stage 3 only in
+    the 7 days after opend_time, and the cohort needs a post-operative creatinine or such CRRT. 56,926 operations, 955
+    positives; test 11,473 operations, 180 positives.
+subgroups:
+  preexisting_kidney_failure: >-
+    kidney failure that predates the operation (preexisting_kidney_failure in the instances): a creatinine >= 4.5
+    mg/dl, the cohort's limit (in INSPIRE 1.3 the top bin, 5.55), charted in the 90 days up to opstart_time
+    (preop_creatinine_max_90d), or a crrt row in the 7 days up to opstart_time (crrt_preop_7d). The cohort rule
+    preop_creatinine < 4.5 reads only the latest value. Reported, not excluded: the paper does not exclude these
+    operations (owner decision 2026-10-30). Cohort: 494 operations, 394 of the 1,617 positives (the creatinine part
+    386 operations and 286 positives, the CRRT part 135 operations, all positive); test: 80 operations, 64 of the 300
+    positives. Under the earlier CRRT-in-7-days label: 488 operations, 305 of its 955 positives.
+inputs:
+  columns: [age, sex, height, weight, asa, emop, BSA, BMI, booking_case_length, num_card_events, op_len, antype,
+            department,
+            preop_total_protein, preop_sodium, preop_potassium, preop_platelet, preop_glucose, preop_wbc, preop_alt,
+            preop_chloride, preop_lymphocyte, preop_phosphorus, preop_albumin, preop_fibrinogen, preop_creatinine,
+            preop_ptinr, preop_total_bilirubin, preop_alp, preop_aptt, preop_calcium, preop_bun, preop_ast, preop_crp,
+            preop_hb, preop_hct, preop_seg,
+            ward_spo2, ward_bt, ward_rr, ward_nibp_dbp, ward_nibp_sbp, ward_hr]
+  source: >-
+    The authors' pre-operative model reads every column of build_preop_features except op_id, subject_id,
+    opstart_time, opend_time and the two death times (datasets/tabular.py assemble_tabular_base_frame,
+    models/tabular.py tabular_feature_columns), department one-hot (filters.py get_dummies).
+  lab_items: [total_protein, sodium, potassium, platelet, glucose, wbc, alt, chloride, lymphocyte, phosphorus,
+              albumin, fibrinogen, creatinine, ptinr, total_bilirubin, alp, aptt, calcium, bun, ast, crp, hb, hct,
+              seg]
+  ward_items: [spo2, bt, rr, nibp_dbp, nibp_sbp, hr]
+  window_days: 90
+  end_of_surgery: [op_len, booking_case_length]  # inputs known only when the operation ends (limitations)
+  definitions:
+    sex: "1 if sex == 'M' else 0"
+    BSA: "sqrt(height * weight / 3600)"
+    BMI: "weight / (height / 100) ** 2"
+    op_len: "opend_time - opstart_time (minutes from incision to the end of surgery)"
+    booking_case_length: "orout_time - orin_time (minutes spent in the operating room, not a booked length)"
+    antype: "General 0, MAC 1, Neuraxial 1, anything else missing"
+    department: "surgical department code (one-hot in the baselines)"
+    num_card_events: "number of diagnosis rows with an ICD-10 code starting with I charted before opstart_time"
+    preop_<item>: >-
+      the latest labs.csv value of the item for the patient charted at or before opstart_time and at most 90 days
+      (129,600 min) before it (merge_asof, direction backward); missing if none. Equal chart times: the later row in
+      file order.
+    ward_<item>: "the same from ward_vitals.csv"
+  never: "op_id, subject_id, the raw times, the label columns, gs_aki_count, any value charted after opstart_time"
+gs_aki: "gs_aki_count, the adapted GS-AKI score of the authors (baselines_detail.gs_aki); a baseline, not an input"
+split:
+  by: subject_id
+  method: >-
+    outer fold 0 of the authors' evaluation (split_manager.build_grouped_nested_cv_manifest):
+    StratifiedGroupKFold(n_splits=5, shuffle=True, random_state=42) over the cohort in op_id order, grouped by
+    patient, stratified by the label, with scikit-learn 1.5.2 (the authors' pin; 1.9.1 gives different folds, so
+    builds read the file). Fold 0 is test, folds 1-4 train.
+  file: registry/splits/inspire-aki-1.3-patients.csv
+  sha256: f68e775179f5c6b8f3277b3c3d8025ba454fec08029a10c4bd65c0b67b9b8c4e
+  counts:
+    train: {operations: 45552, patients: 36965, positives: 1317}
+    test: {operations: 11503, patients: 9239, positives: 300}
+    report_crrt_7d: {train: {operations: 45453, patients: 36931, positives: 775}, test: {operations: 11473, patients: 9231, positives: 180}}
+  outer_folds:  # report only: all five outer folds of the same manifest
+    file: registry/inspire-aki/outer-folds-inspire-1.3.csv
+    sha256: f2cbd1eafca9e5a08671d00c2857503ee299b3fbd19545415ecb6e4385c87eb7
+    counts:  # operations, patients, positives of each test fold
+      "0": [11503, 9239, 300]
+      "1": [11378, 9241, 345]
+      "2": [11398, 9233, 314]
+      "3": [11437, 9240, 335]
+      "4": [11339, 9251, 323]
+instance_id: "inspire-aki-<op_id> (INSPIRE op_ids are random numbers)"
+metrics:
+  primary: auroc
+  secondary: [auprc]
+  auprc: average_precision   # sklearn average_precision_score, as the authors' evaluation/metrics.py and bootstrap.py
+  bootstrap: {n: 1000, by: subject_id}
+baselines:
+  benchtoward/prior: "train prevalence for every test operation"
+  benchtoward/inspire-aki-asa: "asa / 6 (the authors' asa_rule score; the paper's 'ASA-PS >= 3' row is scored on it)"
+  benchtoward/inspire-aki-gs-aki: "gs_aki_count / 9 (the authors' gs_aki_rule score)"
+  benchtoward/inspire-aki-logreg: >-
+    the authors' ridge logistic regression: pre-processing (outliers, z-scores, -99 or KNN imputation) fitted on
+    train; StandardScaler; LogisticRegression(C from the authors' Optuna search, max_iter=10000, tol=0.01,
+    random_state=42) with balanced sample weights; isotonic calibration on out-of-fold predictions of five
+    patient-grouped inner folds
+  benchtoward/inspire-aki-xgb: >-
+    the authors' GBT: the same pre-processing, XGBClassifier(parameters from the authors' Optuna search,
+    objective binary:logistic, eval_metric logloss, random_state=42) with balanced sample weights, isotonic
+    calibration as above
+baselines_detail:
+  gs_aki:
+    diabetes_prefixes: [E08, E09, E10, E11, E13]
+    hypertension_prefixes: [I10, I11, I12, I13, I15, I16, I1A]
+    chf_prefixes: [I50]
+    ascites_prefixes: [R18]
+    recent_window_days: 30
+    factors: >-
+      age >= 56, male, emergency (emop == 1), intraperitoneal proxy of the 5-character ICD-10-PCS code
+      (registry/inspire-aki/intraperitoneal_proxy_map_5char.csv), diabetes and hypertension diagnosed before the
+      start, heart failure and ascites diagnosed in the 30 days before it, preop_creatinine >= 1.2
+  seeds: >-
+    pipelines/train.py and split_manager.py: outer fold k trains with random_state 42 + k; its isotonic calibration
+    uses inner folds StratifiedGroupKFold(5, shuffle, random_state 42 + k) of the fold's train part and inner models
+    seeded 42 + 100 k + inner fold. The headline is k = 0.
+  hpo:  # the authors' models/hpo.py tune_tabular_model, unchanged, on each train part (scripts/inspire_aki_reference.py hpo)
+    procedure: >-
+      Optuna 4.1.0 TPESampler(seed 42 + sha256('preop::<model>') mod 100,000), 50 trials, maximising balanced
+      accuracy at 0.5 on a validation part: build_grouped_hpo_split_manifest on the train part (patients: 20% held
+      out and unused, then 25% of the rest for validation, train_test_split random_state 42, stratified by the
+      patient's label), models fitted on the remaining 60% after a StandardScaler, balanced sample weights; the
+      authors' search spaces (configs/aki/default.yaml). One search per train part (the authors tune each outer fold
+      apart, pipelines/tune.py) and per report variant; matrices from `benchtoward baseline inspire-aki --hpo-matrices`.
+    headline:  # paper's label, cohort and inputs; outer fold 0 train part (the recorded runs)
+      log_reg: {"C": 0.0009870644000145776}  # validation balanced accuracy 0.8204
+      xgb: {"n_estimators": 202, "learning_rate": 0.036911529697997346, "max_depth": 3, "subsample": 0.6313129659827867, "colsample_bytree": 0.8154270034053352, "gamma": 4.97445977593264}  # validation balanced accuracy 0.8193
+    fold_1:  # outer fold 1 as test (report.five_fold)
+      log_reg: {"C": 0.00011694638929557}  # validation balanced accuracy 0.8295
+      xgb: {"n_estimators": 221, "learning_rate": 0.04149763663149063, "max_depth": 3, "subsample": 0.6221449225908405, "colsample_bytree": 0.6320229744980259, "gamma": 4.651587029629786}  # validation balanced accuracy 0.8275
+    fold_2:  # outer fold 2 as test
+      log_reg: {"C": 0.00012968932376770733}  # validation balanced accuracy 0.7789
+      xgb: {"n_estimators": 224, "learning_rate": 0.05752269372149779, "max_depth": 3, "subsample": 0.6049563979208644, "colsample_bytree": 0.6497646027613109, "gamma": 4.9593999837910605}  # validation balanced accuracy 0.7907
+    fold_3:  # outer fold 3 as test
+      log_reg: {"C": 0.00010250159404717799}  # validation balanced accuracy 0.8283
+      xgb: {"n_estimators": 221, "learning_rate": 0.035686160213577865, "max_depth": 4, "subsample": 0.632312616970097, "colsample_bytree": 0.8582270970338429, "gamma": 4.651587029629786}  # validation balanced accuracy 0.8301
+    fold_4:  # outer fold 4 as test
+      log_reg: {"C": 0.012846138274212215}  # validation balanced accuracy 0.7782
+      xgb: {"n_estimators": 226, "learning_rate": 0.03614624307848682, "max_depth": 3, "subsample": 0.752463306917956, "colsample_bytree": 0.666078252289989, "gamma": 3.8736594701087665}  # validation balanced accuracy 0.7747
+    crrt_7d_label:  # report: CRRT-in-7-days label and its cohort, the paper's inputs
+      log_reg: {"C": 0.0003616984010923378}  # validation balanced accuracy 0.8299
+      xgb: {"n_estimators": 223, "learning_rate": 0.04144336361638359, "max_depth": 3, "subsample": 0.615002597702296, "colsample_bytree": 0.6438071734153802, "gamma": 4.580655065620314}  # validation balanced accuracy 0.8227
+    without_durations:  # report: the paper's label, inputs without op_len and booking_case_length
+      log_reg: {"C": 0.00023191679628203698}  # validation balanced accuracy 0.8166
+      xgb: {"n_estimators": 221, "learning_rate": 0.02533139818037654, "max_depth": 3, "subsample": 0.7522537884113911, "colsample_bytree": 0.6578282484938789, "gamma": 3.501190830110544}  # validation balanced accuracy 0.8074
+    earlier_headline:  # report: CRRT-in-7-days label, inputs without the durations (the earlier headline)
+      log_reg: {"C": 0.033033138585342584}  # validation balanced accuracy 0.8274
+      xgb: {"n_estimators": 223, "learning_rate": 0.03479688641713841, "max_depth": 3, "subsample": 0.637137944409789, "colsample_bytree": 0.8214744128909789, "gamma": 4.700633949444341}  # validation balanced accuracy 0.7980
+prediction_time: >-
+  the operation start (opstart_time), the authors' merge_asof cut-off, for every input except op_len and
+  booking_case_length, which the authors' pre-operative model also reads and which are known only when the operation
+  ends (limitations). 6.4% of the lab and ward input values (103,576 of 1,606,317; mostly potassium, sodium,
+  haematocrit and glucose, the blood gas drawn at induction) are charted after the patient entered the operating room
+  (orin_time < chart_time <= opstart_time).
+leakage_checks:
+  - "patients are in one split only (0 shared; the file maps each subject_id to one split)"
+  - "every lab and ward input value is charted at or before opstart_time (checked on all 1,606,317 values)"
+  - >-
+    diagnosis times are whole days (every chart_time in diagnosis.csv is a multiple of 1,440 min), so
+    num_card_events and the GS-AKI diagnosis factors (the authors' rule chart_time < opstart_time, kept) also count
+    rows stamped at midnight of the day of the operation, which may have been made after the start: 763 of the 70,034
+    cardiovascular rows counted in the cohort (1.1%, 603 operations). Their count alone (num_card_events_same_day,
+    report) scores AUROC 0.510 (0.499-0.522) on test.
+  - "pre-processing is fitted on train operations only (tests/test_inspire_aki.py)"
+  - "instance ids are inspire-aki-<op_id>; INSPIRE assigns op_ids at random"
+  - >-
+    single columns scored alone on the test split (AUROC, the paper's label / the CRRT-in-7-days label): op_len
+    0.513 / 0.609 and booking_case_length 0.508 / 0.599 (both inputs, limitations); crrt_ever, the flag the paper's
+    label reads (not an input), 0.808 (AUPRC 0.627) / 0.677; preexisting_kidney_failure 0.606 / 0.649
+report:
+  command: "benchtoward baseline inspire-aki --report FILE (not recorded; numbers on the test split, 95% CI over patients)"
+  rows: >-
+    Each earlier BenchToward choice is a row that changes the headline back, with its own Optuna search
+    (baselines_detail.hpo): crrt_7d_label (label_crrt_7d and its cohort), without_durations (inputs without op_len and
+    booking_case_length) and earlier_headline (both: the headline before the owner's decision). Pre-existing kidney
+    failure (subgroups): the headline models scored on the test operations without it and with it, and models
+    retrained without it (headline hyperparameters). five_fold: every outer fold as test once, against paper_table_2.
+  gbt_auroc_auprc:  # benchtoward/inspire-aki-xgb; LR in the report file
+    headline: "AUROC 0.879 (0.845-0.907), AUPRC 0.334 (0.271-0.401)"
+    crrt_7d_label: "AUROC 0.894 (0.868-0.917), AUPRC 0.266 (0.200-0.343)"
+    without_durations: "AUROC 0.875 (0.841-0.902), AUPRC 0.327 (0.266-0.398)"
+    earlier_headline: "AUROC 0.881 (0.852-0.906), AUPRC 0.258 (0.193-0.330)"
+    without_preexisting_kidney_failure_headline_models: "AUROC 0.850 (0.812-0.882), AUPRC 0.188 (0.137-0.249)"
+    preexisting_kidney_failure_only_headline_models: "AUROC 0.797 (0.664-0.916), AUPRC 0.931 (0.861-0.979)"
+    without_preexisting_kidney_failure_retrained: "AUROC 0.848 (0.808-0.880), AUPRC 0.167 (0.125-0.221)"
+  five_fold:  # mean over the five outer folds, t-based 95% interval (reporting/tables.py); LR and GBT calibrated
+    benchtoward/prior:
+      {auroc: [0.500, 0.500, 0.500], auprc: [0.028, 0.026, 0.030], auprc_trapezoid: [0.514, 0.513, 0.515],
+       auroc_by_fold: [0.500, 0.500, 0.500, 0.500, 0.500]}
+    benchtoward/inspire-aki-asa:
+      {auroc: [0.723, 0.700, 0.746], auprc: [0.082, 0.062, 0.102], auprc_trapezoid: [0.126, 0.092, 0.160],
+       auroc_by_fold: [0.730, 0.750, 0.700, 0.716, 0.719]}
+    benchtoward/inspire-aki-gs-aki:
+      {auroc: [0.719, 0.700, 0.739], auprc: [0.076, 0.070, 0.083], auprc_trapezoid: [0.098, 0.085, 0.112],
+       auroc_by_fold: [0.704, 0.720, 0.718, 0.709, 0.745]}
+    benchtoward/inspire-aki-logreg:
+      {auroc: [0.884, 0.863, 0.905], auprc: [0.310, 0.252, 0.369], auprc_trapezoid: [0.325, 0.271, 0.379],
+       auroc_by_fold: [0.865, 0.908, 0.873, 0.892, 0.883]}
+    benchtoward/inspire-aki-xgb:
+      {auroc: [0.891, 0.871, 0.911], auprc: [0.367, 0.313, 0.422], auprc_trapezoid: [0.377, 0.323, 0.432],
+       auroc_by_fold: [0.879, 0.918, 0.878, 0.891, 0.887]}
+limitations:
+  - >-
+    INSPIRE 1.1 and later bin every measurement to 5th-percentile values for anonymity: preop_creatinine takes 20
+    values in the cohort (0.41 to 3.04 mg/dl), so the KDIGO ratios are coarse.
+  - >-
+    The cohort needs a creatinine within 7 days after surgery or a CRRT record, so it holds the operations someone
+    chose to test (57,055 of the 116,648 eligible ones).
+  - >-
+    The paper's label counts patients whose kidneys had already failed before surgery. Its CRRT rule reads any CRRT
+    record of the patient, at any time (label.crrt_counts): 842 of the 1,617 positives are positive through it alone
+    and 662 of them have no CRRT in the 7 days after the operation. INSPIRE's creatinine takes 21 binned values, the
+    top two 3.04 and 5.55 mg/dl, so the stage-3 rule "post-operative creatinine > 4" means a post-operative value in
+    the top bin, and the exclusion of pre-existing end-stage renal disease ("pre-operative creatinine < 4.5") reads
+    only the latest pre-operative value. Counting either sign of earlier failure (subgroups.preexisting_kidney_failure):
+    494 operations and 394 of the 1,617 positives (under the earlier CRRT-in-7-days label 305 of its 955); in test 80
+    operations and 64 of the 300 positives. The flag alone scores AUROC 0.606 on test, and crrt_ever alone (not an
+    input) 0.808 with AUPRC 0.627: a patient's dialysis record, at any time, finds most positives. Without the
+    flagged operations (report): the headline GBT scores AUROC 0.850 (0.812-0.882) and AUPRC 0.188 (0.137-0.249) on
+    the other 11,423 test operations with 236 positives (headline: AUROC 0.879 (0.845-0.907), AUPRC 0.334
+    (0.271-0.401)); retrained without them, AUROC 0.848 (0.808-0.880) and AUPRC 0.167 (0.125-0.221).
+  - >-
+    Operation length (op_len, incision to end) and time in the operating room (booking_case_length, orout_time -
+    orin_time, the time actually spent, not a booking) are inputs, as in the authors' pre-operative model, and are
+    known only when the operation ends; the paper itself counts operation length as intraoperative. A score is
+    therefore available at the end of surgery, not before it. Without the two columns (report, own search): GBT
+    AUROC 0.875 (0.841-0.902) and AUPRC 0.327 (0.266-0.398); headline 0.879 (0.845-0.907) and 0.334 (0.271-0.401).
+  - >-
+    INSPIRE is public, so models trained on INSPIRE may have seen the test patients.
+deviations:  # 1-4: what a single-test-set benchmark needs; 5: BenchToward's AUPRC (open for the owner)
+  - >-
+    One held-out fold: the authors' outer fold 0 is test, the other four train. The paper reports every model as the
+    mean over the five outer folds (reporting/tables.py). The report trains all five once (report.five_fold): mean
+    AUROC of GBT 0.891 (0.871-0.911) against the paper's 0.891 (0.871-0.910), LR 0.884 (0.863-0.905) against 0.876
+    (0.854-0.898), ASA and GS-AKI equal to the paper's to the third decimal; fold 0 alone: GBT 0.879, LR 0.865.
+  - >-
+    Pre-processing is fitted on the train split and applied to test. build_tabular_datasets fits the outlier limits,
+    z-scores, the 10% missing-rate rule and the KNN imputer on every operation with intraoperative features, test
+    operations included, and on the pre- and intraoperative columns together (its KNN imputer also uses
+    intraoperative columns with < 10% missing). The Optuna searches read train matrices pre-processed the same way.
+  - >-
+    Intervals: 1,000 bootstrap samples of patients (BenchToward's unit, as the split). The paper's intervals are t
+    intervals over the five folds' values (reporting/tables.py), and the authors' evaluation/bootstrap.py resamples
+    operations.
+  - >-
+    Equal chart times: preop_<item> and ward_<item> take the later row in file order (stable sorts). The authors sort
+    with pandas' default quicksort, whose order of equal keys depends on the numpy build. On INSPIRE 1.3, 3,559 of
+    the 1,606,317 filled lab and ward input values (57,055 operations x 30 columns = 1,711,650 cells) differ from the
+    authors' output (all at a time with two values; 3,375 are ward_hr), as do 12 preop_creatinine values and 1 GS-AKI
+    count; labels, the cohort, op_len and booking_case_length are identical.
+  - >-
+    AUPRC is average precision (sklearn average_precision_score), the AUPRC of every BenchToward binary task and of the
+    authors' evaluation/metrics.py and bootstrap.py. The paper's Table 2 takes the trapezoidal area under the
+    precision-recall curve (reporting/tables.py), which reads higher for scores with few distinct values and gives a
+    constant score (1 + prevalence) / 2. Over the five folds: ASA 0.082 (0.062-0.102) average precision against
+    0.126 (0.092-0.160) trapezoidal (the paper: 0.126, 0.092-0.160); the prior 0.514 trapezoidal. report.five_fold
+    gives both. AUROC, the primary metric, is the paper's.
+differences:  # not choices: what the port cannot copy, or does not port
+  - >-
+    The inner folds of the isotonic calibration are made with scikit-learn 1.9 (StratifiedGroupKFold(5, shuffle,
+    random_state 42 + fold) on the train part), which assigns patients differently from the authors' 1.5.2. The outer
+    folds are the authors' (published files).
+  - >-
+    The random values that replace outliers (features/normalization.py: uniform draws, seed 42 + 104,729 x the
+    column's position) follow the position among the pre-operative columns, while the authors number the pre- and
+    intraoperative columns together, so the draws differ.
+  - >-
+    Package versions: the runs use xgboost 3.4.1 and scikit-learn 1.9.1; the authors pin xgboost 2.1.2 and
+    scikit-learn 1.5.2 (the split files were made with 1.5.2). Each run's config records the versions used.
+  - >-
+    Only the pre-operative task and two of the paper's model families (ridge logistic regression and GBT) are built,
+    with the ASA and GS-AKI scores. The intraoperative and combined models, AutoGluon, SVM, KNN, MLP, random forest and
+    the LSTM models are not ported.
+notes:
+  - >-
+    The paper's text says the cohort needs a creatinine within 48 hours after surgery and that "patients who received
+    postoperative dialysis" are stage 3; labels.py keeps operations with a creatinine within 7 days or a crrt row, and
+    counts any crrt row of the patient. The code is followed (owner decision 2026-10-30), and it gives the paper's
+    counts.
+  - >-
+    The paper's abstract counts 38 pre-operative variables; the code's pre-operative model reads the 43 columns of
+    inputs.columns (department counted once, one-hot in the model). The code is followed.
+  - >-
+    The procedure audit (reporting/procedure_audit.py, 1,213 lines) is not ported: its decisions on INSPIRE 1.3 are
+    shipped as a table, because they depend on the CMS order file and on which codes occur in the candidate set (its
+    same-4-character neighbour rule). A later INSPIRE release needs the table regenerated
+    (scripts/inspire_aki_reference.py cohort).
+  - >-
+    The split was stratified by the paper's label; the CRRT-in-7-days report rows keep each patient's split.
+decisions:
+  # Owner ruling, 2026-10-30: the task follows the paper, as the authors' code computes it.
+  - >-
+    Label: KDIGO stage 2-3 as labels.py computes it, with its creatinine thresholds and its CRRT rule (any CRRT record
+    of the patient is stage 3). The earlier BenchToward rule (CRRT only in the 7 days after surgery) is a report row.
+  - >-
+    Cohort: the authors' (procedure audit, latest pre-operative creatinine < 4.5 mg/dl, a post-operative creatinine
+    within 7 days or a CRRT record). Operations with pre-existing kidney failure stay in, with the subgroup reported
+    (the open decision of PR #102).
+  - >-
+    Inputs: the authors' pre-operative feature set, op_len and booking_case_length included, with their cut-off, the
+    operation start (the prediction-time question of PR #102). Leaving out the two durations is a report row.
+  - >-
+    Models and hyperparameters: the authors' code, their Optuna search run on each train part. The ASA and GS-AKI
+    scores stay as baseline rows, as in the paper's Table 2.
+  - >-
+    Kept from BenchToward, because a single-test-set benchmark needs them (deviations): one held-out fold (the authors'
+    fold 0), pre-processing fitted on train only, intervals over patients, stable sorts for tied chart times. All five
+    folds run once in the report to check the paper's numbers.

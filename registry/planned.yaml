@@ -1,2 +1,4 @@
 # Tasks shown as "Coming soon" cards on the home page until they are built.
-- {modality: structured, title: "Text-to-SQL over OMOP CDM", dataset: "Synthetic-SNUH v4 (10,000 synthetic patients)"}
+# Each entry needs slug (the future task's slug), modality, title and dataset.
+# The slug removes the card once that task is listed, even if its title changes.
+[]

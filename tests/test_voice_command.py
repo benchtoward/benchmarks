@@ -376,8 +376,8 @@ def test_spec_is_registered_with_the_protocol(tmp_session):
     from conftest import REGISTRY_DIR
 
     spec = yaml.safe_load((REGISTRY_DIR / "tasks" / "kor-surgical-robot-voice-command.yaml").read_text())
-    assert (spec["slug"], spec["version"], spec["preview"], spec["primary_metric"]) == (
-        "kor-surgical-robot-voice-command", 0, True, "exact_match")
+    assert (spec["slug"], spec["version"], "preview" in spec, spec["primary_metric"]) == (
+        "kor-surgical-robot-voice-command", 0, False, "exact_match")
     assert set(spec["subsets"]) == set(vc.SUBSETS)
     assert spec["request"]["temperature"] == 0 and spec["request"]["max_tokens"] == vc.MAX_TOKENS
     assert "10.23421/2026.03507" in json.dumps(spec)

@@ -1,4 +1,4 @@
-"""VitalDB intraoperative hypotension, version 0 (preview): numeric MAP every 2 s, 5 min ahead."""
+"""VitalDB intraoperative hypotension, version 0: numeric MAP every 2 s, 5 min ahead."""
 import io
 import json
 from collections.abc import Iterable

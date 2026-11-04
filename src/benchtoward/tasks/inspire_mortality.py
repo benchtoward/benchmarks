@@ -1,4 +1,4 @@
-"""INSPIRE 30-day postoperative in-hospital mortality, version 0 (preview).
+"""INSPIRE 30-day postoperative in-hospital mortality, version 0.
 
 Cohort, label, inputs and split follow the INSPIRE authors' published script (vitaldb/inspire gbm_mortality.py,
 pinned in registry/tasks/inspire-mortality.yaml), with the deviations listed there (notably: each patient's earliest

@@ -1,6 +1,5 @@
 slug: kor-surgical-robot-voice-command
 version: 0
-preview: true
 visibility: open  # published by the maintainers after its check (2026-10-29)
 dataset: kor-surgical-robot-voice-command
 kind: command

@@ -1,5 +1,5 @@
 """SCOPE (KHDP `icu-cardiac-arrest` 1.0, CC BY 4.0): in-unit cardiac arrest within 0.5-24 h from a 5-min ECG epoch,
-version 0 (preview), built with the dataset authors' SCOPE processing and training scripts (Lee et al. 2023 setup).
+version 0, built with the dataset authors' SCOPE processing and training scripts (Lee et al. 2023 setup).
 Spec: registry/tasks/scope-arrest.yaml. Window rule: benchtoward.tasks.scope_sampling. Epoch pipeline and HRV measures:
 benchtoward.tasks.scope_hrv. The ~376 GB of .vital files are read on compute pods by a deployment-only build that is
 not part of the public code; only per-epoch measures and the test split's 5-min ECG epochs come back.

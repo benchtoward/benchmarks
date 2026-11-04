@@ -1,10 +1,11 @@
 slug: inspire-mortality
 version: 0
-preview: true
 dataset: inspire
 kind: binary
 primary_metric: auroc
 title: 30-day postoperative in-hospital mortality
+# Presentational correction (owner, 2026-11-03); protocol.dataset stays frozen for existing runs.
+dataset_citation: "INSPIRE (KHDP inspire 1.3), doi:10.13026/46m4-f655, CC BY 4.0"
 protocol:
   name: "INSPIRE authors' 30-day in-hospital mortality task (gbm_mortality.py)"
   script: https://github.com/vitaldb/inspire/blob/04a249028b9290729a1f8027322bfcc1101739ed/gbm_mortality.py

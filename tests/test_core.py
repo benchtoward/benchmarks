@@ -33,7 +33,7 @@ def test_load_registry_is_idempotent(tmp_session):
     assert model.digest == "google/medgemma-27b"
     assert tmp_session.get(Model, "benchtoward/majority-b").digest == "benchtoward/majority-b:v0"
     task = tmp_session.query(Task).filter_by(slug="vitaldb-ioh", version=0).one()
-    assert task.preview is True and task.primary_metric == "auroc" and len(task.spec_hash) == 64
+    assert task.preview is False and task.primary_metric == "auroc" and len(task.spec_hash) == 64
 
 
 def test_digest_rule(tmp_path):

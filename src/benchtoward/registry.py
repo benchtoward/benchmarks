@@ -1,6 +1,7 @@
 import json
 import re
 from pathlib import Path
+from urllib.parse import urlsplit
 
 import yaml
 from sqlalchemy.orm import Session
@@ -9,14 +10,36 @@ from benchtoward.db import Dataset, Model, Run, Task
 from benchtoward.runkey import canonical_json, run_key, spec_hash
 
 DATASET_FIELDS = ("title", "modality", "license", "license_url", "source_url", "citation", "khdp_code", "version")
-# Wording, badges, listing and where a task's items are released (with the DOI once assigned): changing them must
-# not invalidate results.
-PRESENTATIONAL_FIELDS = {"title", "preview", "visibility", "items_release"}
+# Wording, listing, releases, current citations and publication decisions never invalidate recorded evaluations.
+# The original protocol (including its citation and transfer fields) remains hashed and stored verbatim.
+PRESENTATIONAL_FIELDS = {"title", "preview", "visibility", "items_release", "code_public",
+                        "dataset_citation", "publication_note"}
 # Baselines get a versioned digest. The provider was "medbench" before the 2026-11 rename plan, which moved every
 # baseline to "benchtoward"; a stale models.yaml line with the old provider gets a bare digest and fails the tests.
 BASELINE_PROVIDERS = ("benchtoward",)
 MODEL_FIELDS = ("name", "type", "provider", "provider_model_id", "price_in_usd_per_m", "price_out_usd_per_m",
                "price_usd_per_audio_min", "notes", "max_tokens", "reference", "developer")
+
+
+def public_code_url(value: object) -> str | None:
+    """Only absolute HTTPS URLs with a host may become public-code links."""
+    if not isinstance(value, str) or not value.lower().startswith("https://"):
+        return None
+    if re.search(r"[\s\x00-\x1f\x7f\\]", value):
+        return None
+    try:
+        parsed = urlsplit(value)
+        return value if parsed.scheme == "https" and parsed.hostname else None
+    except ValueError:
+        return None
+
+
+def validate_code_public(spec: dict) -> None:
+    if "code_public" not in spec:
+        return
+    public = spec["code_public"]
+    if not isinstance(public, dict) or public_code_url(public.get("url")) is None:
+        raise ValueError("code_public.url must be an absolute https:// URL with a host")
 
 
 def _upsert(session: Session, cls, key, values: dict):
@@ -81,6 +104,7 @@ def load_registry(session: Session, registry_dir: Path, *, commit: bool = True):
         report.backup = backup
         for path in sorted((registry_dir / "tasks").glob("*.yaml")):
             spec = yaml.safe_load(path.read_text(encoding="utf-8"))
+            validate_code_public(spec)
             values = {
                 "slug": spec["slug"],
                 "version": int(spec["version"]),

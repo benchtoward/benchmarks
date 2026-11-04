@@ -223,8 +223,8 @@ def test_import_runs_merges_finished_runs_without_touching_other_tables(ctx, tmp
     session = ctx[0]
     session.add(PageView(day="2026-10-29", visitor="v", path="/", kind="human"))
     session.commit()
-    assert import_runs(session, f"sqlite:///{tmp_path}/src.db") == 1
-    assert import_runs(session, f"sqlite:///{tmp_path}/src.db") == 0  # idempotent
+    assert import_runs(session, f"sqlite:///{tmp_path}/src.db")["runs"] == 1
+    assert import_runs(session, f"sqlite:///{tmp_path}/src.db")["runs"] == 0  # idempotent
     imported = session.query(Run).filter_by(run_key=done.run_key).one()
     assert imported.status == "done" and session.query(ItemResult).filter_by(run_id=imported.id).count() == 5
     assert session.query(Run).count() == 1 and session.query(PageView).count() == 1
