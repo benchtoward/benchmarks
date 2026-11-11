@@ -251,7 +251,8 @@ def test_dry_run_is_resumable_and_retries_transient_errors(con, tmp_path):
                         fail_once={"몇 명?"})
     out = tmp_path / "dry"
     summary = asyncio.run(run_dry_run(items, con, client, "m", out, langs=("ko", "en")))
-    assert summary["status"] == "incomplete" and summary["pending"] == 1
+    assert summary["status"] == "failed" and summary["pending"] == 1
+    assert summary["execution_accuracy"] and "1/2" in summary["failed_reason"]
     assert len(client.calls) == 2
 
     summary = asyncio.run(run_dry_run(items, con, client, "m", out, langs=("ko", "en")))
@@ -260,6 +261,22 @@ def test_dry_run_is_resumable_and_retries_transient_errors(con, tmp_path):
     assert summary["tokens_in"] == 20 and summary["tokens_out"] == 10
     report = [json.loads(line) for line in (out / "items.jsonl").read_text().splitlines()]
     assert {r["instance_id"]: r["correct"] for r in report} == {"a-ko": False, "a-en": True}
+
+
+def test_dry_run_terminal_api_errors_fail_and_resume(con, tmp_path):
+    items = [q(id="a", question_en="How many people?", question_ko="몇 명?", sql="SELECT count(*) FROM person")]
+
+    class Down(FakeClient):
+        async def chat(self, *args, **kw):
+            return ChatResult("", None, 0, 0, "http_400", transient=False)
+
+    out = tmp_path / "dry"
+    summary = asyncio.run(run_dry_run(items, con, Down({}), "m", out))
+    assert summary["status"] == "failed" and summary["execution_accuracy"]["value"] == 0
+    assert "2/2" in summary["failed_reason"] and "http_400" in summary["failed_reason"]
+    good = FakeClient({"How many people?": "SELECT count(*) FROM person", "몇 명?": "SELECT count(*) FROM person"})
+    summary = asyncio.run(run_dry_run(items, con, good, "m", out))
+    assert summary["status"] == "done" and len(good.calls) == 2 and "failed_reason" not in summary
 
 
 def test_dry_run_records_its_output_limit(con, tmp_path):
@@ -444,3 +461,40 @@ def test_drafts_are_registered_only_through_the_frozen_task():
     spec = yaml.safe_load((REPO / "registry" / "tasks" / specs[0]).read_text(encoding="utf-8"))
     assert {t["items"]["file"] for t in spec["tiers"].values()} == {
         "drafts/synthetic-snuh-text2sql-v0.yaml", "drafts/synthetic-snuh-text2sql-hard-v0.yaml"}
+
+
+# QA review 2026-11-08: the protection against harmful model SQL lived only in how the connection was opened.
+# execute_sql now refuses any connection that can reach files or the network or change its own settings, so an
+# agentic tool or a test-suite database builder cannot run model SQL on an unsafe connection by mistake.
+@pytest.mark.parametrize("sql,error", [
+    ("ATTACH '/tmp/x.duckdb' AS x", "not_select"),
+    ("COPY person TO '/tmp/out.csv'", "not_select"),
+    ("INSTALL httpfs", "not_select"),
+    ("LOAD httpfs", "not_select"),
+    ("SET enable_external_access = true", "not_select"),
+    ("SELECT * FROM read_text('/etc/hosts')", "execution_error"),
+    ("SELECT * FROM glob('/*')", "execution_error"),
+    ("SELECT * FROM '/etc/passwd'", "execution_error"),
+    ("SELECT * FROM read_csv('https://example.org/x.csv')", "execution_error"),
+    ("SELECT * FROM read_parquet('s3://bucket/x.parquet')", "execution_error"),
+    ("SELECT current_setting('enable_external_access')", None),
+])
+def test_execute_blocks_files_network_and_settings(con, sql, error):
+    assert execute_sql(con, sql).error == error
+
+
+def test_execute_refuses_an_unsafe_connection(omop_db):
+    import duckdb
+    plain = duckdb.connect(str(omop_db), read_only=True)        # external access on, settings unlocked
+    with pytest.raises(ValueError, match="unsafe connection"):
+        execute_sql(plain, "SELECT 1")
+    memory = duckdb.connect()                                    # how an agentic tool might open a scratch database
+    with pytest.raises(ValueError, match="unsafe connection"):
+        execute_sql(memory, "SELECT 1")
+
+
+def test_execute_accepts_a_locked_in_memory_connection():
+    import duckdb
+    memory = duckdb.connect(config={"enable_external_access": False, "autoinstall_known_extensions": False,
+                                    "autoload_known_extensions": False, "lock_configuration": True})
+    assert execute_sql(memory, "SELECT 42 AS a").rows == [(42,)]

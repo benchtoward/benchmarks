@@ -28,6 +28,9 @@ class ChatResult:
     cached_tokens: int = 0  # prompt tokens the route served from its prompt cache, when it says
     reasoning_tokens: int = 0  # completion tokens spent on thinking, when the route says
     finish_reason: str | None = None  # e.g. "stop" or "length" (cut at max_tokens), when the route says
+    batch_id: str | None = None  # aggregate spend is held durably in the batch state
+    charge_id: str | None = None  # synchronous spend is held durably by the backend
+    failed_attempts_usd: float = 0.0
 
 
 class MissingCredential(Exception):
@@ -42,23 +45,26 @@ class LLMClient:
     """Minimal OpenAI-compatible chat client. Never raises for HTTP or payload errors."""
 
     def __init__(self, base_url: str, api_key: str, *, transport: httpx.AsyncBaseTransport | None = None,
-                 max_retries: int = 4, timeout: httpx.Timeout = DEFAULT_TIMEOUT, sleep=asyncio.sleep):
+                 max_retries: int = 4, timeout: httpx.Timeout = DEFAULT_TIMEOUT, sleep=asyncio.sleep,
+                 batch_enabled: bool = False):
         self.base_url = base_url.rstrip("/")
         self.api_key = api_key
         self.transport = transport
         self.max_retries = max_retries
         self.timeout = timeout
         self.sleep = sleep
+        self.batch_enabled = batch_enabled  # serving route explicitly opts into its verified batch contract
 
     async def chat(self, model_id: str, messages: list[dict], *, max_tokens: int,
                    temperature: float = 0.0, extra: dict | None = None,
-                   before_attempt: Callable[[int], Awaitable[bool]] | None = None) -> ChatResult:
+                   before_attempt: Callable[[int], Awaitable[bool]] | None = None,
+                   on_usage: Callable[[int, float], Awaitable[None]] | None = None) -> ChatResult:
         """`extra`: further request fields a task's protocol needs (e.g. response_format); they never replace the
         model, messages, max_tokens or temperature. `before_attempt(n)` is awaited before request n (0 is the
         first, then each retry); when it returns False nothing more is sent and the error is 'budget'. The result
         counts the requests sent and the failed ones that may have been billed (read timeouts and other transport
         errors after sending, 5xx answers, malformed 200s; not 429 or 4xx refusals, nor refused connections), so a
-        budget can charge retries too."""
+        budget can charge retries too. `on_usage(n, cost)` records response billing before parsing or retrying."""
         payload = {**(extra or {}), "model": model_id, "messages": messages, "max_tokens": max_tokens,
                    "temperature": temperature}
         headers = {"Authorization": f"Bearer {self.api_key}"}
@@ -85,6 +91,14 @@ class LLMClient:
                     error, transient = f"transport_{type(exc).__name__}", True
                     billed += not isinstance(exc, UNSENT_ERRORS)
                     continue
+                if on_usage is not None:
+                    try:
+                        payload_usage = response.json().get("usage")
+                        response_cost = payload_usage.get("cost") if isinstance(payload_usage, dict) else None
+                    except (ValueError, AttributeError):
+                        response_cost = None
+                    if isinstance(response_cost, (int, float)) and not isinstance(response_cost, bool):
+                        await on_usage(attempt, response_cost)
                 if response.status_code == 200:
                     try:
                         result = _parse(response)
@@ -144,6 +158,8 @@ def _parse(response: httpx.Response) -> ChatResult:
 
 
 def _error_code(response: httpx.Response) -> str:
+    if response.status_code == 402:
+        return "http_402"
     try:
         body = response.json()
     except ValueError:

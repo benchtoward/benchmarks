@@ -157,7 +157,7 @@ def test_eval_all_continues_after_a_model_fails(tmp_path, monkeypatch):
     monkeypatch.setattr(cli, "_eval_one", fake_eval_one)
     assert CliRunner().invoke(cli.app, ["init"]).exit_code == 0
     result = CliRunner().invoke(cli.app, ["eval-all", "--task", "clinicalqa@0"])
-    assert result.exit_code == 0 and len(seen) > 1 and "boom" in result.output
+    assert result.exit_code != 0 and len(seen) > 1 and "boom" in result.output
 
 
 def test_vitaldb_datasets_link_to_khdp(tmp_session):

@@ -55,7 +55,8 @@ def test_eval_asr_says_how_to_resume_after_an_outage(env, monkeypatch):
     make_release(tmp_path / "datasets" / "k-or-speech" / "1.0.0" / "synthetic_kor_speech_audio_v1.zip")
     monkeypatch.setattr("benchtoward.tasks.speech_cli.asr_client_for", lambda model, settings: DownASR())
     result = CliRunner().invoke(cli.app, ["eval-asr", "--model", "cohere/cohere-transcribe-2b", "--limit", "6"])
-    assert result.exit_code == 0, result.output
+    assert result.exit_code != 0, result.output
+    assert "API errors 6/6 (100.00%) >= 1%" in result.output
     assert "[failed]" in result.output and "6 clip(s) still need a transcript" in result.output
     assert "http_500" in result.output and "run the same command again" in result.output
 

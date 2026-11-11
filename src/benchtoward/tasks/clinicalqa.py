@@ -1,4 +1,5 @@
 import re
+import unicodedata
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -8,7 +9,8 @@ import pandas as pd
 CLINICALQA_URL = ("https://huggingface.co/datasets/snuh/ClinicalQA/resolve/"
                   "29bdc9043f3e693b7671f868e2038ec7ac288acd/data/train-00000-of-00001.parquet")
 PROMPT_ID = "clinicalqa-p0"
-PARSER_VERSION = "p0.2"  # p0.2: LaTeX \boxed{}, "answer is X", bold labels, Korean particles (정답은 X)
+PARSER_VERSION = "p0.3"  # p0.2: LaTeX \boxed{}, "answer is X", bold labels, Korean particles (정답은 X);
+# p0.3 (owner 2026-11-03, rule reviewed with agy 2026-11-08): a last line "X. <option X text>" when p0.2 finds nothing
 SYSTEM_PROMPT = ('You are answering a Korean medical licensing examination question. Think as needed, '
                  'then give your final answer on the last line as JSON: {"answer": "<letter>"}')
 LETTERS = "ABCDE"
@@ -18,6 +20,8 @@ _BOXED = re.compile(r'\\boxed\{\s*(?:\\text\{)?\s*\(?([A-E])\)?\s*\}?\s*\}')
 # "Answer: C", "**Answer:** C", "the answer is (D)", "정답은 E입니다"; a following Latin letter (as in "CBC") blocks it.
 _LABELED_ANSWER = re.compile(r'(?:정답|answer|Answer|ANSWER)\s*(?:is|은|는)?\s*[:：]?\s*\**\s*\(?([A-E])(?![A-Za-z])')
 _BARE_LETTER = re.compile(r'^\(?([A-E])[.)]?$')
+# p0.3: "C. text", "C) text", "(C) text", "C번 text" (after NFKC, so full-width letters and stops count).
+_OPTION_LINE = re.compile(r'^\(?([A-E])(?:\)|\.|번)\s*(.+)$')
 
 
 @dataclass
@@ -67,7 +71,32 @@ def render_messages(item: QAItem) -> list[dict]:
     return [{"role": "system", "content": SYSTEM_PROMPT}, {"role": "user", "content": "\n\n".join(parts)}]
 
 
-def parse_answer(text: str, allowed: set[str]) -> str | None:
+def _clean(line: str) -> str:
+    return unicodedata.normalize("NFKC", line).strip().strip('*"\'“”').strip()
+
+
+def _same_text(a: str, b: str) -> bool:
+    def norm(s: str) -> str:
+        return " ".join(_clean(s).split()).rstrip(".").strip().casefold()
+    return norm(a) == norm(b)
+
+
+def _option_line(text: str, options: dict[str, str]) -> str | None:
+    """p0.3: the last non-empty line is a letter with exactly that option's text, and the line above is not another
+    option line (a cut-off or restated option list)."""
+    lines = [line for line in text.splitlines() if line.strip()]
+    if not lines:
+        return None
+    match = _OPTION_LINE.match(_clean(lines[-1]))
+    if not match or match.group(1) not in options or not _same_text(match.group(2), options[match.group(1)]):
+        return None
+    if len(lines) > 1 and _OPTION_LINE.match(_clean(lines[-2])):
+        return None
+    return match.group(1)
+
+
+def parse_answer(text: str, allowed: set[str], options: dict[str, str] | None = None) -> str | None:
+    """p0.2 patterns first; with the item's option texts, p0.3's option-line rule when they find nothing."""
     text = text or ""
     letter = None
     for pattern in (_JSON_ANSWER, _BOXED, _LABELED_ANSWER):
@@ -78,4 +107,6 @@ def parse_answer(text: str, allowed: set[str]) -> str | None:
     if letter is None:
         bare = _BARE_LETTER.match(text.strip())
         letter = bare.group(1) if bare else None
+    if letter is None and options:
+        letter = _option_line(text, options)
     return letter if letter in allowed else None

@@ -632,14 +632,13 @@ async def run_command_task(session, model, task, instances: list[Instance], clie
             while result.error and not result.transient and idx < len(FORMAT_MODES) - 1:
                 idx += 1
                 retry = await ask(msgs, FORMAT_MODES[idx])
+                result = retry
                 if not retry.error:
                     state["needed"][idx] += 1
                     if state["needed"][idx] >= DOWNGRADE_AFTER:
                         state["mode"] = max(state["mode"], idx)
-                    result = retry
                     break
                 if retry.transient:
-                    result = retry
                     break
             if result.error:
                 idx = state["mode"]
@@ -662,19 +661,15 @@ async def run_command_task(session, model, task, instances: list[Instance], clie
 def finish_command_run(session, model, run, instances: list[Instance], data_dir: Path, request: dict | None = None):
     """Score every stored reply (re-parsed, so parser fixes apply to resumed runs) and write the predictions."""
     from benchtoward.db import ItemResult, utcnow
-    from benchtoward.evaluate import _retry, write_predictions
+    from benchtoward.evaluate import _model_results, finish_model_run, write_predictions
     from benchtoward.llm import cost_usd
 
-    results = {r.instance_id: r for r in session.query(ItemResult).filter_by(run_id=run.id)}
+    results = _model_results(session, run, (i.instance_id for i in instances))
     run.n_items = len(instances)
     run.tokens_in = sum(r.tokens_in for r in results.values())
     run.tokens_out = sum(r.tokens_out for r in results.values())
     run.cost_usd = cost_usd(model, run.tokens_in, run.tokens_out)
     run.eval_date = date.today()
-    if any(_retry(r) for r in results.values()) or any(i.instance_id not in results for i in instances):
-        run.status, run.metrics_json = "failed", None
-        session.commit()
-        return run
 
     ordered = [results[i.instance_id] for i in instances]
     parsed, errors, modes, rows = [], [], [], []
@@ -693,7 +688,7 @@ def finish_command_run(session, model, run, instances: list[Instance], data_dir:
     if request is not None:
         metrics["request"] = request  # the route's thinking-off and schema-mode fields this run was sent with
     run.metrics_json = json.dumps(metrics, ensure_ascii=False)
-    run.status = "done"
+    finish_model_run(run, results.values())
     run.finished_at = utcnow()
     session.commit()
     write_predictions(run, prediction_rows(instances, rows, parsed, errors, modes), data_dir)

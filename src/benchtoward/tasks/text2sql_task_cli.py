@@ -119,7 +119,8 @@ def eval_text2sql(model: str = typer.Option(..., help="LLM slug, e.g. deepseek/d
         typer.echo(_summary(run))
         if run.status == "failed":
             typer.echo("  some answers still need a model call; run the same command again to resume")
-            raise typer.Exit(1)
+            from benchtoward.cli import _raise_failed_run
+            _raise_failed_run(run)
         metrics = json.loads(run.metrics_json)
         typer.echo(f"  {metrics['answers_from_cache']} of {run.n_items} answers from the dry-run cache; cut off at "
                    f"the limit {metrics['cut_off_rate']['all']:.1%}, format failures "

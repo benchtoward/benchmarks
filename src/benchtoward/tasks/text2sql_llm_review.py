@@ -200,22 +200,26 @@ def _load(path: Path) -> dict[str, dict]:
 
 
 async def run_review(items: list[Question], database: Path, clients: dict, prices: dict[str, tuple[float, float]],
-                     out: Path, *, budget_usd: float, extra: dict | None = None) -> dict:
+                     out: Path, *, budget_usd: float, extra: dict | None = None, mode: str = "auto",
+                     batch_retry: str = "sync", batch_registry: dict | None = None) -> dict:
     """Ask every reviewer about every item that has no cached answer for the current prompt. `budget_usd` is a hard
     cap with the accounting of `text2sql_llm_fix.Asker`: the spend already recorded under `out` counts, every
     attempt (retries included) reserves its worst case before it is sent, failed attempts that may have been billed
     are charged that estimate, and a request that raises or is cancelled is charged and recorded before the
     exception goes on. Returns this run's cost (failed attempts included) and counts."""
-    from benchtoward.tasks.text2sql_llm_fix import Attempts, Budget, worst_case_usd
+    from benchtoward.tasks.text2sql_llm_fix import Budget
+
+    from benchtoward.llm_batch import BatchBackend, BatchError
 
     out = Path(out)
     out.mkdir(parents=True, exist_ok=True)
     con = connect_readonly(database)
     schema = schema_summary(con)
     messages = {i.id: render_review_messages(i, con, schema) for i in items}
-    budget = Budget(budget_usd, Budget.spent_in(out))
+    budget = Budget(budget_usd, Budget.spent_in(out), ledger_root=out)
+    start_spend = budget.spent_usd
     state = {"cost_usd": 0.0, "asked": 0, "parsed": 0, "stopped_for_budget": False}
-    kwargs = {"extra": extra} if extra else {}
+    backend = BatchBackend(clients, prices, out, budget, mode=mode, retry=batch_retry, registry=batch_registry)
 
     def write(fh, record: dict) -> None:  # no await: nothing else runs meanwhile, and a cancelled task can write
         fh.write(json.dumps(record, ensure_ascii=False) + "\n")
@@ -227,36 +231,40 @@ async def run_review(items: list[Question], database: Path, clients: dict, price
         if cached.get(item.id, {}).get("prompt_sha") == sha and cached[item.id].get("review"):
             return
         price_in, price_out = prices.get(model, (0.0, 0.0))
-        attempts = Attempts(budget, worst_case_usd(msgs, MAX_TOKENS, (price_in, price_out)))
-        async with sem:
-            if not attempts.start():
+        body = {**(extra or {}), "model": model, "messages": msgs, "max_tokens": MAX_TOKENS, "temperature": 0.0}
+        sync_body = dict(body)
+        if body.get("usage") == {"include": True}:
+            body.pop("usage")
+        async def resolve(result):
+            if result.error == "budget" and result.attempts == 0:
                 state["stopped_for_budget"] = True
                 return
-            try:
-                result = await clients[model].chat(model, msgs, max_tokens=MAX_TOKENS,
-                                                   before_attempt=attempts.before_attempt, **kwargs)
-            except BaseException as exc:  # cancellation included: what was sent may have been billed
-                charged = attempts.charge_all()
-                state["cost_usd"] += charged
-                write(fh, {"id": item.id, "prompt_sha": sha, "review": None, "raw": "",
-                           "error": f"exception_{type(exc).__name__}", "tokens_in": 0, "tokens_out": 0,
-                           "cost_usd": 0.0, "cost_source": "estimate", "attempts": len(attempts.reserved),
-                           "failed_attempts": len(attempts.reserved), "failed_attempts_usd": round(charged, 6)})
-                raise
-        estimate = (result.tokens_in * price_in + result.tokens_out * price_out) / 1_000_000
-        cost = result.cost_usd if result.cost_usd is not None else estimate
-        failed = attempts.finish(cost, result.failed_attempts)
-        review = parse_review(result.content) if not result.error else None
-        state["cost_usd"] += cost + failed
-        state["asked"] += 1
-        state["parsed"] += review is not None
-        state["stopped_for_budget"] |= result.error == "budget"
-        write(fh, {"id": item.id, "prompt_sha": sha, "review": review, "raw": result.content, "error": result.error,
-                   "tokens_in": result.tokens_in, "tokens_out": result.tokens_out, "cost_usd": round(cost, 6),
-                   "cost_estimate_usd": round(estimate, 6),
-                   "cost_source": "route" if result.cost_usd is not None else "estimate",
-                   "attempts": result.attempts, "failed_attempts": result.failed_attempts,
-                   "failed_attempts_usd": round(failed, 6)})
+            estimate = (result.tokens_in * price_in + result.tokens_out * price_out) / 1_000_000
+            cost = result.cost_usd if result.cost_usd is not None else estimate
+            failed = result.failed_attempts_usd
+            review = parse_review(result.content) if not result.error else None
+            state["cost_usd"] += cost + failed
+            state["asked"] += 1
+            state["parsed"] += review is not None
+            state["stopped_for_budget"] |= result.error == "budget"
+            write(fh, {"id": item.id, "prompt_sha": sha, "review": review, "raw": result.content, "error": result.error,
+                       "tokens_in": result.tokens_in, "tokens_out": result.tokens_out, "cost_usd": round(cost, 6),
+                       "cost_estimate_usd": round(estimate, 6),
+                       "cost_source": "route" if result.cost_usd is not None else "estimate",
+                       "attempts": result.attempts, "failed_attempts": result.failed_attempts,
+                       "failed_attempts_usd": round(failed, 6),
+                       **({"charge_id": result.charge_id} if result.charge_id else {}),
+                       **({"batch_id": result.batch_id} if result.batch_id else {})})
+            if result.error == "http_402":
+                raise BatchError("LLM HTTP 402: insufficient balance; job stopped")
+
+        def cached_answer():
+            record = _load(_cache(out, model)).get(item.id, {})
+            return True if record.get("prompt_sha") == sha and record.get("review") else None
+
+        await backend.request(model, body, {"id": item.id, "prompt_sha": sha},
+                              resolve=resolve, cached=cached_answer, parse=parse_review,
+                              sync_body=sync_body, semaphore=sem)
 
     async def reviewer(model: str) -> None:
         cached = _load(_cache(out, model))
@@ -265,7 +273,7 @@ async def run_review(items: list[Question], database: Path, clients: dict, price
             await asyncio.gather(*(one(model, item, cached, fh, sem) for item in items))
 
     await asyncio.gather(*(reviewer(m) for m in clients))
-    state["cost_usd"] = round(state["cost_usd"], 6)
+    state["cost_usd"] = round(budget.spent_usd - start_spend, 6)
     return state
 
 

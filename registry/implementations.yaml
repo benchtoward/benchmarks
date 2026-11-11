@@ -32,6 +32,15 @@ vitaldb-arrhythmia-beat@0:
 - src/benchtoward/tasks/vitaldb_arrhythmia_abnormal.py
 - src/benchtoward/baselines/arrhythmia_rhythm_beat.py
 - src/benchtoward/scoring.py
+lydus-ecg12-dx@0:
+- src/benchtoward/tasks/lydus_ecg12_dx.py
+- src/benchtoward/tasks/lydus.py
+- src/benchtoward/tasks/lydus_dx.py
+- src/benchtoward/tasks/lydus_split.py
+- src/benchtoward/tasks/lydus_labels.py
+- src/benchtoward/tasks/lydus_reporting.py
+- src/benchtoward/baselines/lydus_ecg.py
+- src/benchtoward/baselines/lydus_resnet.py
 inspire-aki@0:
 - src/benchtoward/tasks/inspire_aki.py
 - src/benchtoward/baselines/inspire_aki.py

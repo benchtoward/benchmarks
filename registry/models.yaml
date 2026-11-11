@@ -160,6 +160,16 @@
   type: baseline
   provider: benchtoward
   developer: BenchToward
+- slug: benchtoward/ioh-wave-cnn
+  name: Authors' waveform CNN trained by BenchToward (Yang et al. 2025)
+  type: baseline
+  provider: benchtoward
+  developer: BenchToward
+- slug: benchtoward/ioh-wave-transformer
+  name: Authors' waveform transformer trained by BenchToward (Yang et al. 2025)
+  type: baseline
+  provider: benchtoward
+  developer: BenchToward
 - slug: benchtoward/constant-yes
   name: Constant Yes (ignores the input)
   type: baseline

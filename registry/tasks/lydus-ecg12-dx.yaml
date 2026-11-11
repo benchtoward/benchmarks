@@ -1,0 +1,218 @@
+slug: lydus-ecg12-dx
+version: 0
+visibility: open  # published by the maintainers (2026-11-10)
+publication_note: >-
+  Published by the maintainers on 2026-11-10 after the benchmark check, which passed with a headroom warning
+  (H = 0.060). Records are split by inferred groups that approximate patients; about 6-16% of test records may repeat
+  a patient seen in training. Per-item predictions are not offered for this benchmark because it uses real patient
+  recordings. Research evaluation, not validated for patient care.
+dataset: lydus-snuh-ecg-50k
+kind: multilabel
+primary_metric: macro_auroc
+title: Rhythm, premature beat and conduction labels from a 10-second 12-lead ECG (multi-label, macro AUROC)
+protocol:
+  adopted: >-
+    BenchToward-defined (owner, 2026-11-04): the labels the release itself provides, nothing BenchToward-made. LYDUS
+    gives every record four reviewed label columns (rhythm, premature beat, bundle branch block, AV block); each
+    definite value becomes a binary target, and a model is scored by the AUROC of each of 15 primary targets on the
+    records where that target is known, averaged with equal weight (macro AUROC), with macro F1 beside it. There is no
+    dataset paper and no published protocol on LYDUS; the design is docs/design/2026-11-04-lydus-provided-labels-design.md.
+  source: >-
+    Seoul National University Hospital. SNUH LYDUS ECG 50K (version 1.1.1). KHDP. 2025. doi:10.23421/2025.0704
+  dataset_release: >-
+    LYDUS-SNUH-ECG-50K 1.1.1, KHDP, doi:10.23421/2025.0704, CC BY 4.0 (ECG examinations at Seoul National University
+    Hospital, 2010-2020; waveforms and the electrocardiograph's interpretation, reviewed by an anesthesiologist and an
+    intensivist; drawn from the 160K release to enrich abnormal rhythms and conduction)
+data:
+  files:
+    LYDUS_SNUH_ECG_ANONYMIZED_50K_0512.csv: 841fd752cdb7420d6f1e70e39c364dd21fc89120d2506421f0a40cd896ad5045
+    LYDUS_SNUH_ECG_ANONYMIZED_50k_500hz_1219.npz: c53419da2e875da1db145f975915954eff9f05778acae2945ae25373b9b47154
+  signals: >-
+    50,000 records x 8 stored leads (I, II, V1-V6) x 5,000 int16 samples (500 Hz, 10 s), stored uncompressed and read
+    by memory map. The dataset page says 12 channels; the file holds the 8 independent leads, and III, aVR, aVL and
+    aVF are derived (III = II - I, aVR = -(I + II) / 2, aVL = I - II / 2, aVF = II - I / 2). Amplitude units are not
+    documented; lead II's QRS spans about 215 counts (median over 2,000 records), consistent with about 4.9 uV per
+    count. Inputs keep the stored counts.
+input:
+  hz: 500
+  samples: 5000
+  leads: [I, II, III, aVR, aVL, aVF, V1, V2, V3, V4, V5, V6]
+  also: [age, sex]   # as in the Challenge's headers; age missing for 4,586 records, sex for 44
+  lead_sets:
+    "12": [I, II, III, aVR, aVL, aVF, V1, V2, V3, V4, V5, V6]
+    "6": [I, II, III, aVR, aVL, aVF]
+    "4": [I, II, III, V2]
+    "3": [I, II, V2]
+    "2": [I, II]
+  never: >-
+    new_id or any other record id, the record's position in the release, the dx text, the reviewed rhythm,
+    premature beat, bundle branch block and AV block columns, and the electrocardiograph's measurements (rates,
+    intervals, axes): they come from the same interpretation as the labels (leakage_checks)
+label:
+  source: >-
+    the release's reviewed label columns `rhythm`, `premature beat`, `bbb` and `avb` (benchtoward.tasks.lydus_labels);
+    the dx text and the electrocardiograph's measurements are not used for labels
+  columns: [rhythm, premature beat, bbb, avb]
+  targets: ["rhythm:A.fib", "rhythm:Other sinus rhythm", "rhythm:NSR", "rhythm:S.brady", "rhythm:Junctional rhythm",
+            "rhythm:A.flutter", "rhythm:S.tachy", "rhythm:S.arrhythmia", "rhythm:SVT", "rhythm:WPW", "premature beat:APC",
+            "premature beat:VPC", "bbb:RBBB", "bbb:LBBB", "bbb:LAFB", "bbb:BFB(RBBB+LAFB)", "bbb:BFB(RBBB+LPFB)", "bbb:LPFB",
+            "bbb:BFB", "avb:1AVB", "avb:Variable AVB", "avb:IVB", "avb:2AVB", "avb:3AVB", "avb:AV dissociation"]
+  primary: ["rhythm:A.fib", "rhythm:A.flutter", "rhythm:Junctional rhythm", "rhythm:NSR", "rhythm:Other sinus rhythm",
+            "rhythm:S.brady", "rhythm:S.tachy", "premature beat:VPC", "bbb:RBBB", "bbb:LBBB", "bbb:LAFB",
+            "bbb:BFB(RBBB+LAFB)", "avb:1AVB", "avb:Variable AVB", "avb:IVB"]
+  rules: >-
+    A target `column:value` is positive when the column holds exactly that value; "APC,VPC" makes both premature-beat
+    targets positive; composite bundle-branch values (BFB(...)) are their own targets and do not switch on their
+    parts. "NSP" in premature beat, bbb or avb is no named finding: that column's targets are known negatives. In
+    rhythm, "NSP", "Possible pacing", "Undetermined" and "Others" are not a definite rhythm, so every rhythm target of
+    that record is unknown (masked in training, thresholds and scoring); the other columns stay known. A value outside
+    this vocabulary masks its column and is listed in build_summary.json (audit; none in 1.1.1).
+  primary_rule: >-
+    fixed before any model run: at least 20 positives, 20 negatives and 10 positive groups in the test split of both
+    this task and lydus-ecg-image@0 (whose 2,000 test records are a subset); the other 10 targets are reported, not
+    averaged into the headline. `build` refuses a build where a primary target falls below the minimum.
+counts:
+  # Instances per split and positives per target (build of 2026-11-04); `build` refuses one that differs. Rhythm
+  # targets are known for 26,960 train, 3,915 validation and 7,605 test records; the other columns for all records.
+  records: {train: 34998, validation: 4998, test: 9999}
+  groups: {train: 17586, validation: 2544, test: 5228}
+  positives:
+    train: {"rhythm:A.fib": 11818, "rhythm:Other sinus rhythm": 4918, "rhythm:NSR": 4109, "rhythm:S.brady": 2093,
+            "rhythm:Junctional rhythm": 1584, "rhythm:A.flutter": 1455, "rhythm:S.tachy": 692, "rhythm:S.arrhythmia": 211,
+            "rhythm:SVT": 74, "rhythm:WPW": 6, "premature beat:APC": 72, "premature beat:VPC": 2175, "bbb:RBBB": 7294,
+            "bbb:LBBB": 1165, "bbb:LAFB": 919, "bbb:BFB(RBBB+LAFB)": 509, "bbb:BFB(RBBB+LPFB)": 253, "bbb:LPFB": 187,
+            "bbb:BFB": 4, "avb:1AVB": 5942, "avb:Variable AVB": 1030, "avb:IVB": 674, "avb:2AVB": 153, "avb:3AVB": 58,
+            "avb:AV dissociation": 2}
+    validation: {"rhythm:A.fib": 1806, "rhythm:Other sinus rhythm": 685, "rhythm:NSR": 564, "rhythm:S.brady": 286,
+                 "rhythm:Junctional rhythm": 217, "rhythm:A.flutter": 194, "rhythm:S.tachy": 122,
+                 "rhythm:S.arrhythmia": 34, "rhythm:SVT": 5, "rhythm:WPW": 2, "premature beat:APC": 9,
+                 "premature beat:VPC": 328, "bbb:RBBB": 1051, "bbb:LBBB": 150, "bbb:LAFB": 135, "bbb:BFB(RBBB+LAFB)": 80,
+                 "bbb:BFB(RBBB+LPFB)": 30, "bbb:LPFB": 16, "bbb:BFB": 2, "avb:1AVB": 860, "avb:Variable AVB": 136,
+                 "avb:IVB": 95, "avb:2AVB": 11, "avb:3AVB": 11, "avb:AV dissociation": 0}
+    test: {"rhythm:A.fib": 3216, "rhythm:Other sinus rhythm": 1397, "rhythm:NSR": 1182, "rhythm:S.brady": 624,
+           "rhythm:Junctional rhythm": 428, "rhythm:A.flutter": 484, "rhythm:S.tachy": 181, "rhythm:S.arrhythmia": 71,
+           "rhythm:SVT": 19, "rhythm:WPW": 3, "premature beat:APC": 20, "premature beat:VPC": 573, "bbb:RBBB": 1981,
+           "bbb:LBBB": 392, "bbb:LAFB": 291, "bbb:BFB(RBBB+LAFB)": 165, "bbb:BFB(RBBB+LPFB)": 50, "bbb:LPFB": 60,
+           "bbb:BFB": 1, "avb:1AVB": 1745, "avb:Variable AVB": 314, "avb:IVB": 210, "avb:2AVB": 53, "avb:3AVB": 16,
+           "avb:AV dissociation": 0}
+exclusions:
+  no_analysis: "the dx says the electrocardiograph made no interpretation (no or fewer than 4 QRS complexes): 5 records"
+  flat_signal: "all 8 stored leads constant: 3 records"
+split:
+  by: group
+  unit: >-
+    group of records linked as likely repeat ECGs of one patient (the release has no patient id; see evidence)
+  rules:
+    template: {min_corr: 0.96, max_age_gap: 2}   # same sex; median beats (8 leads) correlate >= 0.96
+    index: {max_id_gap: 10, max_age_gap: 1}      # same sex; new_id at most 10 apart in the 160K index
+  seed: 20261030
+  fractions: [0.7, 0.1, 0.2]
+  method: >-
+    groups are the connected components of the links (named by their smallest new_id); the sorted group names are
+    shuffled with numpy default_rng(seed) and fill train, validation and test by cumulative share of records
+  file: registry/splits/lydus-snuh-ecg-50k-1.1.1-split.csv   # new_id, group, split for all 50,000 records
+  # The public copy has new_id, split only; sha256 is of the full file, which the build re-derives and checks.
+  sha256: a7fddba5764a73d8c1c936296fa52909a822b797be321ec9448c7cc345ea3779
+  evidence: >-
+    Measured 2026-10-30 on the 49,667 records with a median-beat template. Pairs of records whose templates correlate
+    >= 0.96 and whose ages differ by at most 2 years: 25,273 of the same sex, 969 of opposite sex (who cannot be the
+    same patient); at >= 0.98: 6,045 against 8. Records next to each other in new_id order are of the same sex and
+    age in 39.4% of pairs one apart, against 1.2% for records 50-200 apart. So LYDUS holds repeat ECGs of one patient,
+    although the 160K page counts 167,199 patients. Linking: 25,273 template and 37,634 index links; 25,360 groups,
+    30,407 records in groups of two or more, the largest 1,152 records.
+  residual_leakage: >-
+    Test records with a likely repeat outside test, estimated as test records with a same-sex non-test neighbour
+    (ages within 2 years) at a template correlation of at least t minus those with an opposite-sex one: with this
+    split 1,638 of 9,999 at t = 0.93 and 582 at 0.95 (none left at 0.96 or by the index rule); with a record-level
+    random split of the same fractions 3,716, 3,783 and 3,270, and 2,568 by the index rule (build_summary.json,
+    leakage). Repeats whose median beats correlate below 0.93 (another rhythm, years apart) are not detected.
+metrics:
+  primary: macro_auroc
+  secondary: [macro_f1]
+  definitions: >-
+    macro_auroc: for each primary target, the AUROC of the model's score on the test records where the target is
+    known (ties count half), averaged with equal weight over the 15 primary targets. macro_f1: per primary target, F1
+    of score >= threshold on the same records, averaged; thresholds are tuned per target on known validation labels
+    (the F1-best score; 0.5 below 10 validation positives). An answer with labels only (an LLM or VLM) enters as
+    scores 1 for the targets it names and 0 otherwise, so its AUROC equals balanced accuracy; unparsed answers name
+    nothing, and parse and error rates are reported.
+  bootstrap: {n: 1000, by: group, seed: 0}
+  by_class: [positives, known, auroc, f1]
+  report_only: "the 10 non-primary targets: support and AUROC where defined"
+prediction: >-
+  for each record a score in [0, 1] for each of the 25 targets (lydus_labels.TARGETS order); a label-only answer
+  lists the targets it finds
+baselines:
+  thresholds: >-
+    per primary target, the highest F1 on the known validation labels; 0.5 for a target with fewer than 10
+    validation positives
+  training: "every trained baseline uses only the known entries of each target (masked loss or per-target fits)"
+  benchtoward/prior: "train prevalence of each target as the score for every record (macro AUROC 0.5 by construction)"
+  benchtoward/lydus-hgb-beat-features: >-
+    one HistGradientBoostingClassifier per target (300 iterations, learning rate 0.1, random_state 0; targets with
+    fewer than 20 known train positives score their train prevalence) on lead II RR features, each lead's median beat
+    (-200 to +400 ms around lead II R peaks, every 10 ms) and amplitude percentiles of the band-passed leads, with age
+    and sex
+  benchtoward/lydus-resnet1d: >-
+    the network of Ribeiro et al. 2020 (antonior92/automatic-ecg-diagnosis @ 4039348, MIT), ported to PyTorch and
+    trained from scratch on the train split with its train.py settings and a masked binary cross-entropy over the 25
+    targets; input resampled to 400 Hz and padded to 4,096 samples; the weights of the lowest validation loss
+  reduced_lead_sets: "both trained baselines are also fitted on the 6-, 4-, 3- and 2-lead sets (report only)"
+limitations:
+  - >-
+    The data are public (KHDP, open access), so the test records and their labels can be looked up; a model trained on
+    LYDUS outside BenchToward's train split may have seen the test records.
+  - >-
+    Labels are the release's reviewed columns: the electrocardiograph's interpretation reviewed by two clinicians,
+    not a fresh over-read. The release documents neither the review procedure nor what "NSP" stands for; this task
+    reads "NSP" as no named finding (premature beat, bbb, avb) and as no definite rhythm (rhythm).
+  - >-
+    The four columns name rhythm and conduction only: hypertrophy, ischaemia, QT and axis findings in the dx text are
+    not scored.
+  - >-
+    Rhythm is unknown for 24% of test records ("Possible pacing", "NSP", "Undetermined", "Others"); rhythm targets are
+    scored on the other 7,605.
+  - >-
+    A label-only answer has one operating point, so its macro AUROC is a balanced accuracy and is not comparable to a
+    scoring model's ranking AUROC; the leaderboard says which kind each run is.
+leakage_checks:
+  # Report only (`baseline lydus-ecg12-dx --report`); none of these is an input.
+  measurements_only: >-
+    gradient boosting on the electrocardiograph's measurements (ventricular and atrial rate, PR, QRS, QT, QTc, P, QRS
+    and T axes) with age and sex: the reviewed labels come from the same interpretation (rates for the sinus
+    rhythms, PR for 1AVB, QRS duration for the blocks), so this shows what those numbers are worth and why they are
+    never inputs
+  demographics_only: "gradient boosting on age and sex alone"
+  order_only: >-
+    gradient boosting on new_id alone: what the record's position in the release would be worth (neighbouring
+    records are often the same patient), which is why instance ids are opaque
+  record_level_split: >-
+    the gradient-boosting baseline trained and tested on a record-level random split of the same fractions (seed
+    20261030), against this group split: how much repeat ECGs across the split would inflate a score
+  split_leakage: "split.residual_leakage (build_summary.json, leakage)"
+deviations:
+  - >-
+    Not a published protocol: no paper or challenge defines a task on LYDUS. Targets, the primary set, the masking of
+    uncertain rhythm values and the metric are BenchToward's (owner, 2026-11-04; design document in protocol).
+  - >-
+    Earlier drafts of this version scored the PhysioNet/CinC Challenge 2021 classes from a BenchToward-made map of the
+    dx text (registry/maps/lydus-dx-snomed-v0.csv). That map is no longer a label source; the build reads dx only to
+    leave out the 5 records the electrocardiograph did not analyse, so the record set and split are unchanged.
+  - >-
+    Leads: LYDUS stores 8 independent leads; III, aVR, aVL and aVF are derived from I and II, so the 6-lead set
+    carries no more information than the 2-lead set and the 4-lead set no more than the 3-lead set.
+  - >-
+    Population: LYDUS 50K was drawn from the 160K release to enrich abnormal rhythms and conduction (inclusion
+    criteria on KHDP), so prevalences are not those of a general ECG population.
+  - >-
+    Split: a 70/10/20 split of LYDUS by groups of likely repeat ECGs (split.rules), because the release has no patient
+    id. One hospital only.
+  - >-
+    Records left out: 5 without an interpretation and 3 without signal (exclusions).
+owner_decisions:
+  - "D17: confirm on /admin that LYDUS-SNUH-ECG-50K patients are SNUH patients (KHDP summary: ECG examinations at SNUH, 2010-2020)."
+  - "2026-11-04: score only the classes the release provides, with macro AUROC as the primary metric (decided)."
+  - >-
+    Split: keep this group split (residual repeats estimated at about 6-16% of test records), use a record-level
+    split (about 37%), or ask the LYDUS authors for a patient map.
+  - "Reduced lead sets: report-only beside the 12-lead card (this build), or cards of their own."

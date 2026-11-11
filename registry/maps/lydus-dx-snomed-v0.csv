@@ -1,0 +1,729 @@
+statement,n_records,role,codes,hedged_codes,note
+Abnormal ECG,41945,summary,,,overall interpretation or report header; not a finding
+Atrial fibrillation,18289,finding,164889003,,
+with 1st degree A-V block,8544,finding,270492004,,
+Right bundle branch block,8064,finding,59118001,,scored with CRBBB (equivalent classes)
+Sinus rhythm,7688,finding,426783006,,Challenge class 426783006 is 'sinus rhythm'
+Normal sinus rhythm,7556,finding,426783006,,Challenge class 426783006 is 'sinus rhythm'
+", age undetermined",6679,modifier,,,
+Prolonged QT,5208,finding,111975006,,
+ST &,4792,modifier,164930006,,12SL 'ST & T wave abnormality': ST part; the T line that follows carries TAb
+Left axis deviation,4039,finding,39732003,,
+Incomplete right bundle branch block,3345,finding,713426002,,
+with rapid ventricular response,3328,modifier,,,
+Inferior infarct,3288,finding,164865005,,
+with premature ventricular or aberrantly conducted complexes,2974,finding,,427172004,"12SL statement for wide premature complexes, ventricular OR aberrantly conducted: an alternative, so the PVC code is hedged, not a label (owner, 2026-11-03); the reviewed 'premature beat' column marks 97.6% of these VPC"
+"T wave abnormality, consider lateral ischemia",2836,finding,164934002,164861001,
+Sinus bradycardia,2835,finding,426177001,,
+Possible,2760,hedge,,,"qualifies the next finding line: its codes are hedged, not labels"
+Otherwise normal ECG,2633,summary,,,overall interpretation or report header; not a finding
+Left ventricular hypertrophy,2529,finding,164873001,,
+Nonspecific T wave abnormality,2519,finding,164934002,,
+"Minimal voltage criteria for LVH, may be normal variant",2415,finding,,55827005,
+Voltage criteria for left ventricular hypertrophy,2391,finding,55827005,,
+or digitalis effect,2230,modifier,,,
+"T wave abnormality, consider inferior ischemia",2214,finding,164934002,164861001,
+Atrial flutter,2177,finding,164890007,,
+Rightward axis,2147,finding,,,"12SL: axis about +90 to +100 degrees (median 97 here), below its right axis deviation"
+Junctional rhythm,2123,finding,29320008,,
+Nonspecific ST and T wave abnormality,2089,finding,428750005,,Challenge vocabulary keeps 'nonspecific st t abnormality' apart from TAb
+Left anterior fascicular block,2025,finding,445118002,,
+Borderline ECG,1785,summary,,,overall interpretation or report header; not a finding
+with variable A-V block,1780,modifier,,,
+with slow ventricular response,1759,modifier,,,
+Low voltage QRS,1636,finding,251146004,,
+Electronic ventricular pacemaker,1635,finding,10370003,,paced rhythm
+", probably digitalis effect",1622,modifier,,,
+Premature ventricular complexes,1616,finding,427172004,,
+Cannot rule out,1479,hedge,,,"qualifies the next finding line: its codes are hedged, not labels"
+with,1457,modifier,,,
+"T wave abnormality, consider anterolateral ischemia",1454,finding,164934002,164861001,
+Nonspecific ST abnormality,1390,finding,164930006,,
+with repolarization abnormality,1355,modifier,,,
+Left bundle branch block,1328,finding,164909002,,scored with CLBBB (equivalent classes)
+Septal infarct,1325,finding,164865005,,
+Non-specific intra-ventricular conduction block,1242,finding,698252002,,
+with occasional,1197,modifier,,,
+Left atrial enlargement,1184,finding,67741000119109,,
+"T wave abnormality, consider anterior ischemia",1182,finding,164934002,164861001,
+"Moderate voltage criteria for LVH, may be normal variant",1157,finding,,55827005,
+Accelerated,1145,modifier,,,with the next line (junctional rhythm): accelerated; the next line carries the code
+with a competing junctional pacemaker,1128,modifier,,,
+Sinus tachycardia,1035,finding,427084000,,
+Ventricular-paced rhythm,1024,finding,10370003,,paced rhythm
+"T wave abnormality, consider inferolateral ischemia",999,finding,164934002,164861001,
+*** Bifascicular block ***,969,finding,,,the blocks themselves are separate statements
+Undetermined rhythm,956,finding,,,no Challenge code
+"Abnormal QRS-T angle, consider primary T wave abnormality",923,finding,,164934002,
+Lateral infarct,899,finding,164865005,,
+Premature atrial complexes,838,finding,284470004,,
+Wide QRS rhythm,833,finding,,,no Challenge code
+Anterior infarct,824,finding,54329005,,
+with QRS widening,785,modifier,,,
+Right ventricular hypertrophy,778,finding,89792004,,
+Atrial-sensed ventricular-paced rhythm,686,finding,10370003,,paced rhythm
+Normal ECG,672,summary,,,overall interpretation or report header; not a finding
+with frequent,629,modifier,,,
+Anteroseptal infarct,627,finding,164865005,,
+Left posterior fascicular block,607,finding,445211001,,
+Non-specific intra-ventricular conduction delay,542,finding,698252002,,
+Demand pacemaker; interpretation is based on intrinsic rhythm,514,finding,,,"pacemaker present, intrinsic rhythm read"
+with prolonged AV conduction,485,modifier,,,"follows paced rhythms (long programmed AV delay), not PR prolongation"
+AV dual-paced rhythm,479,finding,10370003,,paced rhythm
+Pulmonary disease pattern,475,finding,,,no Challenge code
+and,466,modifier,,,
+Right axis deviation,460,finding,47665007,,
+AV sequential or dual chamber electronic pacemaker,454,finding,10370003,,paced rhythm
+Fusion complexes,445,finding,13640000,,
+with sinus arrhythmia,439,finding,427393009,,
+Marked T wave abnormality consider anterolateral ischemia,387,finding,164934002,164861001,
+Premature supraventricular complexes,385,finding,63593006,,scored with PAC (equivalent classes)
+Incomplete left bundle block,374,finding,251120003,,
+Anterolateral infarct,373,finding,164865005,,
+with QRS widening and repolarization abnormality,358,modifier,,,
+probably abnormal ECG,357,summary,,,overall interpretation or report header; not a finding
+ventricular-paced complexes,355,finding,251266004,,"intermittent paced complexes: pacing pattern, not a paced rhythm"
+"Unusual P axis, possible ectopic atrial rhythm",349,finding,,106068003,
+RSR' or QR pattern in V1 suggests right ventricular conduction delay,317,finding,,,no Challenge code (not IRBBB)
+Atrial-paced rhythm,291,finding,10370003,,paced rhythm
+Marked sinus bradycardia,290,finding,426177001,,
+Electronic atrial pacemaker,287,finding,10370003,,paced rhythm
+*** ** ** ** * ACUTE MI ** ** ** **,276,finding,57054005,,
+with marked sinus arrhythmia,230,finding,427393009,,
+"Marked ST abnormality, possible lateral subendocardial injury",228,finding,164930006,,
+Right superior axis deviation,225,finding,,,no Challenge code
+or,207,alternative,,,"joins two findings as alternatives: the finding before and the finding after become hedged (owner, 2026-11-03)"
+with 2:1 A-V conduction,204,modifier,,,
+"Marked ST abnormality, possible inferior subendocardial injury",199,finding,164930006,,
+Aberrant conduction,162,modifier,,,
+"ST elevation, consider early repolarization, pericarditis, or injury",160,finding,164931005,,
+with 2nd degree A-V block (Mobitz I),155,finding,54016002,,
+Junctional bradycardia,154,finding,29320008,,
+** ** ACUTE MI / STEMI ** **,153,finding,57054005,,
+because QTc (Bazett) >470 ms,150,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+prolonged QT,150,finding,111975006,,
+with 4:1 A-V conduction,148,modifier,,,
+ST elevation consider inferior injury or acute infarct,140,finding,164931005,,
+"Marked T-wave abnormality, consider inferolateral ischemia",120,finding,164934002,164861001,
+in a pattern of bigeminy,119,modifier,,,
+*** Suspect unspecified pacemaker failure,117,finding,,,no Challenge code
+normal ECG,117,summary,,,overall interpretation or report header; not a finding
+"*** Suspect arm lead reversal, interpretation assumes no reversal",111,quality,251139008,,kept; the other statements assume no reversal
+Indeterminate axis,111,finding,251200008,,
+", possibly acute",110,modifier,,,
+"*** Poor data quality, interpretation may be adversely affected",109,quality,,,signal-quality note; the record is kept
+suspected left ventr. hypertrophy,109,finding,,164873001,
+Supraventricular tachycardia,105,finding,426761007,,
+Consider right ventricular involvement in acute inferior infarct,98,finding,,57054005,
+", plus right ventricular hypertrophy",95,finding,89792004,,
+low QRS amplitudes,94,finding,251146004,,
+with short PR,92,finding,49578007,,
+", and consecutive",91,modifier,,,
+Inferior-posterior infarct,86,finding,164865005,,
+borderline ECG,81,summary,,,overall interpretation or report header; not a finding
+with complete heart block,79,finding,27885002,,
+because peak-to-peak amplitude <0.5 mV in [I II III],78,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because HR >100 per minute,75,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+tachycardia,75,finding,,,Schiller statement without 'sinus'; no Challenge code for tachycardia in general
+"Marked T wave abnormality, consider lateral ischemia",74,finding,164934002,164861001,
+"Unusual P axis, possible ectopic atrial bradycardia",73,finding,,106068003,
+"Marked ST abnormality, possible anterolateral subendocardial injury",72,finding,164930006,,
+"Junctional ST depression, probably normal",70,finding,,,normal variant
+"ST depression, consider subendocardial injury",70,finding,429622005,,
+"Marked ST abnormality, possible anterior subendocardial injury",69,finding,164930006,,
+"ST abnormality, possible digitalis effect",69,finding,164930006,,
+with ventricular escape complexes,66,finding,75532003,,
+(masked by fascicular block?),65,modifier,,,
+Right atrial enlargement,65,finding,446358003,,
+atrial fibrillation,64,finding,164889003,,
+because high variance in RR intervals and PR duration not present,64,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+with A-V dissociation,63,finding,50799005,,
+probably normal ECG,61,summary,,,overall interpretation or report header; not a finding
+with retrograde conduction,60,modifier,,,
+ST elevation consider lateral injury or acute infarct,56,finding,164931005,,
+ST elevation consider anterior injury or acute infarct,53,finding,164931005,,
+"Marked ST abnormality, possible inferolateral subendocardial injury",52,finding,164930006,,
+R/S inversion area between V1 and V2,52,finding,,,no Challenge code
+ST elevation consider anterolateral injury or acute infarct,51,finding,164931005,,
+because QRS angle between -30° and 0°,48,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+minor left axis deviation,48,finding,,,no Challenge code
+Biventricular pacemaker detected,47,finding,10370003,,paced rhythm
+"Unusual P axis, possible ectopic atrial tachycardia",47,finding,,106068003,
+Wide QRS tachycardia,47,finding,,,no Challenge code
+"ST depression, consider subendocardial injury or digitalis effect",46,finding,429622005,,
+negative T-wave (anterior),44,finding,59931005,,
+Early repolarization,43,finding,428417006,,
+"Marked T wave abnormality, consider inferior ischemia",43,finding,164934002,164861001,
+with 2nd degree A-V block,41,finding,195042002,,
+"Marked T wave abnormality, consider anterior ischemia",40,finding,164934002,164861001,
+"ST elevation, consider early repolarization",39,finding,164931005,,
+T-wave near baseline (lateral),38,finding,164934002,,flat T wave
+suspected right ventr. hypertrophy,38,finding,,89792004,
+S waves up to V6,37,finding,,,no Challenge code
+because QRS angle between -90° and -30°,36,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+left axis deviation,36,finding,39732003,,
+negative T-wave (lateral),36,finding,59931005,,
+Idioventricular rhythm,35,finding,49260003,,
+Blocked,34,modifier,,,
+"negative T-wave (lateral, anterior)",34,finding,59931005,,
+probably MI (inferior),34,finding,,164865005,
+because Rp duration in [V5|V6] <60 ms and QRS angle between -45° and -90°,33,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+left anterior hemiblock,33,finding,445118002,,
+"Unusual P axis and short PR, probable junctional rhythm",32,finding,,29320008,
+supraventricular complexes,32,modifier,,,"after 'with occasional/frequent' in paced or junctional rhythms: conducted beats, not premature"
+with 3:1 A-V conduction,31,modifier,,,
+with junctional escape complexes,31,finding,426995002,,
+Biatrial enlargement,30,finding,195126007,,
+slightly depressed ST segment (lateral),29,finding,429622005,,
+because premature beat with different morphology,28,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+occasional premature ventricular complexes,28,finding,427172004,,
+"Unusual P axis and short PR, probable junctional tachycardia",27,finding,,426648003,
+complete right bundle branch block,27,finding,59118001,,scored with CRBBB (equivalent classes)
+AV dual-paced complexes,26,finding,251266004,,"intermittent paced complexes: pacing pattern, not a paced rhythm"
+ST-segment elevation (anterior),25,finding,164931005,,
+Lateral injury pattern,24,finding,164931005,,
+because premature beat with same morphology,24,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+occasional premature supraventr. complexes,24,finding,63593006,,scored with PAC (equivalent classes)
+with undetermined rhtyhm irregularity,24,modifier,,,
+1st degree A-V block,23,finding,270492004,,
+because PR duration >=220 ms,23,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+"Increased R/S ratio in V1, consider early transition or posterior infarct",22,finding,,,no Challenge code
+T-wave near baseline (inferior),22,finding,164934002,,flat T wave
+because T <0.01 mV in [II],22,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+RSR' pattern,21,finding,,,no Challenge code (not IRBBB)
+probably MI (anterior),21,finding,,164865005,
+slightly depressed ST segment (inferior),20,finding,429622005,,
+R/S inversion area between V5 and V6,19,finding,,,no Challenge code
+ST elevation consider inferolateral injury or acute infarct,19,finding,164931005,,
+Inferior injury pattern,18,finding,164931005,,
+because QRS angle between 90° and 120°,18,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [aVL],18,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+minor right axis deviation,18,finding,,,no Challenge code
+with 2nd degree A-V block (Mobitz II),18,finding,426183003,,
+no R/S inversion up to V6,17,finding,,,no Challenge code
+"Marked ST abnormality, possible anterseptal subendocardial injury",16,finding,164930006,,
+because T <0.01 mV in [aVL],16,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because enlarged to grossly enlarged R in [V2] and QRS angle > 80°,16,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+sinus complexes,16,modifier,,,
+because HR >100 per minute and normal P waves,15,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because R >= R' in [V2],15,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+sinus tachycardia,15,finding,427084000,,
+*** Age and gender specific ECG analysis ***,14,summary,,,overall interpretation or report header; not a finding
+Acute pericarditis,14,finding,,,no Challenge code
+slightly depressed ST segment (anterior),14,finding,429622005,,
+"Marked ST abnormality, possible septal subendocardial injury",13,finding,164930006,,
+Posterior infarct,13,finding,164865005,,
+Q wave (inferior),13,finding,164917005,,
+Q wave (lateral),13,finding,164917005,,
+"ST-segment depression (lateral, anterior)",13,finding,429622005,,
+because ST <=-0.05 mV and ST slope <0.1 mV/s in [aVL],13,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because peak-to-peak amplitude <1 mV in [V1 V2 V3 V4 V5 V6],13,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+large T wave,13,finding,251259000,,
+Note ! insufficient similar beats,12,quality,,,signal-quality note; the record is kept
+"T-wave near baseline (lateral, anterior)",12,finding,164934002,,flat T wave
+because QRS angle between -150° and -90°,12,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because QRS duration >=120 ms and normal P waves,12,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [V2],12,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+extreme axis deviation,12,finding,,,no Challenge code
+intraventricular block,12,finding,698252002,,
+"negative T-wave (lateral, inferior, anterior)",12,finding,59931005,,
+ST-segment depression (lateral),11,finding,429622005,,
+T-wave near baseline (anterior),11,finding,164934002,,flat T wave
+atrial-paced complexes,11,finding,251268003,,"intermittent paced complexes: pacing pattern, not a paced rhythm"
+because ST <=-0.05 mV and ST slope <0.1 mV/s in [II],11,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+complete left bundle branch block,10,finding,164909002,,scored with CLBBB (equivalent classes)
+probably MI (lateral),10,finding,,164865005,
+right axis deviation,10,finding,47665007,,
+** ** ** ** * Pediatric ECG Analysis * ** ** ** **,9,summary,,,overall interpretation or report header; not a finding
+Anterior injury pattern,9,finding,164931005,,
+Q wave (anterior),9,finding,164917005,,
+Wolff-Parkinson-White syndrome,9,finding,74390002,,
+because QRS angle between 120° and 180°,9,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [V2 V3],9,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+intrinsic complexes,9,modifier,,,
+negative T-wave (inferior),9,finding,59931005,,
+because J >=0.2 mV in [V3],8,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST <=-0.05 mV and ST slope <0.1 mV/s in [II aVF],8,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST <=-0.05 mV and ST slope <0.1 mV/s in [V6],8,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+large negative T-wave (anterior),8,finding,59931005,,
+nonspecific T wave change,8,finding,164934002,,
+probably acute MI (anterior),8,finding,,57054005,
+ST-segment depression (anterior),7,finding,429622005,,
+T-wave inversion in,7,finding,59931005,,free text; the leads follow on the next line
+"T-wave near baseline (lateral, inferior)",7,finding,164934002,,flat T wave
+because (R+S) in [V4] and very acute to negative QRS angle,7,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because (R+S) in [V6] and very acute to negative QRS angle,7,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because Q wave in [aVF],7,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because QRS duration >=120 ms and R' > R and Rp duration >=60 ms in [V2],7,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because enlarged to grossly enlarged (R+S) in [V5] and very acute to,7,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because small S in [V1] and QRS angle > 90°,7,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+"large negative T-wave (lateral, anterior)",7,finding,59931005,,
+negative QRS angle,7,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+"probably MI (lateral, anterior)",7,finding,,164865005,
+"Junctional ST depression, probably abnormal",6,finding,,429622005,
+and Rp duration >=60 ms in [V1] and S duration > R duration in [I],6,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+and S duration > R duration in [I],6,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because J >=0.2 mV in [V2],6,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because Q wave and negative T in [aVL],6,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because Q wave in [II III aVF],6,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because QRS duration <120 ms and PR duration <120 ms and P <0 mV in [aVF],6,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because QRS duration >=120 ms and R' > R and Rp duration >=60 ms in [V1],6,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because R >= R' in [V1],6,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST <=-0.1 mV and ST slope <0.1 mV/s in [V5 V6],6,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <0.01 mV in [I aVL],6,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [V6],6,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because absence of R progression in [V1 V2 V3 V4],6,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because grossly enlarged S in [V5] and QRS angle < -30°,6,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+bifascicular block,6,finding,,,the blocks themselves are separate statements
+"negative T-wave (lateral, inferior)",6,finding,59931005,,
+permanent supraventricular rhythm,6,finding,,,Schiller; no Challenge code
+Nonspecific ST-t change,5,finding,428750005,,Challenge vocabulary keeps 'nonspecific st t abnormality' apart from TAb
+Note ! temporary signal interference,5,quality,,,signal-quality note; the record is kept
+Sinus/atrial capture,5,modifier,,,
+because (R+S) in [V5] and QRS angle < -15°,5,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because HR <50 per minute,5,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because PR duration <120 ms and HR <=100 per minute,5,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because QRS duration >=120 ms and Rp duration in [V5|V6] <60 ms and QRS,5,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST <=-0.05 mV and ST slope <0.1 mV/s in [V1],5,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST <=-0.1 mV and ST slope <0.1 mV/s in [V6],5,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST <=-0.2 mV and ST slope <0.1 mV/s in [V6],5,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <0.01 mV in [I],5,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <0.01 mV in [V5],5,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [I],5,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [V5],5,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because enlarged to grossly enlarged S in [V1] and QRS angle < 0°,5,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+bradycardia,5,finding,426627000,,Schiller statement without 'sinus'
+poor R progression,5,finding,365413008,,
+short PR interval,5,finding,49578007,,
+significant ST-segment depression (lateral),5,finding,429622005,,
+"slightly depressed ST segment (lateral, inferior, anterior)",5,finding,429622005,,
+Inferolateral injury pattern,4,finding,164931005,,
+"T-wave near baseline (inferior, anterior)",4,finding,164934002,,flat T wave
+because J >=0.2 mV in [V1],4,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because Q wave in [II aVF],4,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because QRS duration >=120 ms and R duration >=100 ms in [I V6],4,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because R reduction in [V2],4,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST <=-0.1 mV and ST slope <0.1 mV/s in [V5],4,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <0.01 mV in [V6],4,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <0.01 mV in [aVL V6],4,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [II],4,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [V2 V3 V4 V5 V6],4,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [V3 V4],4,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [V4],4,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [V5 V6],4,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.5 mV in [V4 V5 V6],4,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T >=1.2 mV in [V3],4,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because enlarged to grossly enlarged S and ST depression in [V5],4,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because grossly enlarged R in [V5 V6] and enlarged to grossly enlarged R,4,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because grossly enlarged R in [V5],4,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because increased sum of R in [V5] + S in [V2],4,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+in [V1 V2] and S duration > R duration in [I],4,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+in [V5],4,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+incomplete right bundle branch block,4,finding,713426002,,
+probably acute MI (inferior),4,finding,,57054005,
+"significant ST-segment depression (lateral, anterior)",4,finding,429622005,,
+"*** No QRS complexes found, no ECG analysis possible",3,no_analysis,,,no interpretation was made: the record is left out of the task
+Anterolateral injury pattern,3,finding,164931005,,
+QRS angle < -30°,3,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+QRS angle < 0°,3,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+ST-segment depression (inferior),3,finding,429622005,,
+"ST-segment elevation (inferior, anterior)",3,finding,164931005,,
+"T-wave near baseline (lateral, inferior, anterior)",3,finding,164934002,,flat T wave
+amplitude <1 mV in [V1 V2 V3 V4 V5 V6],3,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+angle between -45° and -90° and Rp duration >=60 ms in [V1 V2],3,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because Q wave in [III] and R (posterior involvement) in [V1],3,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because QRS duration >=100 ms and RSR' pattern with R'>R in [V1],3,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because QRS duration >=120 ms and R duration >=100 ms in [I V5 V6],3,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because QRS duration >=120 ms and R' > R in [V1] and Rp duration >=60 ms,3,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because QRS duration >=120 ms and Rp duration >=60 ms in [V1 V2],3,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST <=-0.05 mV and ST slope <0.1 mV/s in [I aVL],3,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST <=-0.05 mV and ST slope <0.1 mV/s in [V5],3,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST <=-0.1 mV and ST slope <0.1 mV/s in [V4 V5 V6],3,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST <=-0.2 mV and ST slope <0.1 mV/s in [V5 V6],3,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST-segment elevation in [V3],3,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <0.01 mV in [I II V6],3,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <0.01 mV in [I V6],3,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <0.01 mV in [II V5],3,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <0.01 mV in [II V6],3,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <0.01 mV in [V4],3,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <0.01 mV in [V5 V6],3,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [I aVL V6],3,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [I aVL],3,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [II aVF] and QRS mainly upright in [aVF],3,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [V2 V3 V4],3,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [V4 V5 V6],3,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.5 mV in [V3 V4 V5],3,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because consecutive PVCs,3,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because enlarged to grossly enlarged (R+S) in [V5] and (R+S) in [V6] and,3,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because enlarged to grossly enlarged R in [V1 V2] and QRS angle > 90°,3,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because enlarged to grossly enlarged R in [V4 V5 V6],3,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because grossly enlarged (R+S) in [V4],3,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because grossly enlarged (R+S) in [V4] and increased sum of R in [V5] + S,3,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because increased sum of R in [V5] + S in [V1 V2] and increased sum of R in,3,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because missed beat and missed P wave,3,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because moderately to grossly enlarged R in [V6] and QRS angle < -15°,3,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because pacemaker capture,3,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because peak-to-peak amplitude <0.5 mV in [I II III] and peak-to-peak,3,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+depression in [V6],3,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+duration > R duration in [I],3,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+in [II],3,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+pacemaker detected,3,finding,10370003,,paced rhythm
+sinoatrial arrest,3,finding,5609005,,
+"slightly depressed ST segment (lateral, anterior)",3,finding,429622005,,
+"slightly depressed ST segment (lateral, inferior)",3,finding,429622005,,
+ventricular couplet,3,finding,17338001;251182009,,
+(posterior involvement) in [V1],2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+"*** Less than 4 QRS complexes detected, no interpretation possible",2,no_analysis,,,no interpretation was made: the record is left out of the task
+90°,2,modifier,,,
+> R duration in [I],2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+Borderline,2,hedge,,,"qualifies the next finding line: its codes are hedged, not labels"
+Nonspecific T change,2,finding,164934002,,
+Nonspecific T wave change,2,finding,164934002,,
+QRS angle > 90°,2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+ST abnormality and,2,finding,164930006,,
+ST and T wave abnormality,2,finding,428750005,,Challenge vocabulary keeps 'nonspecific st t abnormality' apart from TAb
+ST depression in [V6],2,finding,429622005,,
+"Unusual P axis and short PR, probable junctional bradycardia",2,finding,,29320008,
+V4-V6,2,modifier,,,
+WPW syndrome,2,finding,74390002,,
+[I|II|aVL|V4|V5|V6] >=60 ms and PR duration + QRS duration <300 ms,2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+[V6] + S in [V1 V2 V3] and increased sum of R in [V6] + S in [V3] and small,2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+[V6] + S in [V2] and small to negative T in [V5] and slightly to markedly,2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+angle between -45° and -90° and Rp duration >=60 ms in [V1] and S duration,2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because J >=0.1 mV in [V5] and J >=0.2 mV in [V2 V3],2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because J >=0.2 mV in [V2 V3],2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because P >=0.25 mV in [II III aVF],2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because PR duration <120 ms and QRS duration >=120 ms and Rp duration in,2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because Q wave in [I aVL] and small to negative T in [I] and negative T,2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because Q wave in [III aVF] and R (posterior involvement) in [V1],2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because Q wave in [V2],2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because Q wave in [V6],2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because QRS duration >=120 ms and R duration >=100 ms in [I],2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because QRS duration >=120 ms and R' > R in [V1],2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because QRS duration >=120 ms and Rp duration >=60 ms in [V1 V2] and S,2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because R reduction in [II III aVF] and negative T in [III],2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because R reduction in [II III aVF] and small to negative T in [aVF] and R,2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST <=-0.05 mV and ST slope <0.1 mV/s in [I V6],2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST <=-0.05 mV and ST slope <0.1 mV/s in [I],2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST <=-0.05 mV and ST slope <0.1 mV/s in [V4],2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST <=-0.1 mV and ST slope <0.1 mV/s in [I V6],2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST <=-0.1 mV and ST slope <0.1 mV/s in [I aVL V4],2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST <=-0.1 mV and ST slope <0.1 mV/s in [I aVL V5],2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST <=-0.1 mV and ST slope <0.1 mV/s in [I aVL],2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST <=-0.1 mV and ST slope <0.1 mV/s in [II],2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST-segment elevation and Q wave in [III],2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST-segment elevation and Q wave in [aVF],2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST-segment elevation and inverted T in [V3],2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST-segment elevation in [V2],2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <0.01 mV in [V3 V4],2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <0.01 mV in [V4 V5 V6],2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [I II V5 V6],2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [I II aVF V4 V5 V6] and QRS mainly upright in [aVF],2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [I II aVL V6],2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [I aVL V3 V4 V5 V6],2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [I aVL V4 V5 V6],2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [I aVL V5 V6],2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [II aVF V4 V5 V6] and QRS mainly upright in [aVF],2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [II aVF V6] and QRS mainly upright in [aVF],2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [V2 V3 V4 V5],2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [V2 V6],2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [V3],2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [V4 V5],2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [aVF] and QRS mainly upright in [aVF],2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.5 mV in [V4 V5],2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.5 mV in [V5 V6],2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.5 mV in [V6],2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T >0 mV and T/R ratio <0.05 and R >=1 mV in [V6],2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T >=1.2 mV in [V2],2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T >=1.2 mV in [V3 V4],2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T >=1.2 mV in [V4],2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because alternating sequence of VPB and normal beat,2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because enlarged to grossly enlarged (R+S) in [V5] and (R+S) in [V4 V6] and,2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because enlarged to grossly enlarged (R+S) in [V5] and (R+S) in [V4] and,2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because enlarged to grossly enlarged R and small S in [V1] and QRS angle >,2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because enlarged to grossly enlarged R and small S in [V1] and enlarged to,2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because enlarged to grossly enlarged R in [V1 V2] and small S in [V1] and,2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because grossly enlarged R in [aVL] and QRS angle < -15° and enlarged to,2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because increased sum of R in [V5] + S in [V1 V2] and small to negative T,2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because increased sum of R in [V5] + S in [V1] and small to negative T,2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because increased sum of R in [V6] + S in [V2] and slightly to markedly ST,2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+grossly enlarged S in [V1],2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+grossly enlarged S in [V5],2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+in [V2],2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+incomplete left bundle branch block,2,finding,251120003,,
+large negative T-wave (lateral),2,finding,59931005,,
+nonspecific T change,2,finding,164934002,,
+possible electrode problem,2,quality,,,signal-quality note; the record is kept
+"probably acute MI (lateral, inferior, anterior)",2,finding,,57054005,
+r/o,2,hedge,,,"qualifies the next finding line: its codes are hedged, not labels"
+right atrial enlargement,2,finding,446358003,,
+significant ST-segment depression (anterior),2,finding,429622005,,
+small positive T wave (anterior),2,finding,164934002,,
+small positive T wave (lateral),2,finding,164934002,,
+to negative T in [V5] and negative T in [V6] and ST depression in [V6],2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+ventricular bigeminy,2,finding,17338001;11157007,,
+very acute to negative QRS angle,2,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+with 5:1 A-V conduction,2,modifier,,,
+(HR~93BPM),1,modifier,,,
+(R/O RVOT ORIGIN),1,modifier,,,
+(Trigeminy),1,modifier,,,
++,1,modifier,,,
++ S in [V4] and QRS angle < -30° and ST depression in [aVL],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+",with marked 1st degree AV block",1,finding,270492004,,
+- competing pacemakers,1,modifier,,,
+2nd degree A-V block (Wenckebach),1,finding,54016002,,
+"Abnormal q wave in inferior leads, R/O OMI",1,finding,164917005,164867002,
+Anterolateral leads,1,modifier,,,
+Atrial fibrillation with rapid ventricular response,1,finding,164889003,,
+Atrial fibrillation with slow ventricular response,1,finding,164889003,,
+Atrial flutter with 4:1 A-V conduction,1,finding,164890007,,
+Complete AV block,1,finding,27885002,,
+DEXTROCARDIA,1,finding,,,no Challenge code
+Dextrocardia,1,finding,,,no Challenge code
+Ectopic pacemaker,1,finding,106068003,,free text
+Inferolateral leads,1,modifier,,,
+Lateral leads,1,modifier,,,
+Left atrial rhythm,1,finding,106068003,,
+Pacemaker rhythm with VPC and fusion beat,1,finding,10370003;427172004;13640000,,
+"Pathologic Q wave in V1,V2, inferior leads - R/O OMI",1,finding,164917005,164867002,
+Q w ave and T wave inversion of anteroseptal wall(extensive),1,finding,164917005;59931005,,free text
+Q wave of inferior wall - R/O old myocardial infarction,1,finding,164917005,164867002,
+QRS,1,modifier,,,
+R/O Brugada ECG,1,finding,,418818005,
+R/O Intermittent,1,hedge,,,"qualifies the next finding line: its codes are hedged, not labels"
+"ST and T wave abnormality, consider lateral ischemia",1,finding,428750005,,Challenge vocabulary keeps 'nonspecific st t abnormality' apart from TAb
+"ST depression, consider lateral injury",1,finding,429622005,,
+ST elevation in,1,finding,164931005,,
+"ST-segment depression (inferior, anterior)",1,finding,429622005,,
+"ST-segment depression (lateral, inferior)",1,finding,429622005,,
+"ST-segment depression (lateral, inferior, anterior)",1,finding,429622005,,
+ST-segment elevation (inferior),1,finding,164931005,,
+ST-segment elevation (lateral),1,finding,164931005,,
+"ST-segment elevation (lateral, anterior)",1,finding,164931005,,
+Sinus rhythm with Premature atrial complexs,1,finding,426783006;284470004,,
+Suspicious ectopic P wave,1,finding,,106068003,
+T wave abnomality,1,finding,164934002,,
+T wave abnormality,1,finding,164934002,,
+T wave abnormality in inferolateral leads,1,finding,164934002,,
+"T wave inversion in V 5-V6, consider lateral ischemia",1,finding,59931005,425623009,
+"Ventricular pre-excitation, WPW pattern type A",1,finding,74390002,,
+"Ventricular pre-excitation, WPW pattern type B",1,finding,74390002,,
+Well functioning pacemaker rhythm,1,finding,10370003,,paced rhythm
+and Rp duration >=60 ms in [V1],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+and moderately to grossly enlarged R in [V6] and very acute to negative QRS,1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+angle,1,modifier,,,
+anterior leads,1,modifier,,,
+because (R+S) in [V6] and QRS angle < -30°,1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because (R+S) in [V6] and QRS angle < 0°,1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because HR <50 per minute and normal P waves,1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because J >=0.1 mV in [I aVL V6],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because J >=0.1 mV in [II III aVF] and J >=0.2 mV in [V2],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because J >=0.1 mV in [II aVF V5] and J >=0.2 mV in [V2 V3 V4],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because J >=0.1 mV in [II aVF] and J >=0.2 mV in [V2 V3],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because J >=0.1 mV in [III],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because J >=0.1 mV in [V5 V6],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because J >=0.1 mV in [V5],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because J >=0.1 mV in [V5] and J >=0.2 mV in [V2 V4],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because J >=0.2 mV in [V4],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because Q wave and negative T in [III],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because Q wave and negative T in [aVL V2],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because Q wave and negative T in [aVL] and R reduction in [V2],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because Q wave and small to negative T in [III] and R (posterior,1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because Q wave in [I II],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because Q wave in [II III aVF] and R (posterior involvement) in [V1],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because Q wave in [II III],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because Q wave in [III aVF V1 V2] and negative T in [III] and R reduction,1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because Q wave in [I],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because Q wave in [V1 V2 V3 V4 V5 V6],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because Q wave in [V1 V2 V3 V4],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because Q wave in [V1 V2 V3] and R reduction in [V4],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because Q wave in [V1 V2],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because Q wave in [V1],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because Q wave in [V3],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because Q wave in [V6] and R reduction in [V3 V4],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because Q wave in [aVF] and R (posterior involvement) and R in [V1],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because Q wave in [aVF] and R (posterior involvement) in [V1],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because Q wave in [aVL V1 V2 V3 V4 V5] and negative T in [V3 V4],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because Q wave in [aVL V2] and negative T in [aVL],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because Q wave in [aVL] and negative T in [aVL V4] and absence of R,1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because QRS angle between -180° and -150°,1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because QRS angle between -45° and -90° and QRS duration >=120 ms and Rp,1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because QRS duration >=100 ms and R duration >80 ms in [I],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because QRS duration >=100 ms and R duration >80 ms in [V6],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because QRS duration >=100 ms and RSR' pattern with R'>R in [V1] and RSR',1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because QRS duration >=120 ms and R duration >=100 ms in [I V5],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because QRS duration >=120 ms and R' > R and Rp duration >=60 ms in [V1 V2],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because QRS duration >=120 ms and R' > R in [V1 V2] and Rp duration >=60 ms,1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because QRS duration >=120 ms and Rp duration >=60 ms in [V1] and S,1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because QRS duration >=120 ms and Rp duration >=60 ms in [V2],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because R >=0.5 mV and R >= S in [V1] and S > R in [V2 V3],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because R reduction in [II III aVF] and negative T in [III] and small to,1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because R reduction in [II] and Q wave in [III] and negative T in [I],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because R reduction in [V2 V3],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because R reduction in [V4],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST <=-0.05 mV and ST slope <0.1 mV/s in [I II V3 V4 V5 V6],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST <=-0.05 mV and ST slope <0.1 mV/s in [I II V5 V6],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST <=-0.05 mV and ST slope <0.1 mV/s in [I II V5],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST <=-0.05 mV and ST slope <0.1 mV/s in [I II V6],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST <=-0.05 mV and ST slope <0.1 mV/s in [I II aVL],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST <=-0.05 mV and ST slope <0.1 mV/s in [I aVL V5 V6],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST <=-0.05 mV and ST slope <0.1 mV/s in [I aVL V6],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST <=-0.05 mV and ST slope <0.1 mV/s in [II V2 V3 V5 V6],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST <=-0.05 mV and ST slope <0.1 mV/s in [II aVF V5 V6],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST <=-0.05 mV and ST slope <0.1 mV/s in [II aVF V6],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST <=-0.05 mV and ST slope <0.1 mV/s in [V1 V2],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST <=-0.05 mV and ST slope <0.1 mV/s in [V2 V3],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST <=-0.05 mV and ST slope <0.1 mV/s in [V2],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST <=-0.05 mV and ST slope <0.1 mV/s in [V3],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST <=-0.05 mV and ST slope <0.1 mV/s in [V5 V6],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST <=-0.05 mV and ST slope <0.1 mV/s in [aVF],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST <=-0.05 mV and ST slope <0.1 mV/s in [aVL V4 V5],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST <=-0.1 mV and ST slope <0.1 mV/s in [I II],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST <=-0.1 mV and ST slope <0.1 mV/s in [I aVL V6],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST <=-0.1 mV and ST slope <0.1 mV/s in [II V5],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST <=-0.1 mV and ST slope <0.1 mV/s in [II aVF V4 V5 V6],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST <=-0.1 mV and ST slope <0.1 mV/s in [II aVF],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST <=-0.1 mV and ST slope <0.1 mV/s in [I],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST <=-0.1 mV and ST slope <0.1 mV/s in [V1],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST <=-0.1 mV and ST slope <0.1 mV/s in [V3 V5],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST <=-0.1 mV and ST slope <0.1 mV/s in [V4],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST <=-0.2 mV and ST slope <0.1 mV/s in [II aVF V5 V6],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST <=-0.2 mV and ST slope <0.1 mV/s in [V4 V5 V6],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST <=-0.2 mV and ST slope <0.1 mV/s in [V4],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST <=-0.2 mV and ST slope <0.1 mV/s in [V5],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST-segment elevation in [III V3 V6] and Q wave in [V6],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST-segment elevation in [III V4 V5 V6],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ST-segment elevation in [V6],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <0.01 mV in [I II V4 V5 V6],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <0.01 mV in [I II V4 V6],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <0.01 mV in [I II V5 V6],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <0.01 mV in [I II],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <0.01 mV in [I V3],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <0.01 mV in [I V4 V5 V6],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <0.01 mV in [I V5 V6],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <0.01 mV in [I V5],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <0.01 mV in [I aVL V5 V6],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <0.01 mV in [II V4],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <0.01 mV in [V3 V4 V5 V6],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <0.01 mV in [V3],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <0.01 mV in [aVL V5],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [I II V6],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [I II aVF V6] and QRS mainly upright in [aVF],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [I II aVL V4 V5 V6],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [I V2 V3 V4],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [I V2],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [I V4 V5 V6],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [I V5 V6],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [I aVL V4 V5],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [I aVL V4 V6],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [I aVL V5],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [II V4 V5 V6],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [II aVF V3 V4 V5 V6] and QRS mainly upright in [aVF],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [II aVF V5 V6] and QRS mainly upright in [aVF],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [V2 V4 V5 V6],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [V2 V5 V6],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [V3 V4 V5],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [V4 V6],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [aVF V4 V5 V6] and QRS mainly upright in [aVF],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [aVF V5 V6] and QRS mainly upright in [aVF],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [aVL V2 V3],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [aVL V2 V4 V5],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [aVL V2],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [aVL V3 V4 V5],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [aVL V5],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.1 mV in [aVL V6],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.5 mV in [V3 V4 V5 V6],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.5 mV in [V3 V4],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.5 mV in [V4],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T <=-0.5 mV in [V5],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T >0 mV and T/R ratio <0.05 and R >=1 mV in [V4],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T >0 mV and T/R ratio <0.05 and R >=1 mV in [V5],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T >=1.2 mV in [V1],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T >=1.2 mV in [V2 V3],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because T >=1.2 mV in [V3 V4 V5],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because absence of R progression in [V1 V2 V3] and small to negative T,1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because enlarged to grossly enlarged (R+S) and increased sum of R in [aVL],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because enlarged to grossly enlarged (R+S) in [V4 V5] and (R+S) in [V6] and,1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because enlarged to grossly enlarged (R+S) in [V4] and (R+S) in [V5] and,1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because enlarged to grossly enlarged (R+S) in [V4] and QRS angle < -30°,1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because enlarged to grossly enlarged R and ST depression in [aVL],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because enlarged to grossly enlarged R and ST depression in [aVL] and,1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because enlarged to grossly enlarged R in [I aVL] and ST depression,1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because enlarged to grossly enlarged R in [V1] and QRS angle > 90°,1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because enlarged to grossly enlarged R in [V2] and QRS angle > 90° and,1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because enlarged to grossly enlarged S in [V5 V6] and QRS angle > 90°,1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because enlarged to grossly enlarged S in [V5] and QRS angle > 90°,1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because enlarged to grossly enlarged S in [V5] and ST depression,1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because enlarged to grossly enlarged S in [V5] and ST depression in [V5 V6],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because grossly enlarged (R+S) in [V5],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because grossly enlarged R and ST depression in [aVL] and enlarged to,1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because grossly enlarged R in [V5 V6],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because grossly enlarged R in [V6],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because grossly enlarged S in [V5] and QRS angle < -15°,1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because grossly enlarged S in [V5] and QRS angle < -15° and moderately to,1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because grossly enlarged S in [V5] and enlarged to grossly enlarged S,1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because increased sum of R in [V5] + S in [V1] and increased sum of R in,1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because increased sum of R in [V6] + S in [V1 V2 V3] and increased sum of R,1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because increased sum of R in [V6] + S in [V1] and slightly to markedly ST,1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because increased sum of R in [V6] + S in [V3] and negative T in [V6],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because increased sum of R in [aVL] + S in [V2],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because increased sum of R in [aVL] + S in [V2] and enlarged to grossly,1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because inverted T in [V4],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because moderately to grossly enlarged R in [V6] and ST depression,1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because moderately to grossly enlarged R in [aVL] and QRS angle < -15°,1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because peak-to-peak amplitude <0.1 mV in [V2],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because peak-to-peak amplitude <0.1 mV in [V3],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because ratio of RR to PP intervals >=1.1 and high variance in RR intervals,1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because small S in [V1] and QRS angle > 90° and enlarged to grossly,1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+because three consecutive VPBs,1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+complete,1,modifier,,,
+duration in [V5|V6] <60 ms and R' > R in [V1] and Rp duration >=60 ms,1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+enlarged (R+S) in [V5] and (R+S) in [V6] and QRS angle < 0°,1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+enlarged R in [I] and QRS angle < -15° and enlarged to grossly enlarged S,1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+enlarged R in [aVL] and QRS angle < -15°,1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+enlarged S in [III],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+enlarged S in [V5],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+enlarged to grossly enlarged S in [V1] and QRS angle < 0°,1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+enlarged to grossly enlarged S in [V5],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+grossly enlarged R in [I] and QRS angle < -15° and enlarged to grossly,1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+grossly enlarged R in [aVL],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+in [II aVL],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+in [III],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+in [V1] and QRS angle < -30° and moderately to grossly enlarged R in [V6],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+in [V1] and S duration > R duration in [I],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+in [V1] and small to negative T in [V5],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+in [V3],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+in [V4],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+in [V6] + S in [V3] and negative T and ST depression in [V6],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+in [aVL V5 V6] and moderately to grossly enlarged R in [V6] and grossly,1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+in [aVL V6] and grossly enlarged R in [aVL] and enlarged to grossly,1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+in [aVL],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+in [aVL] and absence of R progression in [V1 V2 V3 V4],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+in [aVL] and enlarged to grossly enlarged S in [III],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+indeterminate QRS axis,1,finding,251200008,,
+inferior Q wave,1,finding,164917005,,
+involvement) in [V1],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+junctional accelerated rhythm,1,finding,426664006,,
+lateral lead,1,modifier,,,
+lateral wall ischemia,1,finding,425623009,,free text
+moderately to grossly enlarged (R+S) in [V1] and QRS angle < -30°,1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+negative T in [aVF] and R (posterior involvement) in [V1],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+nonspecific intravenricular conduction abnormality (>R/O RBBB),1,finding,698252002,,
+paroxysmal atrial fibriiiation,1,finding,164889003;282825002,,"free text, misspelt in the source"
+pattern with R'>R in [V2],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+probable,1,hedge,,,"qualifies the next finding line: its codes are hedged, not labels"
+"probably MI (inferior, anterior)",1,finding,,164865005,
+"probably MI (lateral, inferior)",1,finding,,164865005,
+probably acute MI (lateral),1,finding,,57054005,
+progression in [V1 V2 V3 V4],1,explanation,,,Schiller explanation of the statement above it (or its wrapped continuation)
+q wave in V5-V6,1,finding,164917005,,
+"significant ST-segment depression (lateral, inferior, anterior)",1,finding,429622005,,
+sinus bradycardia,1,finding,426177001,,
+suspected biventricular hypertrophy,1,finding,,266249003,
+ventricular rhythm,1,finding,,,Schiller; no specific Challenge code
+ventricular run,1,finding,17338001,,Schiller: three consecutive VPBs
+with 2nd degree AV block(2:1 conduction),1,finding,195042002,,
+with frequent atrial premature beats,1,finding,284470004,,
+with intermittent ventricular pacing beats,1,finding,251266004,,"intermittent paced complexes: pacing pattern, not a paced rhythm"
+with rhythm strip,1,summary,,,overall interpretation or report header; not a finding
+with variable conduction,1,modifier,,,

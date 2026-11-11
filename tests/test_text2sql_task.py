@@ -464,6 +464,23 @@ def test_cut_off_answers_are_wrong_and_counted_apart(fx, tmp_session):
     m = json.loads(run.metrics_json)
     assert m["cut_off_rate"]["all"] == 1.0 and m["format_failure_rate"]["all"] == 0.0
     assert m["rs0"]["value"] == 0.0 and m["hard_rs5"]["value"] == -5.0 and m["easy_ex"]["value"] == 0.0
+    assert run.status == "done"
+
+
+def test_terminal_http_errors_fail_text2sql_and_resume_only_errors(fx, tmp_session):
+    task, model = _db(tmp_session, fx)
+
+    class Down(FakeClient):
+        async def chat(self, *args, **kw):
+            return ChatResult("", None, 0, 0, "http_400", transient=False)
+
+    kw = dict(spec=fx.spec, data_dir=fx.data_dir)
+    first = asyncio.run(t2s.run_text2sql_task(tmp_session, model, task, fx.tiers(), fx.con, Down(), **kw))
+    assert first.status == "failed" and json.loads(first.metrics_json)["api_error_rate"] == 1
+    assert "8/8" in json.loads(first.internal_json)["failed_reason"]
+    client = FakeClient()
+    second = asyncio.run(t2s.run_text2sql_task(tmp_session, model, task, fx.tiers(), fx.con, client, **kw))
+    assert second.id == first.id and second.status == "done" and len(client.calls) == 8
 
 
 def test_baselines_are_recorded_as_runs(fx, tmp_session):

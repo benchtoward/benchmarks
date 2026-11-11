@@ -3,7 +3,7 @@ import json
 import typer
 
 from benchtoward.config import get_settings, registry_dir
-from benchtoward.db import Model, init_db, make_engine, session_factory
+from benchtoward.db import Model, Run, Task, init_db, make_engine, session_factory
 from benchtoward.evaluate import (constant_answer_baseline, import_runs, max_tokens_for, record_baseline_run,
                                rekey_runs, run_llm_task)
 from benchtoward.llm import MissingCredential, client_for
@@ -64,6 +64,61 @@ def _summary(run) -> str:
     metrics = json.loads(run.metrics_json) if run.metrics_json else {}
     head = {k: v["value"] for k, v in metrics.items() if isinstance(v, dict) and "value" in v}
     return f"run {run.id} [{run.status}] {run.model_slug} n={run.n_items} {head} cost=${run.cost_usd:.4f}"
+
+
+def _raise_failed_run(run) -> None:
+    if run.status == "failed":
+        typer.echo(json.loads(run.internal_json or "{}").get("failed_reason", f"run {run.id} failed"))
+        raise typer.Exit(1)
+
+
+@app.command("audit-api-errors")
+def audit_api_errors(apply: bool = typer.Option(False, "--apply", help="mark the listed runs failed")) -> None:
+    """List done model runs whose stored final call failures reach the API error threshold; dry run by default."""
+    from types import SimpleNamespace
+
+    from benchtoward.db import ItemResult
+    from benchtoward.evaluate import finish_model_run
+
+    with open_session() as session:
+        matches = []
+        for run, task in (session.query(Run, Task).join(Task, Run.task_id == Task.id)
+                          .join(Model, Run.model_slug == Model.slug)
+                          .filter(Run.status == "done", Model.type != "baseline").order_by(Run.id)):
+            items = session.query(ItemResult).filter_by(run_id=run.id).all()
+            candidate = SimpleNamespace(status=run.status, internal_json=run.internal_json)
+            reason = finish_model_run(candidate, items)
+            if reason and reason.startswith("API errors "):
+                typer.echo(f"{run.id}\t{task.slug}@{task.version}\t{run.model_slug}\t{reason}")
+                matches.append((run, items))
+        if apply:
+            for run, items in matches:
+                finish_model_run(run, items)
+            session.commit()
+        typer.echo(f"{len(matches)} run(s) {'marked failed' if apply else 'would be marked failed (dry run)'}")
+
+
+@app.command("privacy-retention")
+def privacy_retention_command(apply: bool = typer.Option(False, "--apply", help="Apply privacy deadlines")) -> None:
+    """Delete inactive accounts and expired records; anonymise old downloads. Dry run by default.
+
+    Run daily on the work host against the site database, never as a Mac data job.
+    """
+    from benchtoward.privacy import privacy_retention
+
+    settings = get_settings()
+    # No init_db: a dry run must not migrate/create tables or create a missing database.
+    if settings.db_url.startswith("sqlite:///") and settings.db_url != "sqlite:///:memory:":
+        from pathlib import Path
+        if not Path(settings.db_url.removeprefix("sqlite:///")).is_file():
+            raise typer.BadParameter("The site database must already exist.")
+    engine = make_engine(settings.db_url)
+    try:
+        with session_factory(engine)() as session:
+            counts = privacy_retention(session, apply=apply, idle_seconds=settings.session_idle_seconds)
+        typer.echo(("applied: " if apply else "dry run: ") + " ".join(f"{k}={v}" for k, v in counts.items()))
+    finally:
+        engine.dispose()
 
 
 @app.command()
@@ -161,6 +216,29 @@ def import_bundle_cmd(source: str = typer.Argument(..., help="path to another Be
         typer.echo(" ".join(f"{k}={v}" for k, v in counts.items()))
 
 
+@app.command("rescore-clinicalqa")
+def rescore_clinicalqa_cmd(apply: bool = typer.Option(False, "--apply", help="write the new runs (default: preview only)")
+                           ) -> None:
+    """Re-read finished ClinicalQA runs from their stored replies with the current parser, without model calls. Each
+    becomes a new run (its config names the parser) that replaces the old one on the leaderboard; preview first."""
+    from benchtoward.evaluate import rescore_clinicalqa
+    from benchtoward.tasks.clinicalqa import fetch_clinicalqa, load_items
+
+    settings = get_settings()
+    items = load_items(fetch_clinicalqa(settings.data_dir))
+    with open_session() as session:
+        load_registry(session, registry_dir())
+        task = session.query(Task).filter_by(slug="clinicalqa").order_by(Task.version.desc()).first()
+        made = rescore_clinicalqa(session, task, items, data_dir=settings.data_dir, dry_run=not apply)
+        for new in made:
+            old = session.get(Run, json.loads(new.internal_json)["rescored_from"])
+            before, after = json.loads(old.metrics_json), json.loads(new.metrics_json)
+            typer.echo(f"{new.model_slug} [{new.status}] {old.id} -> {'(preview)' if not apply else new.id}: "
+                       f"accuracy {before['accuracy']['value']:.3f} -> {after['accuracy']['value']:.3f}, "
+                       f"parse rate {before['parse_rate']:.3f} -> {after['parse_rate']:.3f}")
+        typer.echo(f"{len(made)} run(s) {'re-scored' if apply else 'would be re-scored (preview; --apply writes)'}")
+
+
 @app.command("import-runs")
 def import_runs_cmd(source: str = typer.Argument(..., help="path to another BenchToward SQLite database")) -> None:
     """Import finished runs (with their item results and missing models) from another database by run key. Papers,
@@ -214,6 +292,7 @@ def _eval_one(session, model: Model, task_ref: str, force: bool, limit: int | No
                                    max_tokens=max_tokens_for(model),
                                    data_dir=settings.data_dir))
     typer.echo(_summary(run))
+    _raise_failed_run(run)
 
 
 @app.command("eval")
@@ -231,15 +310,21 @@ def eval_cmd(task: str = typer.Option(..., help="e.g. clinicalqa@0"),
 @app.command("eval-all")
 def eval_all(task: str = typer.Option(..., help="e.g. clinicalqa@0")) -> None:
     """Evaluate every enabled LLM whose credentials are available."""
+    failed = False
     with open_session() as session:
         for model in session.query(Model).filter_by(type="llm", enabled=True).order_by(Model.slug):
             try:
                 _eval_one(session, model, task, False, None)
             except MissingCredential as exc:
                 typer.echo(f"skip {model.slug}: {exc}")
+            except typer.Exit:
+                failed = True
             except Exception as exc:  # one model's failure must not stop the others
                 session.rollback()
                 typer.echo(f"error {model.slug}: {type(exc).__name__}: {exc}")
+                failed = True
+    if failed:
+        raise typer.Exit(1)
 
 
 @baseline_app.command("clinicalqa")

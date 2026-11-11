@@ -446,7 +446,7 @@ def _recorded(meta: dict) -> dict[str, dict]:
 
 async def run_decide(draft: Path, clients: dict, prices: dict[str, tuple[float, float]], out: Path, budget: Budget,
                      *, facts: str, decisions: list[Decision] | None = None, extra: dict | None = None,
-                     setup: DecideSetup = V0) -> list[dict]:
+                     setup: DecideSetup = V0, mode: str = "auto", batch_retry: str = "sync") -> list[dict]:
     """Ask every model about every decision that is still open in the draft (`decisions`, default the setup's
     table). Returns one result per decision; status 'incomplete' when a request failed or the budget stopped it
     (asked again on the next run)."""
@@ -454,7 +454,7 @@ async def run_decide(draft: Path, clients: dict, prices: dict[str, tuple[float, 
     entries, recorded = _entries(meta), _recorded(meta)
     decisions = setup.table if decisions is None else decisions
     todo = [d for d in decisions if d.key not in recorded and any(e.startswith(d.match) for e in entries)]
-    asker = Asker(clients, prices, out, budget, extra=extra)
+    asker = Asker(clients, prices, out, budget, extra=extra, mode=mode, batch_retry=batch_retry)
 
     async def one(decision: Decision) -> dict:
         background = next((e for e in entries if e.startswith(decision.match)), "")

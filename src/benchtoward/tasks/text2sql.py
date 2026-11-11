@@ -208,9 +208,26 @@ class ExecResult:
     detail: str | None = None
 
 
+_SAFE_SETTINGS = {"enable_external_access": False, "lock_configuration": True,
+                  "autoinstall_known_extensions": False, "autoload_known_extensions": False}
+
+
+def require_safe_connection(con: duckdb.DuckDBPyConnection) -> None:
+    """Raise unless the connection cannot reach files or the network, load extensions or change its settings (QA
+    review 2026-11-08): model-written SQL must never depend on how a caller happened to open the database."""
+    names = list(_SAFE_SETTINGS)
+    values = con.execute("SELECT " + ", ".join(f"current_setting('{n}')" for n in names)).fetchone()
+    unsafe = [n for n, v in zip(names, values) if bool(v) != _SAFE_SETTINGS[n]]
+    if unsafe:
+        raise ValueError(f"unsafe connection for model SQL: {', '.join(unsafe)} (use synthetic_snuh.connect_readonly "
+                         "or the same config)")
+
+
 def execute_sql(con: duckdb.DuckDBPyConnection, sql: str | None, *, timeout_s: float = DEFAULT_TIMEOUT_S,
                 max_rows: int = DEFAULT_MAX_ROWS) -> ExecResult:
-    """Run one SELECT on a read-only connection with a wall-clock limit. Never raises for bad SQL."""
+    """Run one SELECT on a locked-down connection with a wall-clock limit. Never raises for bad SQL; raises
+    ValueError for an unsafe connection (a caller bug, not a model error)."""
+    require_safe_connection(con)
     sql = (sql or "").strip().rstrip(";").strip()
     if not sql:
         return ExecResult([], [], "empty")
@@ -631,7 +648,7 @@ def _prompt_sha(model_id: str, messages: list[dict]) -> str:
 def _needs_call(record: dict | None, prompt_sha: str) -> bool:
     if record is None or record.get("prompt_sha") != prompt_sha:
         return True
-    return record.get("error") is not None and record.get("transient", True) is not False
+    return record.get("error") is not None
 
 
 async def run_dry_run(items: list[Question], con: duckdb.DuckDBPyConnection, client, model_id: str, out_dir: Path, *,
@@ -675,21 +692,27 @@ async def run_dry_run(items: list[Question], con: duckdb.DuckDBPyConnection, cli
     pending = [iid for iid in wanted if _needs_call(responses.get(iid), shas[iid])]
     tokens_in = sum(responses[i]["tokens_in"] for i in wanted if i in responses)
     tokens_out = sum(responses[i]["tokens_out"] for i in wanted if i in responses)
-    if pending:
-        summary = {"status": "incomplete", "pending": len(pending), "model": model_id,
-                   "tokens_in": tokens_in, "tokens_out": tokens_out}
-    else:
-        extract = extract_answer if spec.abstention else extract_sql
-        predictions = {iid: None if responses[iid]["error"] else extract(responses[iid]["content"]) for iid in wanted}
-        rows, summary = score_predictions(con, items, predictions, timeout_s=timeout_s, abstention=spec.abstention)
-        summary["prompt"] = spec.id
+    extract = extract_answer if spec.abstention else extract_sql
+    predictions = {iid: None if responses[iid]["error"] else extract(responses[iid]["content"]) for iid in wanted}
+    rows, summary = score_predictions(con, items, predictions, timeout_s=timeout_s, abstention=spec.abstention)
+    summary["prompt"] = spec.id
+    for row in rows:
+        if responses[row["instance_id"]]["error"]:
+            row["error"] = f"llm_{responses[row['instance_id']]['error']}"
+    with (out_dir / "items.jsonl").open("w", encoding="utf-8") as fh:
         for row in rows:
-            if responses[row["instance_id"]]["error"]:
-                row["error"] = f"llm_{responses[row['instance_id']]['error']}"
-        with (out_dir / "items.jsonl").open("w", encoding="utf-8") as fh:
-            for row in rows:
-                fh.write(json.dumps(row, ensure_ascii=False, default=str) + "\n")
-        summary = {"status": "done", "model": model_id, "langs": list(langs), "n_questions": len(items),
-                   **summary, "tokens_in": tokens_in, "tokens_out": tokens_out, "max_tokens": max_tokens}
+            fh.write(json.dumps(row, ensure_ascii=False, default=str) + "\n")
+    summary = {"status": "done", "model": model_id, "langs": list(langs), "n_questions": len(items),
+               **summary, "tokens_in": tokens_in, "tokens_out": tokens_out, "max_tokens": max_tokens}
+    from types import SimpleNamespace
+    from benchtoward.db import ItemResult
+    from benchtoward.evaluate import finish_model_run
+
+    diagnostic = SimpleNamespace(status="running", internal_json=None)
+    reason = finish_model_run(diagnostic, [ItemResult(error=responses[iid]["error"]) for iid in wanted])
+    summary["status"] = diagnostic.status
+    if reason:
+        summary["failed_reason"] = reason
+        summary["pending"] = len(pending)
     (out_dir / "summary.json").write_text(json.dumps(summary, indent=1, ensure_ascii=False))
     return summary

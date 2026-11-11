@@ -100,7 +100,7 @@ def test_resume_only_transcribes_missing_clips(ctx):
 
 def test_transient_errors_leave_run_failed_and_resumable(ctx):
     r = run(ctx, FakeASR({"U2-maia": fail("http_503")}))
-    assert r.status == "failed" and r.metrics_json is None
+    assert r.status == "failed" and json.loads(r.metrics_json)["error_rate"] == pytest.approx(1 / 6)
     assert ctx[0].get(ItemResult, (r.id, "U2-maia")).error == "http_503"
     client = FakeASR()
     again = run(ctx, client)
@@ -109,7 +109,7 @@ def test_transient_errors_leave_run_failed_and_resumable(ctx):
 
 def test_final_error_counts_as_an_empty_transcript(ctx):
     r = run(ctx, FakeASR({"U1-chul": fail("http_400", transient=False)}))
-    assert r.status == "done"
+    assert r.status == "failed"
     metrics = json.loads(r.metrics_json)
     assert metrics["cer"]["value"] == pytest.approx(5 / 54) and metrics["cer"]["n_missing"] == 1
     assert metrics["error_rate"] == pytest.approx(1 / 6) and metrics["errors"] == {"http_400": 1}
@@ -203,7 +203,8 @@ def test_runner_with_real_client_over_mock_transport(ctx):
     outage["on"] = False
     calls.clear()
     second = run(ctx, client)
-    assert second.id == first.id and second.status == "done" and list(calls) == ["U2__qwen3m_maia.wav"]
+    assert second.id == first.id and second.status == "failed"
+    assert set(calls) == {"U2__qwen3m_maia.wav", "U3__qwen3m_chul.wav"}
     metrics = json.loads(second.metrics_json)
     assert metrics["errors"] == {"http_400": 1} and metrics["cer"]["value"] == pytest.approx(11 / 54)
     assert ctx[0].get(ItemResult, (second.id, "U3-chul")).raw == '{"detail":"could not decode audio"}'

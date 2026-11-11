@@ -344,7 +344,8 @@ class GenerationResult:
 
 async def run_generate(database: Path, clients: dict, prices: dict[str, tuple[float, float]], out: Path,
                        budget: Budget, *, models: list[str], existing: list[Question], gen_round: int = 1,
-                       plan: dict[str, list[int]] = PLAN, hint: str = "", extra: dict | None = None
+                       plan: dict[str, list[int]] = PLAN, hint: str = "", extra: dict | None = None,
+                       mode: str = "auto", batch_retry: str = "sync"
                        ) -> GenerationResult:
     """Generate, check and repair every batch of the plan. Categories run in parallel, a category's batches one
     after another (each sees the items accepted before it). Answers are cached per model, batch and prompt."""
@@ -352,7 +353,7 @@ async def run_generate(database: Path, clients: dict, prices: dict[str, tuple[fl
     schema = schema_summary(con, null_columns=HARD_PROMPT.null_columns)
     profile = data_profile(con)
     asker = Asker(clients, prices, out, budget, max_tokens=GEN_MAX_TOKENS, concurrency=2, extra=extra,
-                  cache_split=GUIDE_START)
+                  cache_split=GUIDE_START, mode=mode, batch_retry=batch_retry)
     result = GenerationResult()
     accepted: dict[str, list[dict]] = {c: [] for c in plan}
     batches = plan_batches(models, plan)
@@ -504,14 +505,15 @@ REVIEW_BATCH = 5  # items per review request: the shared schema prompt is paid o
 
 
 async def run_hard_review(items: list[Question], database: Path, clients: dict, prices: dict[str, tuple[float, float]],
-                          out: Path, budget: Budget, *, extra: dict | None = None, batch_size: int = REVIEW_BATCH
+                          out: Path, budget: Budget, *, extra: dict | None = None, batch_size: int = REVIEW_BATCH,
+                          mode: str = "auto", batch_retry: str = "sync"
                           ) -> dict[str, dict[str, dict | None] | None]:
     """Every model reviews every pending item with the harder set's rubric, `batch_size` items per request; an item
     whose verdict is missing from a batch answer is asked again on its own. item id -> {model: review or None}, or
     None when a request failed or the budget stopped it (asked again on the next run)."""
     con = connect_readonly(database)
     schema = schema_summary(con, null_columns=HARD_PROMPT.null_columns)
-    asker, batch_asker = review_askers(clients, prices, out, budget, extra)
+    asker, batch_asker = review_askers(clients, prices, out, budget, extra, mode=mode, batch_retry=batch_retry)
     pending = [i for i in items if i.review == "pending"]
     return await review_items(asker, batch_asker, list(clients), pending, con, schema, HARD_PROMPT, "r0", batch_size)
 
@@ -605,13 +607,16 @@ def collect_reviews(out: Path, models: list[str], items: list[Question], current
 def spend_report(root: Path) -> dict:
     """Spend recorded under the job folder: what the route billed, estimates where it did not say, and the
     estimates charged for failed attempts, by step."""
-    out: dict = {"route_usd": 0.0, "estimate_usd": 0.0, "failed_attempts_usd": 0.0, "requests": 0, "by_step": {}}
+    out: dict = {"route_usd": 0.0, "estimate_usd": 0.0, "failed_attempts_usd": 0.0, "requests": 0,
+                 "cost_unknown": False, "by_step": {}}
     for path in sorted(Path(root).rglob("*.jsonl")) if Path(root).exists() else []:
         step = path.parent.name
         for line in path.read_text(encoding="utf-8").splitlines():
             if not line.strip():
                 continue
             r = json.loads(line)
+            if r.get("batch_id") or r.get("charge_id"):
+                continue  # aggregate billing also covers failed and uncached items
             cost = float(r.get("cost_usd") or 0)
             key = "route_usd" if r.get("cost_source") == "route" else "estimate_usd"
             out[key] += cost
@@ -620,4 +625,28 @@ def spend_report(root: Path) -> dict:
             s = out["by_step"].setdefault(step, {"usd": 0.0, "requests": 0})
             s["usd"] += cost + float(r.get("failed_attempts_usd") or 0)
             s["requests"] += 1
+    from benchtoward.llm_batch import batch_states, charge_states
+    for path, state in charge_states(root):
+        cost = state.get("cost_usd", state["charged_usd"])
+        failed = state.get("failed_attempts_usd", 0.0)
+        out["route_usd" if state.get("cost_source") == "route" else "estimate_usd"] += cost
+        out["failed_attempts_usd"] += failed
+        out["requests"] += 1
+        out["cost_unknown"] |= state.get("cost_unknown", False)
+        s = out["by_step"].setdefault(path.parent.parent.name, {"usd": 0.0, "requests": 0})
+        s["usd"] += cost + failed
+        s["requests"] += 1
+    for path, state in batch_states(root):
+        step = path.parent.parent.name
+        cost = state["charged_usd"]
+        billed = state.get("status") in {"completed", "failed", "expired", "cancelled"} and \
+            not state.get("cost_unknown", False) and (state.get("usage") or {}).get("cost") is not None
+        out["cost_unknown"] |= state.get("cost_unknown", False)
+        out["route_usd" if billed else "estimate_usd"] += cost
+        count = len(state["requests"])
+        out["requests"] += count
+        s = out["by_step"].setdefault(step, {"usd": 0.0, "requests": 0})
+        s["usd"] += cost
+        s["requests"] += count
+        s["cost_unknown"] = s.get("cost_unknown", False) or state.get("cost_unknown", False)
     return out

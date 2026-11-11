@@ -112,6 +112,8 @@ def _eval_one(session, model: Model, task_ref: str, subsets: list[str], force: b
     typer.echo(_summary(run))
     if run.status == "failed":
         typer.echo("  some items still need a reply; run the same command again to resume")
+        from benchtoward.cli import _raise_failed_run
+        _raise_failed_run(run)
 
 
 def eval_voice_command(model: str = typer.Option(..., help="LLM slug, e.g. alibaba/qwen3.8-flash-next-180b-a6b"),

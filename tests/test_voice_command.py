@@ -326,6 +326,23 @@ def test_runner_resumes_after_transient_failures(tmp_session, data_dir):
     assert second.id == first.id and second.status == "done" and len(client.calls) == 13
 
 
+def test_terminal_http_failures_are_failed_and_retried(tmp_session, data_dir):
+    model, task, inst, answers = _setup(tmp_session, data_dir)
+
+    class Down(FakeLLM):
+        async def chat(self, *args, **kw):
+            from benchtoward.llm import ChatResult
+            return ChatResult("", None, 0, 0, "http_400", transient=False)
+
+    kw = dict(scenes=vc.load_scenes(data_dir), rules=vc.load_rules(data_dir), data_dir=data_dir, route=ROUTE)
+    first = asyncio.run(vc.run_command_task(tmp_session, model, task, inst, Down(answers), **kw))
+    assert first.status == "failed" and first.metrics_json
+    assert "http_400" in json.loads(first.internal_json)["failed_reason"]
+    client = FakeLLM(answers)
+    second = asyncio.run(vc.run_command_task(tmp_session, model, task, inst, client, **kw))
+    assert second.id == first.id and second.status == "done" and len(client.calls) == len(inst)
+
+
 def test_runner_falls_back_when_the_server_rejects_the_schema(tmp_session, data_dir):
     model, task, inst, answers = _setup(tmp_session, data_dir)
     inst = inst[:6]

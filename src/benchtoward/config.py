@@ -1,5 +1,6 @@
 import os
 from dataclasses import dataclass, field
+from ipaddress import ip_address
 from pathlib import Path
 
 import yaml
@@ -16,9 +17,20 @@ class Settings:
     audio_providers: tuple[str, ...] = ()  # routes allowed to receive dataset audio (`audio: true` in providers.yaml)
     # Request fields a route needs for a task protocol (`request:` in providers.yaml), e.g. how to switch thinking off.
     route_requests: dict[str, dict] = field(default_factory=dict)
-    admin_password: str | None = None  # /admin is disabled when unset
+    admin_password: str | None = None  # password for the explicitly enabled Basic fallback
+    admin_basic_enabled: bool = False  # explicit break-glass fallback only
+    admin_emails: tuple[str, ...] = ()
+    google_client_id: str | None = None
+    google_client_secret: str | None = field(default=None, repr=False)
+    github_client_id: str | None = None
+    github_client_secret: str | None = field(default=None, repr=False)
+    session_idle_seconds: int = 86400
+    session_absolute_seconds: int = 604800
+    download_daily_limit: int = 300
     daily_goal: int = 100  # human visitors per day shown as the target on /admin
     analytics_secret: str | None = None  # salt for visitor hashes; generated into data_dir when unset
+    internal_ips: tuple[str, ...] = ()  # exact source addresses, used in memory only
+    internal_token: str | None = None  # scripts identify their own requests; never persisted
     agent_token: str | None = None  # shared secret for POST /v1/agent/events (paper agent -> site)
     # The site's public origin. Every absolute link the code writes (pages, sitemap, robots, BibTeX, API URLs,
     # AGENTS.md, exports) comes from here. BENCHTOWARD_SITE_URL, or the old MEDBENCH_SITE_URL, in a .env overrides it.
@@ -26,6 +38,15 @@ class Settings:
     llm_wiki_dir: Path | None = None  # paper archive the paper agent reads (LLM_WIKI_DIR)
     khdp_token: str | None = None  # KHDP Gateway personal access token; sent only to api.khdp.net
     allow_shared_files: bool = False  # allow third-party code on a compute account that also holds other data
+
+
+def _basic_enabled(env) -> bool:
+    """HTTP Basic admin: on while no admin email allowlist exists (rollout, so /admin is never locked out before
+    OAuth is configured); after that only when ADMIN_BASIC_ENABLED asks for it (break-glass)."""
+    value = (envnames.getenv("ADMIN_BASIC_ENABLED", env=env) or "").strip().lower()
+    if value:
+        return value in ("1", "true", "yes")
+    return not (envnames.getenv("ADMIN_EMAILS", env=env) or "").strip()
 
 
 def get_settings() -> Settings:
@@ -38,8 +59,20 @@ def get_settings() -> Settings:
         audio_providers=_audio_providers(),
         route_requests=_route_requests(),
         admin_password=envnames.getenv("ADMIN_PASSWORD", env=env) or None,
+        admin_basic_enabled=_basic_enabled(env),
+        admin_emails=tuple(e.strip().casefold() for e in (envnames.getenv("ADMIN_EMAILS", env=env) or "").split(",") if e.strip()),
+        google_client_id=envnames.getenv("GOOGLE_CLIENT_ID", env=env),
+        google_client_secret=envnames.getenv("GOOGLE_CLIENT_SECRET", env=env),
+        github_client_id=envnames.getenv("GITHUB_CLIENT_ID", env=env),
+        github_client_secret=envnames.getenv("GITHUB_CLIENT_SECRET", env=env),
+        session_idle_seconds=int(envnames.getenv("SESSION_IDLE_SECONDS", env=env) or defaults.session_idle_seconds),
+        session_absolute_seconds=int(envnames.getenv("SESSION_ABSOLUTE_SECONDS", env=env) or defaults.session_absolute_seconds),
+        download_daily_limit=int(envnames.getenv("DOWNLOAD_DAILY_LIMIT", env=env) or defaults.download_daily_limit),
         daily_goal=int(envnames.getenv("DAILY_GOAL", env=env) or defaults.daily_goal),
         analytics_secret=envnames.getenv("ANALYTICS_SECRET", env=env) or None,
+        internal_ips=tuple(dict.fromkeys(str(ip_address(ip.strip())) for ip in
+                           (envnames.getenv("INTERNAL_IPS", env=env) or "").split(",") if ip.strip())),
+        internal_token=envnames.getenv("INTERNAL_TOKEN", env=env) or None,
         agent_token=envnames.getenv("AGENT_TOKEN", env=env) or None,
         site_url=site_url(env),
         llm_wiki_dir=Path(env["LLM_WIKI_DIR"]).expanduser() if env.get("LLM_WIKI_DIR") else None,

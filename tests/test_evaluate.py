@@ -7,6 +7,7 @@ import pytest
 from conftest import REGISTRY_DIR
 from benchtoward.db import ItemResult, Model, Run, Task
 from benchtoward.evaluate import HARNESS_VERSION, run_llm_task
+from benchtoward.runkey import run_key
 from benchtoward.llm import ChatResult
 from benchtoward.registry import load_registry
 from benchtoward.tasks.clinicalqa import QAItem
@@ -100,7 +101,7 @@ def test_api_errors_leave_run_failed_and_resumable(ctx):
     a = answers()
     a["Q1"] = ChatResult(content="", reasoning=None, tokens_in=0, tokens_out=0, error="http_503", transient=True)
     r = run(ctx, FakeClient(a))
-    assert r.status == "failed" and r.metrics_json is None
+    assert r.status == "failed" and json.loads(r.metrics_json)["error_rate"] == 0.2
     client = FakeClient(answers())
     again = run(ctx, client)
     assert client.calls == 1 and again.status == "done"
@@ -135,16 +136,22 @@ def test_constant_answer_baseline_recorded_once(ctx):
     assert first.id == second.id and first.status == "done" and first.n_items == 5
 
 
-def test_terminal_error_counts_as_unparsed_and_run_finishes(ctx):
+def test_terminal_error_fails_with_metrics_and_is_retried(ctx):
     a = answers()
     a["Q1"] = ChatResult(content="", reasoning=None, tokens_in=0, tokens_out=0, error="context_length_exceeded",
                          transient=False)
     r = run(ctx, FakeClient(a))
-    assert r.status == "done"
+    assert r.status == "failed"
+    reason = json.loads(r.internal_json)["failed_reason"]
+    assert "1/5" in reason and "20.00%" in reason and "context_length_exceeded" in reason
     item = ctx[0].get(ItemResult, (r.id, "cqa-1"))
     assert item.prediction is None and item.correct is False and item.error == "context_length_exceeded"
     metrics = json.loads(r.metrics_json)
     assert metrics["error_rate"] == 0.2 and metrics["parse_rate"] == 0.8 and metrics["accuracy"]["value"] == 0.6
+    client = FakeClient(answers())
+    again = run(ctx, client)
+    assert again.id == r.id and again.status == "done" and client.calls == 1
+    assert "failed_reason" not in json.loads(again.internal_json)
 
 
 class RaisingClient(FakeClient):
@@ -237,3 +244,112 @@ def test_raw_output_and_parser_version_are_stored(ctx):
     item = ctx[0].get(ItemResult, (r.id, "cqa-0"))
     assert item.raw == '{"answer": "A"}'
     assert json.loads(r.metrics_json)["parser"] == PARSER_VERSION
+
+
+
+def test_new_runs_record_the_parser_in_their_config_and_read_option_lines(ctx):
+    from benchtoward.tasks.clinicalqa import PARSER_VERSION
+    r = run(ctx, FakeClient({**answers(), "Q4": ok("A. a")}))
+    assert json.loads(r.config_json)["parser"] == PARSER_VERSION
+    assert json.loads(r.metrics_json)["accuracy"]["value"] == 1.0
+
+
+def _old_p02_run(ctx):  # also used by tests/test_web.py
+    """A finished run made before p0.3: its config has no parser and its option-line replies were unparsed."""
+    session = ctx[0]
+    r = run(ctx, FakeClient({**answers(), "Q3": ok("A. a"), "Q4": ok("B. b")}))
+    r.config_json = json.dumps({k: v for k, v in json.loads(r.config_json).items() if k != "parser"}, sort_keys=True)
+    r.run_key = "old-p02-key"
+    r.internal_json = json.dumps({"checks": [{"name": "parse_rate", "ok": False, "detail": "65% answers parsed"}]})
+    metrics = json.loads(r.metrics_json)
+    metrics["parser"] = "p0.2"
+    r.metrics_json = json.dumps(metrics)
+    for iid in ("cqa-3", "cqa-4"):
+        item = session.get(ItemResult, (r.id, iid))
+        item.prediction, item.correct = None, False
+    session.commit()
+    return r
+
+
+def test_rescore_makes_a_new_run_from_stored_replies_without_model_calls(ctx):
+    from benchtoward.evaluate import rescore_clinicalqa
+    session, model, task, data_dir = ctx
+    old = _old_p02_run(ctx)
+    made = rescore_clinicalqa(session, task, ITEMS, data_dir=data_dir)
+    assert [m.model_slug for m in made] == [model.slug]
+    new = made[0]
+    assert new.id != old.id and new.run_key != old.run_key and new.status == old.status
+    assert json.loads(new.config_json)["parser"] == "p0.3"
+    metrics = json.loads(new.metrics_json)
+    assert metrics["parser"] == "p0.3" and metrics["accuracy"]["value"] == 0.8 and metrics["parse_rate"] == 1.0
+    assert (new.tokens_in, new.tokens_out, new.cost_usd, new.eval_date) == (old.tokens_in, old.tokens_out,
+                                                                            old.cost_usd, old.eval_date)
+    assert json.loads(new.internal_json)["rescored_from"] == old.id
+    assert "checks" not in json.loads(new.internal_json)     # the old run's checks describe the old numbers
+    assert session.get(ItemResult, (new.id, "cqa-3")).prediction == "A"
+    assert session.get(ItemResult, (new.id, "cqa-3")).raw == "A. a"
+    assert json.loads(session.get(Run, old.id).metrics_json)["parser"] == "p0.2"     # the old run is untouched
+    assert (data_dir / "artifacts" / new.id / "predictions.parquet").exists()
+    assert new.created_at > old.created_at        # the leaderboard lists each model's latest run (tests/test_web.py)
+    assert rescore_clinicalqa(session, task, ITEMS, data_dir=data_dir) == []          # idempotent
+
+
+def test_rescore_skips_runs_already_on_the_current_parser_and_unfinished_runs(ctx):
+    from benchtoward.evaluate import rescore_clinicalqa
+    session, model, task, data_dir = ctx
+    current = run(ctx, FakeClient(answers()))
+    assert rescore_clinicalqa(session, task, ITEMS, data_dir=data_dir) == []
+    current.status = "failed"
+    current.config_json = "{}"
+    session.commit()
+    assert rescore_clinicalqa(session, task, ITEMS, data_dir=data_dir) == []
+
+
+
+def test_rescore_dry_run_writes_nothing(ctx):
+    from benchtoward.evaluate import rescore_clinicalqa
+    session, model, task, data_dir = ctx
+    old = _old_p02_run(ctx)
+    preview = rescore_clinicalqa(session, task, ITEMS, data_dir=data_dir, dry_run=True)
+    assert len(preview) == 1 and json.loads(preview[0].metrics_json)["accuracy"]["value"] == 0.8
+    assert json.loads(preview[0].internal_json)["rescored_from"] == old.id
+    assert session.query(Run).count() == 1 and session.query(ItemResult).count() == 5
+
+
+def test_rescore_keeps_answers_already_read_and_never_drops_items_without_stored_replies(ctx):
+    """Work-host preview 2026-11-08: most runs keep only the parsed letter, not the reply (raw is NULL); the first
+    re-score turned their accuracy into 0. p0.3 runs p0.2 first, so a letter already read stays as it is."""
+    from benchtoward.evaluate import rescore_clinicalqa
+    session, model, task, data_dir = ctx
+    old = _old_p02_run(ctx)
+    for item in session.query(ItemResult).filter_by(run_id=old.id):
+        if item.instance_id != "cqa-3":
+            item.raw = None                        # only cqa-3 ("A. a") still has its reply
+    session.commit()
+    new = rescore_clinicalqa(session, task, ITEMS, data_dir=data_dir)[0]
+    preds = {r.instance_id: r.prediction for r in session.query(ItemResult).filter_by(run_id=new.id)}
+    assert preds == {"cqa-0": "A", "cqa-1": "A", "cqa-2": "A", "cqa-3": "A", "cqa-4": None}
+    assert json.loads(new.metrics_json)["accuracy"]["value"] == 0.8
+
+
+def test_rescore_leaves_runs_whose_answers_do_not_change(ctx):
+    """No new run (and no new result URL) when the new parser reads nothing more."""
+    from benchtoward.evaluate import rescore_clinicalqa
+    session, model, task, data_dir = ctx
+    old = _old_p02_run(ctx)
+    for iid in ("cqa-3", "cqa-4"):
+        session.get(ItemResult, (old.id, iid)).raw = "free text without an answer"
+    session.commit()
+    assert rescore_clinicalqa(session, task, ITEMS, data_dir=data_dir) == []
+    assert session.query(Run).count() == 1
+
+
+def test_an_unchanged_p02_run_still_deduplicates_a_new_evaluation(ctx):
+    """A run the re-score left alone (nothing to read again) still counts, so the model is not called a second time."""
+    session, model, task, data_dir = ctx
+    old = _old_p02_run(ctx)
+    old.run_key = run_key(model.digest, task.spec_hash, HARNESS_VERSION,
+                          {k: v for k, v in json.loads(old.config_json).items()})
+    session.commit()
+    client = FakeClient(answers())
+    assert run(ctx, client).id == old.id and client.calls == 0

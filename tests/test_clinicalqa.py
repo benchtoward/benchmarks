@@ -69,3 +69,39 @@ def test_parse_answer_is_and_bold_and_korean_particle():
 
 def test_json_still_wins_over_other_mentions():
     assert parse_answer('The answer is A at first glance... {"answer": "B"}', ABCDE) == "B"
+
+
+# Parser p0.3 (owner 2026-11-03; rule reviewed with agy 2026-11-08): a reply whose last line is the letter AND that
+# option's exact text ("C. 정서적 학대") is read as that letter. Only when p0.2 finds nothing; never inside a sentence;
+# never when the line above is also an option line (an option list cut off, or restated choices).
+OPTS = {"A": "레보티록신 용량을 25mcg으로 감량", "B": "운동부하 심초음파", "C": "정서적 학대", "D": "d text.", "E": "Eee (CBC)"}
+
+
+def p3(text):
+    return parse_answer(text, set(OPTS), OPTS)
+
+
+def test_p03_reads_letter_with_its_option_text():
+    from benchtoward.tasks.clinicalqa import PARSER_VERSION
+    assert PARSER_VERSION == "p0.3"
+    assert p3("C. 정서적 학대") == "C"
+    assert p3("A. 레보티록신 용량을 25mcg으로 감량") == "A"
+    assert p3("  (C) 정서적 학대 ") == "C" and p3("C번 정서적 학대") == "C" and p3("C) 정서적 학대.") == "C"
+    assert p3("Ｃ．정서적 학대") == "C"                      # full-width letter and period (NFKC)
+    assert p3("D. d text") == "D" and p3("E. eee (cbc)") == "E"   # trailing period and case ignored
+    assert p3("생각해 보면 이 환자는 학대가 의심된다.\nC. 정서적 학대") == "C"
+
+
+def test_p03_refuses_everything_else():
+    assert p3("C. 운동부하 심초음파") is None                 # letter and text disagree
+    assert p3("B. 운동부하 심초음파\nC. 정서적 학대") is None   # the line above is an option line too
+    assert p3("The answer could be C. 정서적 학대 here") is None
+    assert p3("정서적 학대") is None                          # text without the letter
+    assert p3("C. 정서적") is None                            # partial text
+    assert parse_answer("C. 정서적 학대", set(OPTS)) is None  # no option texts given: p0.2 behaviour
+    assert p3("F. 정서적 학대") is None
+
+
+def test_p02_patterns_still_win():
+    assert p3('{"answer": "B"}\nC. 정서적 학대') == "B"
+    assert p3("정답은 E입니다") == "E"

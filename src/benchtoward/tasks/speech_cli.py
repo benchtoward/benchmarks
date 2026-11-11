@@ -58,9 +58,11 @@ def _eval_asr_one(session, model: Model, task_ref: str, force: bool, limit: int 
         from benchtoward.db import ItemResult
 
         stored = session.query(ItemResult).filter_by(run_id=run.id).all()
-        retry = Counter(r.error for r in stored if r.error is not None and r.transient is not False)
+        retry = Counter(r.error for r in stored if r.error is not None)
         typer.echo(f"  {len(clips if limit is None else clips[:limit]) - len(stored) + sum(retry.values())} clip(s) "
                    f"still need a transcript (errors: {dict(retry)}); run the same command again to resume")
+        from benchtoward.cli import _raise_failed_run
+        _raise_failed_run(run)
 
 
 def eval_asr(model: str = typer.Option(..., help="ASR model slug, e.g. alibaba/qwen3-asr-1.7b"),
@@ -82,15 +84,21 @@ def eval_asr_all(task: str = typer.Option(DEFAULT_TASK, help="speech task, slug@
     """Evaluate every enabled ASR model whose credentials are available, one after another."""
     from benchtoward.cli import open_session
 
+    failed = False
     with open_session() as session:
         for model in session.query(Model).filter_by(type="asr", enabled=True).order_by(Model.slug):
             try:
                 _eval_asr_one(session, model, task, False, None, concurrency)
             except MissingCredential as exc:
                 typer.echo(f"skip {model.slug}: {exc}")
+            except typer.Exit:
+                failed = True
             except Exception as exc:  # one model's failure must not stop the others
                 session.rollback()
                 typer.echo(f"error {model.slug}: {type(exc).__name__}: {exc}")
+                failed = True
+    if failed:
+        raise typer.Exit(1)
 
 
 def register(app: typer.Typer, fetch_app: typer.Typer) -> None:

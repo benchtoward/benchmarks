@@ -1,6 +1,6 @@
 from datetime import date, datetime, timezone
 
-from sqlalchemy import Boolean, Date, DateTime, Float, ForeignKey, Integer, String, Text, UniqueConstraint, create_engine
+from sqlalchemy import Boolean, Date, DateTime, Float, ForeignKey, Index, Integer, String, Text, UniqueConstraint, create_engine
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
 from sqlalchemy.pool import StaticPool
@@ -104,25 +104,86 @@ class ItemResult(Base):
 
 class ReuseEvent(Base):
     __tablename__ = "reuse_events"
+    __table_args__ = (Index("uq_reuse_daily", "day", "visitor", "kind", "run_id", unique=True),)
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     run_id: Mapped[str] = mapped_column(ForeignKey("runs.id"))
     kind: Mapped[str] = mapped_column(String)
     at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    day: Mapped[str | None] = mapped_column(String, nullable=True)
+    visitor: Mapped[str | None] = mapped_column(String, nullable=True)
 
 
 class DownloadEvent(Base):
-    """A download of a published result, counted as a reuse next to lookup hits (benchtoward.analytics.record_download).
-    A table of its own: reuse_events.run_id is NOT NULL, a leaderboard CSV belongs to a task, and init_db cannot relax
-    the constraint on the live database. At most one row per visitor, kind, target and KST day; `visitor` is the
-    salted daily hash also used for page views, never an IP address or user agent."""
+    """Daily deduplicated download reuses. New downloads use user_id and a user marker in visitor;
+    legacy rows retain their daily visitor hash. Deletion removes user_id and randomises each visitor marker.
+    A separate table supports both run files and task-level leaderboard exports."""
     __tablename__ = "download_events"
-    __table_args__ = (UniqueConstraint("day", "visitor", "kind", "target"),)
+    __table_args__ = (UniqueConstraint("day", "visitor", "kind", "target"),
+                     Index("uq_download_user_daily", "day", "user_id", "kind", "target", unique=True))
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
     day: Mapped[str] = mapped_column(String, index=True)  # YYYY-MM-DD in Asia/Seoul
     visitor: Mapped[str] = mapped_column(String)
     kind: Mapped[str] = mapped_column(String)  # predictions | result_json | leaderboard_csv
     target: Mapped[str] = mapped_column(String)  # run id, or slug@version for a leaderboard CSV
+    agent_family: Mapped[str | None] = mapped_column(String, nullable=True)
+    user_id: Mapped[int | None] = mapped_column(ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
+
+
+class User(Base):
+    __tablename__ = "users"
+    __table_args__ = (UniqueConstraint("provider", "provider_subject"), {"sqlite_autoincrement": True})
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    provider: Mapped[str] = mapped_column(String)
+    provider_subject: Mapped[str] = mapped_column(String)
+    email: Mapped[str] = mapped_column(String)
+    name: Mapped[str] = mapped_column(String)
+    affiliation: Mapped[str | None] = mapped_column(String, nullable=True)
+    organisation_type: Mapped[str | None] = mapped_column(String, nullable=True)
+    consented_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    last_login_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    last_active_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True, default=utcnow)
+
+
+class UserConsent(Base):
+    """Versioned decisions: privacy_notice acknowledges contract processing; it is not consent.
+    Append decisions so withdrawal and subsequent grants retain their own timestamps."""
+    __tablename__ = "user_consents"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
+    item: Mapped[str] = mapped_column(String)
+    policy_version: Mapped[str] = mapped_column(String)
+    recorded_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    accepted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    withdrawn_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+
+
+class AuthSession(Base):
+    __tablename__ = "auth_sessions"
+    id: Mapped[str] = mapped_column(String(64), primary_key=True)  # hash of cookie; never the bearer value
+    user_id: Mapped[int | None] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), nullable=True, index=True)
+    csrf_token: Mapped[str] = mapped_column(String)
+    payload: Mapped[str] = mapped_column(Text, default="{}")
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    last_seen_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), index=True)
+
+
+class DownloadQuota(Base):
+    __tablename__ = "download_quotas"
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), primary_key=True)
+    day: Mapped[str] = mapped_column(String, primary_key=True)
+    count: Mapped[int] = mapped_column(Integer, default=0)
+
+
+class DeletedIdentityQuota(Base):
+    """Today's download count of a deleted account, keyed by an HMAC of provider and subject (no email, no name),
+    so deleting and registering again does not reset the daily limit. Rows of earlier days are purged."""
+    __tablename__ = "deleted_identity_quotas"
+    identity_hash: Mapped[str] = mapped_column(String(64), primary_key=True)
+    day: Mapped[str] = mapped_column(String, primary_key=True)
+    count: Mapped[int] = mapped_column(Integer, default=0)
 
 
 class Paper(Base):
@@ -266,7 +327,8 @@ class PageView(Base):
     path: Mapped[str] = mapped_column(String)
     source: Mapped[str | None] = mapped_column(String, nullable=True)  # ?ref= or ?utm_source=
     referrer_host: Mapped[str | None] = mapped_column(String, nullable=True)
-    kind: Mapped[str] = mapped_column(String)  # human | bot | agent
+    kind: Mapped[str] = mapped_column(String)  # human | bot | agent | internal | beacon
+    agent_family: Mapped[str | None] = mapped_column(String, nullable=True)
     status: Mapped[int | None] = mapped_column(Integer, nullable=True)
 
 
@@ -287,20 +349,38 @@ class RenameProof(Base):
 
 def make_engine(db_url: str) -> Engine:
     if db_url in ("sqlite://", "sqlite:///:memory:"):
-        return create_engine(db_url, connect_args={"check_same_thread": False}, poolclass=StaticPool)
+        return _secure_delete(create_engine(db_url, connect_args={"check_same_thread": False}, poolclass=StaticPool))
     if db_url.startswith("sqlite:///"):
         from pathlib import Path
 
         path = db_url.removeprefix("sqlite:///")
         if not path.startswith("file:"):  # a URI (sqlite:///file:...?uri=true) is no folder path
             Path(path).parent.mkdir(parents=True, exist_ok=True)
-        return create_engine(db_url, connect_args={"check_same_thread": False, "timeout": 60})
+        return _secure_delete(create_engine(db_url, connect_args={"check_same_thread": False, "timeout": 60}))
     return create_engine(db_url)
+
+
+def _secure_delete(engine: Engine) -> Engine:
+    """Deleted rows are overwritten with zeros in the database file, so destroyed personal information cannot be
+    recovered from it (privacy policy, Article 6). Set on every new connection: the pragma is per connection."""
+    from sqlalchemy import event
+
+    @event.listens_for(engine, "connect")
+    def _on_connect(dbapi_connection, _record):
+        cursor = dbapi_connection.cursor()
+        cursor.execute("PRAGMA secure_delete = ON")
+        cursor.close()
+
+    return engine
 
 
 def init_db(engine: Engine) -> None:
     Base.metadata.create_all(engine)
     _add_missing_columns(engine)
+    # create_all cannot add a constraint to an existing table. NULLs keep legacy rows outside this dedup window.
+    for table in (ReuseEvent.__table__, DownloadEvent.__table__):
+        for index in table.indexes:
+            index.create(engine, checkfirst=True)
 
 
 def _add_missing_columns(engine: Engine) -> None:

@@ -19,6 +19,7 @@ import yaml
 from benchtoward.config import get_settings, provider_routes, registry_dir
 from benchtoward.db import Model
 from benchtoward.llm import MissingCredential, client_for
+from benchtoward.llm_batch import BatchMode, RetryMode
 
 text2sql_app = typer.Typer(help="Synthetic-SNUH Text-to-SQL: question files, frontier-model jobs, KHDP release",
                            no_args_is_help=True)
@@ -191,6 +192,8 @@ def apply_review_cmd(workbook: Path = typer.Argument(..., help="the filled revie
 def llm_review_cmd(models: str = typer.Option("openai/gpt-6-astra,google/gemini-4-argon,anthropic/claude-opus-5.5",
                                               help="reviewer model ids on the LLM route, comma separated"),
                    route: str | None = typer.Option(None, help=ROUTE_HELP),
+                   mode: BatchMode = typer.Option(BatchMode.auto, help="auto: batch at 100+ uncached requests"),
+                   batch_retry: RetryMode = typer.Option(RetryMode.sync, help="retry failed/missing batch items"),
                    draft: Path | None = typer.Option(None, help="question file (default: the v0 draft)"),
                    limit: int | None = typer.Option(None, help="only the first N questions (a pilot)"),
                    budget_usd: float = typer.Option(50.0, help="hard cap for the cache folder (its recorded spend "
@@ -209,7 +212,8 @@ def llm_review_cmd(models: str = typer.Option("openai/gpt-6-astra,google/gemini-
     items = items[:limit] if limit else items
     _connect().close()
     database = db_path(settings.data_dir)
-    summary = asyncio.run(run_review(items, database, clients, prices, out, budget_usd=budget_usd, extra=extra))
+    summary = asyncio.run(run_review(items, database, clients, prices, out, budget_usd=budget_usd, extra=extra,
+                                      mode=mode, batch_retry=batch_retry))
     typer.echo(f"asked {summary['asked']}, parsed {summary['parsed']}, cost ${summary['cost_usd']:.2f}"
                + (" (stopped at the budget)" if summary["stopped_for_budget"] else ""))
     path = write_review_workbook(_draft(draft), database, out, workbook, models=ids)
@@ -272,6 +276,8 @@ def _frontier(models: str, route: str | None) -> tuple[list[str], dict, dict, di
     except MissingCredential as exc:
         typer.echo(str(exc))
         raise typer.Exit(1)
+    for client in clients.values():
+        client.batch_enabled = bool(entry.get("batch"))
     billing = (entry.get("request") or {}).get("billing")  # the route then reports what it billed
     return ids, clients, prices, dict(billing) if billing else None
 
@@ -288,6 +294,8 @@ def _spend(asked_from: float, budget) -> str:
 @text2sql_app.command("llm-fix")
 def llm_fix_cmd(models: str = typer.Option(FRONTIER, help="proposers in rotation order; all of them re-review"),
                 route: str | None = typer.Option(None, help=ROUTE_HELP),
+                mode: BatchMode = typer.Option(BatchMode.auto, help="auto: batch at 100+ uncached requests"),
+                batch_retry: RetryMode = typer.Option(RetryMode.sync, help="retry failed/missing batch items"),
                 draft: Path | None = typer.Option(None, help="question file (default: the v0 draft)"),
                 id: list[str] = typer.Option(None, help="only these needs_edit items (repeatable)"),
                 budget_usd: float | None = typer.Option(None, help="hard cap for the whole job (every cache under "
@@ -341,11 +349,11 @@ def llm_fix_cmd(models: str = typer.Option(FRONTIER, help="proposers in rotation
     # otherwise (an item sent back by a decision on the draft, perhaps after an earlier fix) its review note.
     asked = {i.id for i in items if any(r and r.get("verdict") != "approve" for r in (cached.get(i.id) or {}).values())}
     original = {i.id: cached[i.id] if i.id in asked else notes.get(i.id) for i in items}
-    budget = Budget(job_cap(job, budget_usd), Budget.spent_in(job))
+    budget = Budget(job_cap(job, budget_usd), Budget.spent_in(job), ledger_root=job)
     before = budget.spent_usd
     outcomes = asyncio.run(run_fix(items, db_path(get_settings().data_dir), clients, prices, job / "fix", budget,
                                    proposers=ids, original_reviews=original, ids=id or None, extra=extra, spec=spec,
-                                   review_batch=review_batch))
+                                   review_batch=review_batch, mode=mode, batch_retry=batch_retry))
     write_report(job / f"fix-report-{_draft(draft).stem}.json", outcomes)
     for o in outcomes:
         where = f" in round {o.round} ({o.proposer.split('/')[-1]})" if o.status == "approved" else ""
@@ -364,6 +372,8 @@ def llm_fix_cmd(models: str = typer.Option(FRONTIER, help="proposers in rotation
 @text2sql_app.command("llm-decide")
 def llm_decide_cmd(models: str = typer.Option(FRONTIER, help="voter model ids on the route, comma separated"),
                    route: str | None = typer.Option(None, help=ROUTE_HELP),
+                   mode: BatchMode = typer.Option(BatchMode.auto, help="auto: batch at 100+ uncached requests"),
+                   batch_retry: RetryMode = typer.Option(RetryMode.sync, help="retry failed/missing batch items"),
                    draft: Path | None = typer.Option(None, help="question file (default: the v0 draft)"),
                    budget_usd: float | None = typer.Option(None, help="hard cap for the whole job (every cache "
                                                                       "under the job folder counts; default: the "
@@ -427,10 +437,10 @@ def llm_decide_cmd(models: str = typer.Option(FRONTIER, help="voter model ids on
                     if not r["correct"]] if summary and scored.exists() else []
         facts = facts_text(items, summary, failures)
         job = _job_dir(out)
-    budget = Budget(job_cap(job, budget_usd), Budget.spent_in(job))
+    budget = Budget(job_cap(job, budget_usd), Budget.spent_in(job), ledger_root=job)
     before = budget.spent_usd
     results = asyncio.run(run_decide(_draft(draft), clients, prices, job / "decide", budget, facts=facts,
-                                     extra=extra, setup=setup))
+                                     extra=extra, setup=setup, mode=mode, batch_retry=batch_retry))
     for r in results:
         if r["status"] != "decided":
             typer.echo(f"{r['key']}: incomplete")
@@ -475,6 +485,8 @@ def _hard_job(out: Path | None) -> Path:
 @text2sql_app.command("hard-generate")
 def hard_generate_cmd(models: str = typer.Option(FRONTIER, help="proposers; batches rotate over them by category"),
                       route: str | None = typer.Option(None, help=ROUTE_HELP),
+                      mode: BatchMode = typer.Option(BatchMode.auto, help="auto: batch at 100+ uncached requests"),
+                      batch_retry: RetryMode = typer.Option(RetryMode.sync, help="retry failed/missing batch items"),
                       draft: Path | None = typer.Option(None, help="the harder set's draft (default: "
                                                                    "registry/drafts/synthetic-snuh-text2sql-hard-v0)"),
                       plan: str | None = typer.Option(None, help="batch sizes, e.g. 'clinical_terms=8,8;unanswerable=7'"
@@ -501,11 +513,12 @@ def hard_generate_cmd(models: str = typer.Option(FRONTIER, help="proposers; batc
     earlier = [i for i in items if (batch_round(batches.get(i.id)) or 0) < gen_round]
     _connect().close()
     job = _hard_job(out)
-    budget = Budget(budget_usd, Budget.spent_in(job))
+    budget = Budget(budget_usd, Budget.spent_in(job), ledger_root=job)
     before = budget.spent_usd
     result = asyncio.run(run_generate(db_path(get_settings().data_dir), clients, prices, job / GENERATE_DIR, budget,
                                       models=ids, existing=earlier, gen_round=gen_round,
-                                      plan=parse_plan(plan) if plan else PLAN, hint=hint, extra=extra))
+                                      plan=parse_plan(plan) if plan else PLAN, hint=hint, extra=extra,
+                                      mode=mode, batch_retry=batch_retry))
     for b in result.batches:
         typer.echo(f"{b['batch']} ({b['proposer'].split('/')[-1]}): asked {b['asked']}, proposed {b['proposed']}, "
                    f"passed {b['passed']}, sent back {b['sent_back']}, repaired {b['repaired']}")
@@ -526,6 +539,8 @@ def hard_generate_cmd(models: str = typer.Option(FRONTIER, help="proposers; batc
 @text2sql_app.command("hard-review")
 def hard_review_cmd(models: str = typer.Option(FRONTIER, help="reviewer model ids on the route, comma separated"),
                     route: str | None = typer.Option(None, help=ROUTE_HELP),
+                    mode: BatchMode = typer.Option(BatchMode.auto, help="auto: batch at 100+ uncached requests"),
+                    batch_retry: RetryMode = typer.Option(RetryMode.sync, help="retry failed/missing batch items"),
                     draft: Path | None = typer.Option(None, help="the harder set's draft"),
                     budget_usd: float = typer.Option(25.0, help="hard cap for the whole job folder"),
                     out: Path | None = typer.Option(None, help=f"job folder (default: <data_dir>/drafts/"
@@ -543,10 +558,10 @@ def hard_review_cmd(models: str = typer.Option(FRONTIER, help="reviewer model id
     _, items = load_questions(path)
     _connect().close()
     job = _hard_job(out)
-    budget = Budget(budget_usd, Budget.spent_in(job))
+    budget = Budget(budget_usd, Budget.spent_in(job), ledger_root=job)
     before = budget.spent_usd
     reviews = asyncio.run(run_hard_review(items, db_path(get_settings().data_dir), clients, prices, job / REVIEW_DIR,
-                                          budget, extra=extra))
+                                          budget, extra=extra, mode=mode, batch_retry=batch_retry))
     incomplete = sorted(k for k, v in reviews.items() if v is None)
     counts = apply_reviews(path, reviews) if apply else {}
     typer.echo(f"reviewed {len(reviews) - len(incomplete)} of {len(reviews)} pending item(s): "
@@ -678,8 +693,8 @@ def dry_run_cmd(model: str | None = typer.Option(None, help="registry model slug
                                           concurrency=concurrency, max_tokens=max_tokens or max_tokens_for(row),
                                           spec=spec))
         if summary["status"] != "done":
-            typer.echo(f"incomplete: {summary['pending']} answer(s) still pending after transient errors; "
-                       f"run the same command again to resume")
+            typer.echo(summary["failed_reason"])
+            typer.echo(f"{summary['pending']} answer(s) still pending; run the same command again to resume")
             raise typer.Exit(1)
         summary["model"] = row.slug
     else:

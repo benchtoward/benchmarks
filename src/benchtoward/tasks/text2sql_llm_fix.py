@@ -93,22 +93,25 @@ HARD_SYSTEM = (
 # ---- budget and cached requests ----
 
 class Budget:
-    """A hard cap on paid calls for one job. `spent_usd` starts with what the job's caches already record (earlier
-    runs count); a request starts only if its worst-case cost fits under the cap with the requests in flight."""
+    """A hard cap on paid calls for one job. Durable backend ledgers and legacy caches count earlier runs and
+    in-flight reservations; a request starts only if its worst-case cost fits under the cap."""
 
-    def __init__(self, cap_usd: float, spent_usd: float = 0.0):
+    def __init__(self, cap_usd: float, spent_usd: float = 0.0, *, ledger_root: Path | None = None):
         self.cap_usd, self.spent_usd, self.reserved_usd, self.stopped = cap_usd, spent_usd, 0.0, False
+        self.ledger_root = Path(ledger_root).resolve() if ledger_root is not None else None
 
     @staticmethod
     def spent_in(root: Path) -> float:
-        """Sum of cost_usd, plus the estimates charged for failed attempts, over every cached answer under `root`."""
+        """Durable charges/reservations plus legacy cached spend, without counting ledger-backed caches twice."""
         total = 0.0
         for path in sorted(Path(root).rglob("*.jsonl")) if Path(root).exists() else []:
             for line in path.read_text(encoding="utf-8").splitlines():
                 if line.strip():
                     record = json.loads(line)
-                    total += float(record.get("cost_usd") or 0) + float(record.get("failed_attempts_usd") or 0)
-        return total
+                    if not record.get("batch_id") and not record.get("charge_id"):
+                        total += float(record.get("cost_usd") or 0) + float(record.get("failed_attempts_usd") or 0)
+        from benchtoward.llm_batch import batch_spend, charge_states
+        return total + batch_spend(root) + sum(s["charged_usd"] for _, s in charge_states(root))
 
     def try_reserve(self, usd: float) -> bool:
         if self.spent_usd + self.reserved_usd + usd > self.cap_usd:
@@ -190,15 +193,17 @@ def cache_breakpoint(messages: list[dict], split: str) -> list[dict]:
 class Asker:
     """Asks a model once per (kind, key) and prompt. Answers go to <cache_dir>/<model>.jsonl and are reused while the
     prompt is unchanged; unusable answers are asked again on the next run. Every request passes the budget, retries
-    included (`Attempts`): each attempt reserves its worst-case cost first, and a failed attempt that may have been
-    billed keeps that estimate as spend (recorded as failed_attempts_usd, so later runs count it). A request that
-    raises or is cancelled is charged its reserved attempts the same way and recorded before the exception goes on,
+    included): the backend durably reserves each attempt first and records billing before caching. Failed attempts
+    without reported billing keep their estimates as spend. A request that raises or is cancelled keeps its paid
+    charges and uncertain reservations in the backend ledger before the exception goes on,
     so it is asked again next run and its cost still counts. With `cache_split`, requests to
     Anthropic models mark the prompt up to that text for prompt caching (the cache key stays the logical prompt)."""
 
     def __init__(self, clients: dict, prices: dict[str, tuple[float, float]], cache_dir: Path, budget: Budget, *,
                  max_tokens: int = MAX_TOKENS, concurrency: int = CONCURRENCY, extra: dict | None = None,
-                 cache_split: str | None = None):
+                 cache_split: str | None = None, mode: str = "auto", batch_retry: str = "sync",
+                 batch_registry: dict | None = None):
+        from benchtoward.llm_batch import BatchBackend
         self.clients, self.prices, self.budget = clients, prices, budget
         self.cache_dir, self.max_tokens, self.extra = Path(cache_dir), max_tokens, extra
         self.cache_split = cache_split
@@ -206,6 +211,8 @@ class Asker:
         self.sems = {m: asyncio.Semaphore(concurrency) for m in clients}
         self.cached = {m: self._load(m) for m in clients}
         self.asked = 0
+        self.backend = BatchBackend(clients, prices, cache_dir, budget, mode=mode, retry=batch_retry,
+                                    registry=batch_registry)
 
     def _path(self, model: str) -> Path:
         return self.cache_dir / f"{model.replace('/', '__')}.jsonl"
@@ -226,8 +233,9 @@ class Asker:
                     records[(r["kind"], r["key"])] = r
         return records
 
-    async def ask(self, model: str, kind: str, key: str, messages: list[dict], parse) -> Answer:
-        sha = _sha(messages)
+    def _cached_answer(self, model, kind, key, sha, parse, *, reload=False):
+        if reload:
+            self.cached[model] = self._load(model)
         hit = self.cached[model].get((kind, key))
         if hit and hit.get("prompt_sha") == sha and hit.get("answer") is not None:
             return Answer(hit["answer"], "ok", hit.get("raw") or "")
@@ -235,28 +243,37 @@ class Asker:
             value = parse(hit["raw"])  # an answer an earlier parser could not read: read it again, do not re-ask
             if value is not None:
                 return Answer(value, "ok", hit["raw"])
+
+    async def ask(self, model: str, kind: str, key: str, messages: list[dict], parse) -> Answer:
+        sha = _sha(messages)
+        hit = self._cached_answer(model, kind, key, sha, parse)
+        if hit is not None:
+            return hit
         price = self.prices.get(model, (0.0, 0.0))
-        attempts = Attempts(self.budget, worst_case_usd(messages, self.max_tokens, price))
+        body = {**(self.extra or {}), "model": model, "messages": messages,
+                "max_tokens": self.max_tokens, "temperature": 0.0}
+        # Batch usage is always returned. The sync route's billing opt-in is
+        # unnecessary there; protocol parameters are preserved and gated.
+        if body.get("usage") == {"include": True}:
+            body.pop("usage")
+        async def resolve(result):
+            return await self._answer(model, kind, key, messages, parse, sha, price, result)
         sent = cache_breakpoint(messages, self.cache_split) if self.cache_split and model.startswith("anthropic/") \
             else messages
-        async with self.sems[model]:
-            if not attempts.start():
-                return Answer(None, "budget")
-            kwargs = {"extra": self.extra} if self.extra else {}
-            try:
-                result = await self.clients[model].chat(model, sent, max_tokens=self.max_tokens,
-                                                        before_attempt=attempts.before_attempt, **kwargs)
-            except BaseException as exc:  # cancellation included: what was sent may have been billed
-                charged = attempts.charge_all()
-                self._write(model, {"kind": kind, "key": key, "prompt_sha": sha, "answer": None, "raw": "",
-                                    "error": f"exception_{type(exc).__name__}", "tokens_in": 0, "tokens_out": 0,
-                                    "cost_usd": 0.0, "cost_estimate_usd": 0.0, "cost_source": "estimate",
-                                    "attempts": len(attempts.reserved), "failed_attempts": len(attempts.reserved),
-                                    "failed_attempts_usd": round(charged, 6)})
-                raise
+        sync_body = {**(self.extra or {}), "model": model, "messages": sent,
+                     "max_tokens": self.max_tokens, "temperature": 0.0}
+        return await self.backend.request(
+            model, body, {"kind": kind, "key": key, "prompt_sha": sha}, resolve=resolve,
+            cached=lambda: self._cached_answer(model, kind, key, sha, parse, reload=True),
+            parse=parse, sync_body=sync_body, semaphore=self.sems[model],
+        )
+
+    async def _answer(self, model, kind, key, messages, parse, sha, price, result):
+        if result.error == "budget" and result.attempts == 0:
+            return Answer(None, "budget")
         estimate = (result.tokens_in * price[0] + result.tokens_out * price[1]) / 1_000_000
         cost = result.cost_usd if result.cost_usd is not None else estimate
-        failed_usd = attempts.finish(cost, result.failed_attempts)
+        failed_usd = result.failed_attempts_usd
         answer = None if result.error else parse(result.content)
         self.asked += 1
         self._write(model, {"kind": kind, "key": key, "prompt_sha": sha, "answer": answer, "raw": result.content,
@@ -265,7 +282,12 @@ class Asker:
                             "cost_usd": round(cost, 6), "cost_estimate_usd": round(estimate, 6),
                             "cost_source": "route" if result.cost_usd is not None else "estimate",
                             "attempts": result.attempts, "failed_attempts": result.failed_attempts,
-                            "failed_attempts_usd": round(failed_usd, 6)})
+                            "failed_attempts_usd": round(failed_usd, 6),
+                            **({"charge_id": result.charge_id} if result.charge_id else {}),
+                            **({"batch_id": result.batch_id} if result.batch_id else {})})
+        if result.error == "http_402":
+            from benchtoward.llm_batch import BatchError
+            raise BatchError("LLM HTTP 402: insufficient balance; job stopped")
         if result.error:
             return Answer(None, "budget" if result.error == "budget" else "error", result.content)
         return Answer(answer, "ok" if answer is not None else "unparsed", result.content)
@@ -505,19 +527,23 @@ async def review_items(asker: Asker, batch_asker: Asker, models: list[str], item
     return {i.id: None if i.id in failed else {m: results[i.id].get(m) for m in models} for i in items}
 
 
-def review_askers(clients: dict, prices: dict, out: Path, budget: Budget, extra: dict | None) -> tuple[Asker, Asker]:
+def review_askers(clients: dict, prices: dict, out: Path, budget: Budget, extra: dict | None, *,
+                  mode: str = "auto", batch_retry: str = "sync") -> tuple[Asker, Asker]:
     """An Asker for single-item reviews and one for batches, sharing the per-model concurrency limits."""
-    asker = Asker(clients, prices, out, budget, extra=extra, cache_split=ITEM_START)
+    asker = Asker(clients, prices, out, budget, extra=extra, cache_split=ITEM_START,
+                  mode=mode, batch_retry=batch_retry)
     batch_asker = Asker(clients, prices, out, budget, max_tokens=BATCH_MAX_TOKENS, extra=extra,
                         cache_split=ITEM_START)
     batch_asker.sems = asker.sems
+    batch_asker.backend = asker.backend
     return asker, batch_asker
 
 
 async def run_fix(items: list[Question], database: Path, clients: dict, prices: dict[str, tuple[float, float]],
                   out: Path, budget: Budget, *, proposers: list[str], original_reviews: dict[str, object],
                   ids: list[str] | None = None, max_rounds: int = MAX_ROUNDS, extra: dict | None = None,
-                  spec: PromptSpec = P0, review_batch: int = 1) -> list[FixOutcome]:
+                  spec: PromptSpec = P0, review_batch: int = 1, mode: str = "auto",
+                  batch_retry: str = "sync") -> list[FixOutcome]:
     """Fix every needs_edit item (or the needs_edit items among `ids`), round by round: every open item gets a
     proposal from the round's proposer, then all three re-review the valid proposals (`review_batch` items per
     request). `original_reviews`: item id -> {model: review} from the three-model review, or the review note text.
@@ -525,7 +551,7 @@ async def run_fix(items: list[Question], database: Path, clients: dict, prices: 
     unanswerable items without SQL). Returns one outcome per item, in draft order."""
     con = connect_readonly(database)
     schema = schema_summary(con, null_columns=spec.null_columns)
-    asker, batch_asker = review_askers(clients, prices, out, budget, extra)
+    asker, batch_asker = review_askers(clients, prices, out, budget, extra, mode=mode, batch_retry=batch_retry)
     reviewers = list(clients)
     todo = [i for i in items if i.review == "needs_edit" and (not ids or i.id in ids)]
     histories: dict[str, list[dict]] = {i.id: [] for i in todo}
