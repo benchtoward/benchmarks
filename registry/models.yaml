@@ -203,6 +203,16 @@
   type: baseline
   provider: benchtoward
   developer: BenchToward
+- slug: benchtoward/ptbxl-hgb-beat-features
+  name: Gradient boosting on median-beat, amplitude and RR features (PTB-XL)
+  type: baseline
+  provider: benchtoward
+  developer: BenchToward
+- slug: benchtoward/ptbxl-resnet1d
+  name: 1-D ResNet trained on PTB-XL (Ribeiro et al. 2020 architecture)
+  type: baseline
+  provider: benchtoward
+  developer: BenchToward
 - slug: benchtoward/lydus-ecg-image-resnet18
   name: ResNet-18 on half-size ECG images (fine-tuned from ImageNet)
   type: baseline

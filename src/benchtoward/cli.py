@@ -469,6 +469,13 @@ except ModuleNotFoundError:
 if register_lydus is not None:
     register_lydus(app, fetch_app, build_app, baseline_app)
 
+try:  # ptbxl-superdiagnostic@0 is exported with its task once the maintainers publish it
+    from benchtoward.tasks.ptbxl_cli import register as register_ptbxl  # noqa: E402
+except ModuleNotFoundError:
+    register_ptbxl = None
+if register_ptbxl is not None:
+    register_ptbxl(app, fetch_app, build_app, baseline_app)
+
 try:  # lydus-ecg-image@0 is exported with its task once the maintainers publish it
     from benchtoward.tasks.lydus_ecg_image_cli import register as register_ecg_image  # noqa: E402
 except ModuleNotFoundError:

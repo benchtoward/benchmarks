@@ -113,3 +113,13 @@
   citation: "Lee H-C, Seoul National University Hospital. Synthetic-SNUH v4.0.0: synthetic OMOP CDM and KR Core FHIR records for 10,000 virtual patients (version 4.0.0). KHDP. 2026. doi:10.23421/2026.03183"
   khdp_code: synthetic-snuh
   version: 4.0.0
+
+- slug: ptb-xl
+  title: "PTB-XL: 12-lead ECGs with SCP-ECG statements (Physikalisch-Technische Bundesanstalt, Germany)"
+  modality: biosignal
+  license: CC BY 4.0
+  license_url: https://creativecommons.org/licenses/by/4.0/
+  source_url: https://physionet.org/content/ptb-xl/1.0.3/
+  # PhysioNet asks for three citations: the release, the original paper and the standard PhysioNet citation.
+  citation: "Wagner P, Strodthoff N, Bousseljot R, Samek W, Schaeffter T. PTB-XL, a large publicly available electrocardiography dataset (version 1.0.3). PhysioNet. 2022. doi:10.13026/kfzx-aw45. Wagner P, Strodthoff N, Bousseljot R-D, Kreiseler D, Lunze FI, Samek W, Schaeffter T. PTB-XL, a large publicly available electrocardiography dataset. Sci Data. 2020;7:154. doi:10.1038/s41597-020-0495-6. Pollard T, Moody BE, Lehman L, Gow B, Fernandes C, Xie C, Johnson A, Mark RG, Heldt T. PhysioNet as a global platform for biomedical research. Nature Health. 2026. doi:10.1038/s44360-026-00096-z"
+  version: 1.0.3

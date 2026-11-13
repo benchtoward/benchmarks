@@ -1,0 +1,110 @@
+slug: ptbxl-superdiagnostic
+version: 0
+visibility: open  # published by the maintainers (2026-11-13)
+publication_note: >-
+  Published by the maintainers on 2026-11-13 although the benchmark check failed on separation: the 1-D ResNet strong
+  reference (macro AUROC 0.913) scored below the gradient-boosting weak reference (0.924), so the task does not
+  separate stronger from weaker models well. Headroom passed (H = 0.15). PTB-XL is public and in the CinC 2020 and
+  2021 training sets, so models may have seen the test fold. Labels are the release's statements (cardiologists or
+  the device's automatic reading, 1989-1996). Research evaluation, not validated for patient care.
+dataset: ptb-xl
+kind: multilabel
+primary_metric: macro_auroc
+title: Diagnostic superclasses from a 10-second 12-lead ECG (PTB-XL, multi-label, macro AUROC)
+protocol:
+  adopted: >-
+    Experiment exp1.1.1 ("superdiagnostic") of Strodthoff et al.'s PTB-XL benchmark, as their code computes it: the
+    release's own aggregation of diagnostic SCP statements into five superclasses (scp_statements.csv,
+    diagnostic_class), every diagnostic statement of a record whatever its likelihood, records without a superclass
+    left out, the release's patient-safe folds with 1-8 for training, 9 for validation and 10 for testing, and macro
+    AUROC over the five classes (roc_auc_score, average "macro") on fold 10.
+  source: >-
+    Strodthoff N, Wagner P, Schaeffter T, Samek W. Deep Learning for ECG Analysis: Benchmarks and Insights from
+    PTB-XL. IEEE J Biomed Health Inform. 2021;25(5):1519-1528. doi:10.1109/JBHI.2020.3022989
+  repository: https://github.com/helme/ecg_ptbxl_benchmarking
+  commit: cdbf4e66d7e57d9b6a2657b6024716212b8d0afa
+  experiment: exp1.1.1 superdiagnostic
+  code: "code/utils/utils.py (compute_label_aggregations, select_data, evaluate_experiment), code/experiments/scp_experiment.py"
+  license: >-
+    GPL-3.0. Reimplemented from the code at the pinned commit (src/benchtoward/tasks/ptbxl.py,
+    ptbxl_superdiagnostic.py), not copied; nothing of the repository is vendored.
+  dataset_release: >-
+    PTB-XL 1.0.3, PhysioNet, doi:10.13026/kfzx-aw45, CC BY 4.0 (21,799 ECGs of 18,869 patients, Physikalisch-Technische
+    Bundesanstalt, Germany, 1989-1996; statements from up to two cardiologists or the device's automatic
+    interpretation; the dataset page says folds 9 and 10 had at least one human evaluation)
+data:
+  files: [ptbxl_database.csv, scp_statements.csv, records500/]
+  # From PhysioNet's SHA256SUMS.txt for 1.0.3; `fetch` checks every listed file, `build` these two.
+  database_sha256: 7600de9c1b27d181d850b3c6038a35d7c3ddb6bb33b702e3a20252a6859d216b
+  statements_sha256: ad05b0b1fcae83bb1230755ad9cfc7c96f303feddc08a4a9ad5bdc9ca63bac8f
+  archive_sha256: 2d98687a9c69c8df03dbd69e0c569b3363981a0f667861c279c747d4aec29812  # the ZIP as downloaded 2026-11-12
+  signals: >-
+    records500: 12 leads (I, II, III, aVR, aVL, aVF, V1-V6) x 5,000 samples, WFDB format 16, gain 1000 per mV,
+    baseline 0; `build` refuses any other header. Inputs keep the stored units (1 uV).
+input:
+  hz: 500
+  samples: 5000
+  leads: [I, II, III, aVR, aVL, aVF, V1, V2, V3, V4, V5, V6]
+  also: [age, sex]   # as the release gives them; ages over 89 are recorded as 300 (release documentation)
+  never: >-
+    ecg_id, patient_id, filename, report text, scp_codes, the validator fields, the heart axis, infarction stadium
+    and signal-quality columns, and strat_fold: they identify the record or come from the same reading as the labels
+label:
+  source: "scp_statements.csv diagnostic_class of every diagnostic statement in scp_codes (no likelihood threshold)"
+  classes: [CD, HYP, MI, NORM, STTC]   # conduction disturbance, hypertrophy, myocardial infarction, normal, ST/T change
+  rule: >-
+    a class is positive when any of the record's SCP codes is a diagnostic statement of that class; a record may have
+    several; records with no diagnostic statement (no superclass) are left out, as in the protocol
+counts:
+  # The build of 2026-11-12; `build` refuses one that differs.
+  # 2,158 test records, as in the protocol's superdiagnostic experiment; no patient is in two splits.
+  records: {train: 17084, validation: 2146, test: 2158}
+  patients: {train: 14823, validation: 1917, test: 1877}
+  excluded: {no_superdiagnostic_label: 411}
+  positives:
+    train: {CD: 3907, HYP: 2119, MI: 4379, NORM: 7596, STTC: 4186}
+    validation: {CD: 495, HYP: 268, MI: 540, NORM: 955, STTC: 528}
+    test: {CD: 496, HYP: 262, MI: 550, NORM: 963, STTC: 521}
+split:
+  source: strat_fold
+  by: patient_id
+  folds: {train: [1, 2, 3, 4, 5, 6, 7, 8], validation: [9], test: [10]}
+metrics:
+  primary: macro_auroc
+  definitions: >-
+    macro_auroc: the AUROC of each class's score on the test records (ties count half), averaged with equal weight
+    over the five classes, which is roc_auc_score(average="macro"). A label-only answer enters as scores 1 for the
+    classes it names and 0 otherwise, so its AUROC equals balanced accuracy.
+  bootstrap: {n: 1000, by: patient_id, seed: 0}
+  by_class: [positives, negatives, auroc]
+prediction: "for each record a score in [0, 1] for each of the five classes, in the order of label.classes"
+baselines:
+  benchtoward/prior: "train prevalence of each class as the score for every record (macro AUROC 0.5 by construction)"
+  benchtoward/ptbxl-hgb-beat-features: >-
+    one HistGradientBoostingClassifier per class (300 iterations, learning rate 0.1, random_state 0) on folds 1-8,
+    on the LYDUS beat features (lead II RR features, each lead's median beat from -200 to +400 ms around lead II R
+    peaks every 10 ms, amplitude percentiles of the band-passed leads) of the eight independent leads, with age and sex
+limitations:
+  - >-
+    The data are public and widely used (the CinC 2020 and 2021 challenge training sets include PTB-XL), so a model
+    may have been trained on fold 10; scores of models with undisclosed training data are not external validation.
+  - >-
+    One centre's recordings from 1989-1996 on one device family, from Germany; not a sample of today's devices or of
+    other populations.
+  - >-
+    Labels are the release's statements: up to two cardiologists or the device's automatic interpretation, not a
+    fresh over-read; folds 9 and 10 had at least one human evaluation.
+deviations:
+  - >-
+    Sampling rate: the protocol's published results use the 100 Hz records; this task gives the 500 Hz records (the
+    same recordings; the dataset page provides both), the rate of BenchToward's other 12-lead ECG task.
+  - >-
+    Intervals: the protocol reports the 5th and 95th percentiles of 100 record-level bootstrap draws; this task gives a
+    95% interval from 1,000 draws of whole patients (seed 0), so repeat ECGs of one patient are resampled together.
+  - >-
+    Reimplementation: the label aggregation, record selection and metric are reimplemented from the authors' GPL-3.0
+    code at the pinned commit (not copied); tests check the aggregation against the release's statements and the
+    metric against roc_auc_score.
+  - >-
+    Baselines: the protocol's networks (xresnet1d101 and others, fastai) are not run here; the reference models of
+    the benchmark check stand in, with the gradient-boosting baseline above.
